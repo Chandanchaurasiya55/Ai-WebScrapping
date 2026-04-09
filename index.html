@@ -387,13 +387,13 @@
       </svg>
     </div>
     <h3>No results found</h3>
-    <p id="emptyMsg">Business type aur location check karo aur dobara try karo.</p>
+    <p id="emptyMsg">Retry with a different business type or location OR try a more general search.</p>
   </div>
 </div>
 
 <footer class="footer">
-  <span class="footer-brand">BizScout</span>
-  <span>Powered by Gemini AI</span>
+  <span class="footer-brand">Scrapper</span>
+  <span>Powered by AI</span>
 </footer>
 
 <script>
@@ -401,14 +401,15 @@
      BACKEND CONFIG — sirf yahan key daalo, UI mein nahi dikhegi
   ══════════════════════════════════════════════ */
   const GEMINI_API_KEY = "AIzaSyDcP4hB6JlsfzuyDSiqfNmT1TcatMZJb00";
-  /* ════════════════════════════════════════════ */
-
+  /* ═════════════════════════════════════════════════
+     UI & LOGIC — iske neeche waale code ko mat chhedna
+  ══════════════════════════════════════════════ */
   const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
 
   let allResults = [];
   let busy = false;
 
-  document.getElementById('bizType').addEventListener('keydown',  e => { if(e.key==='Enter') startSearch(); });
+
   document.getElementById('location').addEventListener('keydown', e => { if(e.key==='Enter') startSearch(); });
 
   function setProgress(pct, label) {
@@ -458,7 +459,7 @@
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.1, maxOutputTokens: 8192 }
+        generationConfig: { temperature: 0.1, maxOutputTokens: 819200 }
       })
     });
     if (!res.ok) {
