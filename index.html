@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BizScout — Business Data Scraper</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Instrument+Sans:ital,wght@0,400;0,500;0,600;1,400&display=swap" rel="stylesheet"/>
+  <title>BizScout</title>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
   <style>
     :root {
@@ -25,8 +25,7 @@
       --amber-bg: #FEF0E0;
       --red:      #C0282A;
       --red-bg:   #FDE8E8;
-      --r:        16px;
-      --sh1: 0 1px 4px rgba(0,0,0,.05);
+      --r: 16px;
       --sh2: 0 4px 20px rgba(0,0,0,.08), 0 1px 4px rgba(0,0,0,.04);
       --sh3: 0 16px 48px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.06);
     }
@@ -35,87 +34,83 @@
     body {
       font-family: 'Instrument Sans', sans-serif;
       background: var(--bg); color: var(--ink);
-      min-height: 100vh; padding: 0 0 6rem; overflow-x: hidden;
+      min-height: 100vh; padding-bottom: 5rem; overflow-x: hidden;
     }
 
-    /* ── HERO ── */
+    /* HERO */
     .hero {
-      background: var(--ink); padding: 3rem 2rem 3.5rem;
+      background: var(--ink); padding: 3.25rem 2rem 4rem;
       position: relative; overflow: hidden;
     }
     .hero::before {
-      content: ''; position: absolute; inset: 0;
+      content: ''; position: absolute; inset: 0; pointer-events: none;
       background:
-        radial-gradient(ellipse 60% 80% at 80% 50%, rgba(45,91,227,.18) 0%, transparent 70%),
-        radial-gradient(ellipse 40% 60% at 10% 80%, rgba(45,91,227,.10) 0%, transparent 60%);
-      pointer-events: none;
+        radial-gradient(ellipse 55% 80% at 85% 50%, rgba(45,91,227,.20) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 60% at 10% 85%, rgba(45,91,227,.10) 0%, transparent 60%);
     }
     .hero-grid {
-      position: absolute; inset: 0;
+      position: absolute; inset: 0; pointer-events: none;
       background-image:
-        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
-      background-size: 40px 40px; pointer-events: none;
+        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
+      background-size: 44px 44px;
     }
-    .hero-inner {
-      max-width: 900px; margin: 0 auto;
-      position: relative; z-index: 1;
-      display: flex; align-items: center;
-      justify-content: space-between; gap: 2rem;
-    }
-    .hero-eyebrow {
+    .hero-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
+    .hero-eye {
       display: inline-flex; align-items: center; gap: 8px;
-      font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 600;
-      letter-spacing: 1.4px; text-transform: uppercase;
-      color: rgba(255,255,255,.45); margin-bottom: 1rem;
+      font-family: 'Syne', sans-serif; font-size: 10.5px; font-weight: 600;
+      letter-spacing: 1.6px; text-transform: uppercase;
+      color: rgba(255,255,255,.38); margin-bottom: 1rem;
     }
-    .hero-eyebrow::before { content: ''; width: 22px; height: 1px; background: rgba(255,255,255,.25); }
+    .hero-eye::before { content:''; width:20px; height:1px; background:rgba(255,255,255,.2); }
     .hero h1 {
       font-family: 'Syne', sans-serif;
-      font-size: clamp(26px, 4vw, 44px); font-weight: 800;
-      color: #fff; line-height: 1.08; letter-spacing: -1.5px; margin-bottom: .8rem;
+      font-size: clamp(28px, 4.5vw, 52px); font-weight: 800;
+      color: #fff; line-height: 1.06; letter-spacing: -1.8px; margin-bottom: .75rem;
     }
-    .hero h1 span {
-      background: linear-gradient(135deg, #7BAAF7 0%, #4A80F5 100%);
+    .hero h1 em {
+      font-style: normal;
+      background: linear-gradient(130deg, #7BAAF7, #4A7FF5);
       -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
     }
-    .hero-sub { font-size: 15px; color: rgba(255,255,255,.45); line-height: 1.65; max-width: 420px; }
+    .hero-sub { font-size: 15px; color: rgba(255,255,255,.42); line-height: 1.7; max-width: 480px; }
+    .hero-pills { display: flex; gap: 8px; margin-top: 1.5rem; flex-wrap: wrap; }
+    .hero-pill {
+      display: inline-flex; align-items: center; gap: 6px;
+      font-size: 11px; font-weight: 500; color: rgba(255,255,255,.45);
+      border: 0.5px solid rgba(255,255,255,.13); border-radius: 20px; padding: 4px 12px;
+    }
 
-    /* ── MAIN ── */
-    .main { max-width: 900px; margin: 0 auto; padding: 2rem 1.5rem 0; }
+    /* MAIN */
+    .main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 0; }
 
-    /* ── SEARCH CARD ── */
+    /* SEARCH CARD */
     .search-card {
       background: var(--white); border: 1px solid var(--border);
       border-radius: var(--r); box-shadow: var(--sh3);
-      padding: 2rem 2.25rem; margin-top: -1.75rem;
+      padding: 2rem 2.25rem; margin-top: -2rem;
       position: relative; z-index: 10;
-      animation: slideUp .45s cubic-bezier(.22,1,.36,1) both;
+      animation: slideUp .4s cubic-bezier(.22,1,.36,1) both;
     }
     @keyframes slideUp {
-      from { opacity: 0; transform: translateY(20px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from { opacity:0; transform:translateY(18px); }
+      to   { opacity:1; transform:translateY(0); }
     }
 
-    /* Two fields side by side */
-    .search-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 14px;
-      margin-bottom: 18px;
+    .fields-row {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px;
     }
     .field { display: flex; flex-direction: column; gap: 6px; }
     .field label { font-size: 12px; font-weight: 600; color: var(--ink2); }
     .input-wrap { position: relative; }
     .i-icon {
-      position: absolute; left: 13px; top: 50%;
-      transform: translateY(-50%);
-      color: var(--ink3); pointer-events: none; display: flex; align-items: center;
+      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+      color: var(--ink3); pointer-events: none; display: flex;
     }
     .field input {
-      width: 100%; height: 50px;
-      border: 1.5px solid var(--border); border-radius: 12px;
-      padding: 0 14px 0 42px; font-size: 14.5px;
+      width: 100%; height: 52px;
+      border: 1.5px solid var(--border); border-radius: 13px;
+      padding: 0 14px 0 44px; font-size: 15px;
       font-family: 'Instrument Sans', sans-serif;
       outline: none; background: var(--surface); color: var(--ink);
       transition: border-color .15s, box-shadow .15s, background .15s;
@@ -126,168 +121,149 @@
       box-shadow: 0 0 0 3px var(--accent-t);
     }
 
-    /* hint text */
-    .hint {
-      font-size: 11.5px; color: var(--ink3);
-      text-align: center; margin-bottom: 16px;
-      display: flex; align-items: center; justify-content: center; gap: 6px;
-    }
-    .hint kbd {
-      display: inline-flex; align-items: center;
-      background: var(--surface); border: 1px solid var(--border2);
-      border-radius: 5px; padding: 1px 7px; font-size: 11px;
-      font-family: 'Instrument Sans', sans-serif; color: var(--ink2);
-    }
-
-    /* ── BUTTON ── */
+    /* SEARCH BUTTON */
     .search-btn {
-      width: 100%; height: 54px; border-radius: 13px;
+      width: 100%; height: 56px; border-radius: 14px;
       background: var(--accent); color: #fff; border: none;
-      font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700; letter-spacing: .2px;
+      font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
       cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
+      box-shadow: 0 4px 20px rgba(45,91,227,.34);
       transition: background .15s, transform .15s, box-shadow .15s;
-      box-shadow: 0 4px 18px rgba(45,91,227,.32), 0 1px 4px rgba(45,91,227,.2);
       position: relative; overflow: hidden;
     }
     .search-btn::before {
-      content: ''; position: absolute; inset: 0;
-      background: linear-gradient(135deg, rgba(255,255,255,.13) 0%, transparent 55%);
+      content:''; position:absolute; inset:0;
+      background: linear-gradient(135deg, rgba(255,255,255,.12) 0%, transparent 50%);
     }
     .search-btn:hover:not(:disabled) {
       background: var(--accent2); transform: translateY(-2px);
-      box-shadow: 0 8px 30px rgba(45,91,227,.40);
+      box-shadow: 0 8px 32px rgba(45,91,227,.42);
     }
     .search-btn:active:not(:disabled) { transform: translateY(0); }
     .search-btn:disabled { opacity: .45; cursor: not-allowed; }
     .btn-spinner {
-      width: 18px; height: 18px;
-      border: 2px solid rgba(255,255,255,.3);
-      border-top-color: #fff; border-radius: 50%;
-      animation: spin .7s linear infinite;
-      display: none; flex-shrink: 0;
+      width: 18px; height: 18px; border-radius: 50%;
+      border: 2.5px solid rgba(255,255,255,.3); border-top-color: #fff;
+      animation: spin .65s linear infinite; display: none;
     }
     @keyframes spin { to { transform: rotate(360deg); } }
 
-    /* ── PROGRESS ── */
-    .prog-wrap { display: none; margin: 1.5rem 0 .75rem; }
-    .prog-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; }
+    /* PROGRESS */
+    .prog-wrap { display: none; margin: 1.5rem 0 .5rem; }
+    .prog-top { display: flex; justify-content: space-between; margin-bottom: 8px; }
     .prog-label { font-size: 13px; color: var(--ink2); font-weight: 500; }
-    .prog-pct { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--accent); }
+    .prog-pct   { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--accent); }
     .prog-track { height: 5px; background: var(--border); border-radius: 10px; overflow: hidden; }
-    .prog-fill {
+    .prog-fill  {
       height: 100%; border-radius: 10px;
       background: linear-gradient(90deg, var(--accent) 0%, #7BAAF7 100%);
-      transition: width .55s cubic-bezier(.4,0,.2,1);
+      transition: width .6s cubic-bezier(.4,0,.2,1);
     }
 
-    /* ── STATUS ── */
+    /* STATUS */
     .status-pill {
       display: none; align-items: center; gap: 8px;
-      margin: 1rem 0; padding: 10px 18px;
-      border-radius: 50px; width: fit-content;
-      font-size: 13px; font-weight: 600;
+      margin: 1rem 0; padding: 10px 18px; border-radius: 50px;
+      width: fit-content; font-size: 13px; font-weight: 600;
     }
-    .status-pill.running { background: var(--amber-bg); color: var(--amber); }
-    .status-pill.done    { background: var(--green-bg);  color: var(--green); }
-    .status-pill.error   { background: var(--red-bg);    color: var(--red);   }
+    .status-pill.running { background: var(--amber-bg); color: var(--amber); display: flex; }
+    .status-pill.done    { background: var(--green-bg);  color: var(--green); display: flex; }
+    .status-pill.error   { background: var(--red-bg);    color: var(--red);   display: flex; }
     .pdot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
-    .status-pill.running .pdot { animation: pdotPulse 1.2s ease-in-out infinite; }
-    @keyframes pdotPulse {
-      0%,100% { opacity: 1; transform: scale(1); }
-      50%      { opacity: .25; transform: scale(.65); }
-    }
+    .status-pill.running .pdot { animation: pulse 1.2s ease infinite; }
+    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.2;transform:scale(.6)} }
 
-    /* ── RESULTS BAR ── */
+    /* RESULTS BAR */
     .results-bar {
-      display: flex; align-items: flex-end;
-      justify-content: space-between; gap: 1rem;
-      margin: 2.25rem 0 1rem;
+      display: flex; align-items: flex-end; justify-content: space-between;
+      gap: 1rem; margin: 2.25rem 0 1rem;
     }
-    .results-bar h2 { font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -.5px; }
+    .results-bar h2 {
+      font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -.5px;
+    }
     .results-bar p { font-size: 12px; color: var(--ink3); margin-top: 4px; }
     .export-btn {
-      height: 42px; padding: 0 22px; border-radius: 11px;
+      height: 44px; padding: 0 22px; border-radius: 11px;
       background: var(--surface); border: 1.5px solid var(--border2);
-      font-family: 'Instrument Sans', sans-serif;
-      font-size: 13px; font-weight: 600; cursor: pointer; color: var(--ink);
-      display: flex; align-items: center; gap: 7px;
-      transition: all .15s; flex-shrink: 0; box-shadow: var(--sh1);
+      font-family: 'Instrument Sans', sans-serif; font-size: 13px; font-weight: 600;
+      cursor: pointer; color: var(--ink);
+      display: flex; align-items: center; gap: 8px;
+      transition: all .15s; flex-shrink: 0;
+      box-shadow: 0 1px 4px rgba(0,0,0,.05);
     }
     .export-btn:hover:not(:disabled) {
       background: var(--green); color: #fff; border-color: var(--green);
-      box-shadow: var(--sh2); transform: translateY(-1px);
+      transform: translateY(-1px); box-shadow: var(--sh2);
     }
+    .export-btn.done-state { background: var(--green); color: #fff; border-color: var(--green); }
     .export-btn:disabled { opacity: .35; cursor: not-allowed; }
 
-    /* ── TABLE ── */
+    /* TABLE */
     .table-card {
       background: var(--white); border: 1px solid var(--border);
       border-radius: var(--r); box-shadow: var(--sh2);
       overflow: hidden; animation: fadeUp .3s ease both;
     }
     @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
+      from { opacity:0; transform:translateY(8px); }
+      to   { opacity:1; transform:translateY(0); }
     }
     .tbl-scroll { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 860px; }
+    table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 900px; }
     thead { background: var(--surface); border-bottom: 1px solid var(--border); }
     th {
       padding: 13px 15px; text-align: left;
-      font-family: 'Syne', sans-serif; font-size: 10.5px; font-weight: 700;
-      letter-spacing: 1px; text-transform: uppercase; color: var(--ink3); white-space: nowrap;
+      font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700;
+      letter-spacing: 1.1px; text-transform: uppercase; color: var(--ink3); white-space: nowrap;
     }
     td {
       padding: 13px 15px; border-bottom: 1px solid var(--border);
-      color: var(--ink); white-space: nowrap;
-      overflow: hidden; text-overflow: ellipsis;
-      max-width: 180px; vertical-align: middle;
+      color: var(--ink); white-space: nowrap; overflow: hidden;
+      text-overflow: ellipsis; max-width: 180px; vertical-align: middle;
     }
     tr:last-child td { border-bottom: none; }
     tbody tr:hover td { background: #F5F3EF; }
-    .num-cell { font-family: 'Syne', sans-serif; font-size: 11px; font-weight: 700; color: var(--ink3); width: 38px; text-align: center; }
+    .num-cell { font-family:'Syne',sans-serif; font-size:11px; font-weight:700; color:var(--ink3); width:36px; text-align:center; }
     .biz-name { font-weight: 600; }
-    a.link { color: var(--accent); text-decoration: none; font-weight: 500; }
+    a.link { color: var(--accent); text-decoration: none; font-size: 12.5px; font-weight: 500; }
     a.link:hover { text-decoration: underline; }
-    .chip { display: inline-flex; align-items: center; font-size: 11.5px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
-    .chip-green { background: var(--green-bg); color: var(--green); }
-    .chip-gray  { background: #EDEBE5; color: var(--ink3); }
-    .chip-blue  { background: #EEF2FF; color: var(--accent); }
+    .chip-gray { display:inline-flex; font-size:11.5px; font-weight:600; padding:3px 10px; border-radius:20px; background:#EDEBE5; color:var(--ink3); }
+    .chip-blue { display:inline-flex; font-size:11.5px; font-weight:600; padding:3px 10px; border-radius:20px; background:#EEF2FF; color:var(--accent); }
 
-    /* ── SKELETON ── */
+    /* SKELETON */
     .skel {
       height: 13px; border-radius: 5px;
-      background: linear-gradient(90deg, #EEEBE5 25%, #F5F3EF 50%, #EEEBE5 75%);
+      background: linear-gradient(90deg,#EEEBE5 25%,#F5F3EF 50%,#EEEBE5 75%);
       background-size: 200% 100%; animation: shim 1.5s infinite;
     }
     @keyframes shim { to { background-position: -200% 0; } }
-    .w40{width:40%} .w60{width:60%} .w80{width:80%} .w100{width:100%}
+    .w30{width:30%}.w45{width:45%}.w60{width:60%}.w75{width:75%}.w90{width:90%}
 
-    /* ── EMPTY ── */
-    .empty { display: none; text-align: center; padding: 5.5rem 1rem; }
+    /* EMPTY */
+    .empty { display:none; text-align:center; padding:5rem 1rem; }
     .empty-ico {
-      width: 66px; height: 66px; background: var(--surface);
-      border: 1.5px solid var(--border); border-radius: 50%;
-      display: flex; align-items: center; justify-content: center; margin: 0 auto 1.25rem;
+      width:64px; height:64px; background:var(--surface);
+      border:1.5px solid var(--border); border-radius:50%;
+      display:flex; align-items:center; justify-content:center; margin:0 auto 1.2rem;
     }
-    .empty h3 { font-family: 'Syne', sans-serif; font-size: 17px; font-weight: 700; margin-bottom: 7px; }
-    .empty p { font-size: 13px; color: var(--ink3); }
+    .empty h3 { font-family:'Syne',sans-serif; font-size:17px; font-weight:700; margin-bottom:6px; }
+    .empty p  { font-size:13px; color:var(--ink3); max-width:340px; margin:0 auto; }
 
-    /* ── FOOTER ── */
+    /* FOOTER */
     .footer {
-      max-width: 900px; margin: 3.5rem auto 0; padding: 0 1.5rem;
+      max-width: 960px; margin: 3.5rem auto 0; padding: 1.25rem 1.5rem 0;
       font-size: 12px; color: var(--ink3);
       display: flex; align-items: center; justify-content: space-between;
-      border-top: 1px solid var(--border); padding-top: 1.25rem;
+      border-top: 1px solid var(--border);
     }
-    .footer-brand { font-family: 'Syne', sans-serif; font-weight: 800; font-size: 14px; color: var(--ink); letter-spacing: -.3px; }
+    .footer-brand { font-family:'Syne',sans-serif; font-weight:800; font-size:14px; color:var(--ink); }
 
     @media (max-width: 600px) {
-      .search-row { grid-template-columns: 1fr; }
-      .hero { padding: 2rem 1.25rem 2.75rem; }
-      .search-card { margin: -1.25rem .5rem 0; padding: 1.5rem; }
+      .fields-row { grid-template-columns: 1fr; }
+      .hero { padding: 2rem 1.25rem 3rem; }
+      .search-card { margin: -1.5rem .75rem 0; padding: 1.5rem; }
       .results-bar { flex-direction: column; align-items: flex-start; }
-      .main { padding: 1.5rem 1rem 0; }
+      .main { padding: 1.25rem 1rem 0; }
     }
   </style>
 </head>
@@ -297,10 +273,22 @@
 <div class="hero">
   <div class="hero-grid"></div>
   <div class="hero-inner">
-    <div>
-      <div class="hero-eyebrow">Business Data Scraper</div>
-      <h1>Find any business.<br/><span>Download every contact.</span></h1>
-      <p class="hero-sub">Search by business type + location — then extract executives (CEO/CFO/CMO/VP/President) + public emails/phones. No API key.</p>
+    <div class="hero-eye">Business Intelligence Tool</div>
+    <h1>Find any business.<br/><em>Extract every contact.</em></h1>
+    <p class="hero-sub">Business type aur location enter karo — CEO naam, email, phone, website sab ek saath extract hokar Excel mein download ho jaayega.</p>
+    <div class="hero-pills">
+      <span class="hero-pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+        Real-time AI Search
+      </span>
+      <span class="hero-pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+        Excel Export
+      </span>
+      <span class="hero-pill">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
+        CEO · Email · Phone · Website
+      </span>
     </div>
   </div>
 </div>
@@ -308,39 +296,33 @@
 <!-- MAIN -->
 <div class="main">
   <div class="search-card">
-
-    <div class="search-row">
+    <div class="fields-row">
       <div class="field">
         <label>Business Type</label>
         <div class="input-wrap">
           <span class="i-icon">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
           </span>
-          <input type="text" id="bizType" placeholder="e.g. Hotels, Restaurants, Hospitals…" value="" autocomplete="off"/>
+          <input type="text" id="bizType" placeholder="Hotels, Restaurants, Hospitals…" value="Hotels" autocomplete="off"/>
         </div>
       </div>
       <div class="field">
         <label>Location</label>
         <div class="input-wrap">
           <span class="i-icon">
-            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           </span>
-          <input type="text" id="location" placeholder="e.g. Uttarakhand, Delhi, Mumbai…" value="" autocomplete="off"/>
+          <input type="text" id="location" placeholder="Haldwani Uttarakhand, Delhi…" value="Haldwani, Uttarakhand" autocomplete="off"/>
         </div>
       </div>
     </div>
 
-    <div class="hint">
-      <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"/><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"/></svg>
-      Press <kbd>Enter</kbd> to search instantly
-    </div>
-
     <button class="search-btn" id="searchBtn" onclick="startSearch()">
-      <span class="btn-spinner" id="spinner"></span>
+      <div class="btn-spinner" id="spinner"></div>
       <svg id="btnIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <span id="btnText">Discover &amp; Scrape</span>
+      <span id="btnText">Discover &amp; Extract</span>
     </button>
   </div>
 
@@ -348,7 +330,7 @@
   <div class="prog-wrap" id="progWrap">
     <div class="prog-top">
       <span class="prog-label" id="progLabel">Searching…</span>
-      <span class="prog-pct" id="progPct">0%</span>
+      <span class="prog-pct"   id="progPct">0%</span>
     </div>
     <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
   </div>
@@ -364,7 +346,7 @@
     <div class="results-bar">
       <div>
         <h2 id="resultsTitle">Results</h2>
-        <p id="resultsSub"></p>
+        <p  id="resultsSub"></p>
       </div>
       <button class="export-btn" id="exportBtn" onclick="exportExcel()" disabled>
         <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -372,25 +354,23 @@
           <polyline points="7 10 12 15 17 10"/>
           <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
-        Download Excel
+        <span id="exportTxt">Download Excel</span>
       </button>
     </div>
+
     <div class="table-card">
       <div class="tbl-scroll">
         <table>
           <thead>
             <tr>
               <th style="text-align:center">#</th>
-              <th>Company Name</th>
+              <th>Business Name</th>
               <th>Phone</th>
+              <th>CEO / Owner</th>
+              <th>Email</th>
               <th>Website</th>
-              <th>CEO & Email</th>
-              <th>CMO & Email</th>
-              <th>CFO & Email</th>
-              <th>VP & Email</th>
-              <th>President & Email</th>
-              <th>Location</th>
-              <th>Emails (extra)</th>
+              <th>Address</th>
+              <th>Category</th>
             </tr>
           </thead>
           <tbody id="tableBody"></tbody>
@@ -402,31 +382,34 @@
   <!-- EMPTY -->
   <div class="empty" id="emptyState">
     <div class="empty-ico">
-      <svg width="25" height="25" viewBox="0 0 24 24" fill="none" stroke="#A8A49E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/>
-        <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-        <line x1="8" y1="11" x2="14" y2="11"/>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A8A49E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/>
       </svg>
     </div>
     <h3>No results found</h3>
-    <p>Server chal raha hai? Terminal mein <code>node server.js</code> run karo.</p>
+    <p id="emptyMsg">Business type aur location check karo aur dobara try karo.</p>
   </div>
 </div>
 
-<!-- FOOTER -->
 <footer class="footer">
   <span class="footer-brand">BizScout</span>
-  <span>Powered by Google Maps API</span>
+  <span>Powered by Gemini AI</span>
 </footer>
 
 <script>
-  const PROXY      = "http://localhost:3000/discover-scrape";
-  let   allResults = [];
-  let   searching  = false;
+  /* ══════════════════════════════════════════════
+     BACKEND CONFIG — sirf yahan key daalo, UI mein nahi dikhegi
+  ══════════════════════════════════════════════ */
+  const GEMINI_API_KEY = "AIzaSyDcP4hB6JlsfzuyDSiqfNmT1TcatMZJb00";
+  /* ════════════════════════════════════════════ */
 
-  // ── Enter key triggers search ──
-  document.getElementById('bizType').addEventListener('keydown',  e => { if (e.key === 'Enter') startSearch(); });
-  document.getElementById('location').addEventListener('keydown', e => { if (e.key === 'Enter') startSearch(); });
+  const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+
+  let allResults = [];
+  let busy = false;
+
+  document.getElementById('bizType').addEventListener('keydown',  e => { if(e.key==='Enter') startSearch(); });
+  document.getElementById('location').addEventListener('keydown', e => { if(e.key==='Enter') startSearch(); });
 
   function setProgress(pct, label) {
     document.getElementById('progWrap').style.display = 'block';
@@ -437,15 +420,14 @@
 
   function setStatus(text, state) {
     const p = document.getElementById('statusPill');
-    p.style.display = 'flex';
     p.className = 'status-pill ' + (state || '');
     document.getElementById('statusText').textContent = text;
   }
 
   function setBtnLoading(on) {
     document.getElementById('spinner').style.display = on ? 'block' : 'none';
-    document.getElementById('btnIcon').style.display = on ? 'none'  : 'block';
-    document.getElementById('btnText').textContent   = on ? 'Discovering…' : 'Discover & Scrape';
+    document.getElementById('btnIcon').style.display = on ? 'none'  : 'inline';
+    document.getElementById('btnText').textContent   = on ? 'Extracting data…' : 'Discover & Extract';
     document.getElementById('searchBtn').disabled    = on;
   }
 
@@ -455,96 +437,131 @@
     for (let i = 0; i < 8; i++) {
       tbody.insertAdjacentHTML('beforeend', `
         <tr>
-          <td><div class="skel w40"></div></td>
-          <td><div class="skel w80"></div></td>
+          <td><div class="skel w30"></div></td>
+          <td><div class="skel w75"></div></td>
           <td><div class="skel w60"></div></td>
           <td><div class="skel w60"></div></td>
-          <td><div class="skel w80"></div></td>
-          <td><div class="skel w80"></div></td>
-          <td><div class="skel w80"></div></td>
-          <td><div class="skel w80"></div></td>
-          <td><div class="skel w80"></div></td>
-          <td><div class="skel w100"></div></td>
+          <td><div class="skel w90"></div></td>
+          <td><div class="skel w45"></div></td>
+          <td><div class="skel w75"></div></td>
+          <td><div class="skel w30"></div></td>
         </tr>`);
     }
     document.getElementById('resultsSection').style.display = 'block';
     document.getElementById('resultsTitle').textContent = 'Searching…';
-    document.getElementById('resultsSub').textContent   = 'Live data fetch ho raha hai, please wait…';
+    document.getElementById('resultsSub').textContent   = 'AI se live data fetch ho raha hai…';
+  }
+
+  async function callGemini(prompt) {
+    const res = await fetch(GEMINI_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        contents: [{ parts: [{ text: prompt }] }],
+        generationConfig: { temperature: 0.1, maxOutputTokens: 8192 }
+      })
+    });
+    if (!res.ok) {
+      const e = await res.json().catch(() => ({}));
+      if (res.status === 403 || res.status === 400) throw new Error('API key invalid. Script mein GEMINI_API_KEY check karo.');
+      if (res.status === 429) throw new Error('Rate limit. Thodi der baad try karo.');
+      throw new Error(e?.error?.message || `API error ${res.status}`);
+    }
+    const d = await res.json();
+    return d?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  }
+
+  function parseJSON(raw) {
+    let t = raw.trim()
+      .replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/i,'').trim();
+    const s = t.indexOf('['), e = t.lastIndexOf(']');
+    if (s === -1 || e === -1) throw new Error('JSON array nahi mili response mein.');
+    return JSON.parse(t.slice(s, e + 1));
   }
 
   async function startSearch() {
-    if (searching) return;
-
+    if (busy) return;
     const bizType  = document.getElementById('bizType').value.trim();
     const location = document.getElementById('location').value.trim();
     if (!bizType)  { document.getElementById('bizType').focus();  return; }
     if (!location) { document.getElementById('location').focus(); return; }
 
-    searching  = true;
-    allResults = [];
-    document.getElementById('emptyState').style.display = 'none';
-    document.getElementById('exportBtn').disabled       = true;
-
-    setBtnLoading(true);
-    setProgress(0, 'Starting search');
-    setStatus(bizType + ' · ' + location + ' search chal raha hai', 'running');
-    showSkeletons();
-
-    // Simulate progress increment every 200ms until response
-    let progressInterval = setInterval(() => {
-      const current = parseInt(document.getElementById('progFill').style.width);
-      if (current < 70) {
-        setProgress(current + Math.random() * 15, 'Loading data');
-      }
-    }, 200);
-
-    try {
-      setProgress(5, 'API call ho raha hai');
-
-      const response = await fetch(PROXY, {
-        method:  "POST",
-        headers: { "Content-Type": "application/json" },
-        body:    JSON.stringify({ bizType, location, maxResults: 20, radiusKm: 5, enrichExecutives: true }),
-      });
-
-      clearInterval(progressInterval);
-      setProgress(60, 'Response mil gaya, process ho raha hai');
-
-      if (!response.ok) {
-        const e = await response.json().catch(() => ({}));
-        throw new Error(e?.error || `Server error ${response.status}`);
-      }
-
-      const data = await response.json();
-      setProgress(80, 'Data parse ho raha hai');
-
-      if (!data.results || !data.results.length)
-        throw new Error('Koi result nahi mila. Alag keyword ya location try karo.');
-
-      allResults = data.results;
-      setProgress(90, 'Table render ho rahi hai');
-      renderResults(allResults);
-      
-      setProgress(100, 'Done');
-      setStatus('✓ ' + allResults.length + ' results', 'done');
-      document.getElementById('exportBtn').disabled       = false;
-      document.getElementById('resultsTitle').textContent = allResults.length + ' Results';
-      document.getElementById('resultsSub').textContent   = bizType + ' · ' + (data.location || location);
-
-    } catch (err) {
-      clearInterval(progressInterval);
-      document.getElementById('progWrap').style.display = 'none';
-      let msg = err.message;
-      if (msg.includes('fetch') || msg.includes('Failed') || msg.includes('NetworkError')) {
-        msg = 'Server nahi mila! Terminal mein "node server.js" run karo pehle.';
-      }
-      setStatus('Error: ' + msg, 'error');
-      document.getElementById('tableBody').innerHTML = '';
-      document.getElementById('resultsSection').style.display = 'none';
-      document.getElementById('emptyState').style.display     = 'block';
+    if (GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE') {
+      alert('Script mein GEMINI_API_KEY set karo pehle!');
+      return;
     }
 
-    searching = false;
+    busy = true;
+    allResults = [];
+    document.getElementById('emptyState').style.display  = 'none';
+    document.getElementById('exportBtn').disabled        = true;
+    document.getElementById('exportBtn').className       = 'export-btn';
+    document.getElementById('exportTxt').textContent     = 'Download Excel';
+
+    setBtnLoading(true);
+    setProgress(5, 'AI connect ho raha hai…');
+    setStatus(`${bizType} · ${location} — data fetch ho raha hai`, 'running');
+    showSkeletons();
+
+    try {
+      setProgress(20, 'Gemini ko prompt bheja…');
+
+      const prompt = `You are a professional business researcher. Find 20 real, named "${bizType}" businesses in "${location}", India.
+
+Return ONLY a valid JSON array — no explanation, no markdown, no code fences.
+
+Each object MUST have exactly these keys:
+- "name"      : Full business name (string)
+- "phone"     : Phone with +91 prefix, else "N/A"
+- "ceo"       : CEO / owner / MD / manager name, else "N/A"
+- "ceo_email" : Their professional email (e.g. owner@bizname.com), else "N/A"
+- "website"   : Full URL with https://, else "N/A"
+- "address"   : Street / area address in ${location}
+- "category"  : "${bizType}"
+
+Rules:
+1. Real named businesses only — no generic placeholders
+2. Return exactly 20 objects
+3. Valid JSON — no trailing commas, no comments
+
+JSON:`;
+
+      setProgress(35, 'AI se response aa raha hai…');
+      const raw = await callGemini(prompt);
+      setProgress(70, 'Data parse ho raha hai…');
+
+      let parsed;
+      try {
+        parsed = parseJSON(raw);
+      } catch(_) {
+        setProgress(75, 'Retry parsing…');
+        const raw2 = await callGemini(`Return ONLY the JSON array from this text, nothing else:\n\n${raw}`);
+        parsed = parseJSON(raw2);
+      }
+
+      if (!Array.isArray(parsed) || !parsed.length)
+        throw new Error('Koi data nahi mila. Alag keyword ya location try karo.');
+
+      allResults = parsed;
+      setProgress(90, 'Table render ho rahi hai…');
+      renderResults(allResults);
+      setProgress(100, 'Done!');
+
+      setStatus(`✓ ${allResults.length} businesses found`, 'done');
+      document.getElementById('exportBtn').disabled       = false;
+      document.getElementById('resultsTitle').textContent = allResults.length + ' Results';
+      document.getElementById('resultsSub').textContent   = bizType + ' · ' + location;
+
+    } catch(err) {
+      setStatus('Error: ' + err.message, 'error');
+      document.getElementById('progWrap').style.display       = 'none';
+      document.getElementById('tableBody').innerHTML           = '';
+      document.getElementById('resultsSection').style.display = 'none';
+      document.getElementById('emptyState').style.display     = 'block';
+      document.getElementById('emptyMsg').textContent         = err.message;
+    }
+
+    busy = false;
     setBtnLoading(false);
   }
 
@@ -557,82 +574,84 @@
       document.getElementById('emptyState').style.display     = 'block';
       return;
     }
-
     document.getElementById('resultsSection').style.display = 'block';
     document.getElementById('emptyState').style.display     = 'none';
 
     results.forEach((r, i) => {
-      const tr = document.createElement('tr');
-      const domain = (r.website && r.website !== 'N/A')
-        ? r.website.replace(/https?:\/\//, '').split('/')[0] : null;
+      const tr      = document.createElement('tr');
+      const name    = r.name      || '';
+      const phone   = r.phone     || '';
+      const ceo     = r.ceo       || '';
+      const email   = r.ceo_email || '';
+      const website = r.website   || '';
+      const address = r.address   || '';
+      const cat     = r.category  || document.getElementById('bizType').value;
 
-      const execCell = (name, email) => {
-        if (!name || name === 'N/A') return na();
-        if (email && email !== 'N/A') {
-          return `<div style="font-size:12px"><strong>${x(name)}</strong><br/><a class="link" href="mailto:${x(email)}">${x(email)}</a></div>`;
-        }
-        return `<strong>${x(name)}</strong>`;
-      };
+      const domain    = (website && website !== 'N/A') ? website.replace(/https?:\/\//,'').split('/')[0] : null;
+      const emailHtml = (email && email !== 'N/A')
+        ? `<a class="link" href="mailto:${esc(email)}">${esc(email)}</a>` : na();
+      const webHtml   = domain
+        ? `<a class="link" href="${esc(website)}" target="_blank" rel="noopener">${esc(domain)}</a>` : na();
 
       tr.innerHTML = `
-        <td class="num-cell">${i + 1}</td>
-        <td class="biz-name" title="${x(r.company_name || r.name)}">${x(r.company_name || r.name) || na()}</td>
-        <td>${x(r.phone) || na()}</td>
-        <td>${domain ? `<a class="link" href="${x(r.website)}" target="_blank" rel="noopener">${x(domain)}</a>` : na()}</td>
-        <td>${execCell(r.ceo, r.ceo_email)}</td>
-        <td>${execCell(r.cmo, r.cmo_email)}</td>
-        <td>${execCell(r.cfo, r.cfo_email)}</td>
-        <td>${execCell(r.vp, r.vp_email)}</td>
-        <td>${execCell(r.president, r.president_email)}</td>
-        <td title="${x(r.location)}">${x(r.location) || na()}</td>
-        <td title="${x((r.emails || []).join(', '))}">${(r.emails && r.emails.length) ? x(r.emails.slice(0,2).join(', ')) : na()}</td>`;
+        <td class="num-cell">${i+1}</td>
+        <td class="biz-name" title="${esc(name)}">${esc(name)||na()}</td>
+        <td>${esc(phone)||na()}</td>
+        <td title="${esc(ceo)}">${esc(ceo)||na()}</td>
+        <td>${emailHtml}</td>
+        <td>${webHtml}</td>
+        <td title="${esc(address)}">${esc(address)||na()}</td>
+        <td><span class="chip-blue">${esc(cat)}</span></td>`;
       tbody.appendChild(tr);
     });
   }
 
-  function x(s) {
-    if (!s) return '';
+  function esc(s) {
+    if (!s || s === 'N/A') return '';
     return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
   }
-  function na() { return '<span class="chip chip-gray">N/A</span>'; }
+  function na() { return '<span class="chip-gray">N/A</span>'; }
 
   function exportExcel() {
     if (!allResults.length) return;
+    const bizType  = document.getElementById('bizType').value;
+    const location = document.getElementById('location').value;
+
     const rows = allResults.map((r, i) => ({
-      '#'            : i + 1,
-      'Company Name' : r.company_name || r.name || '',
-      'Phone'        : r.phone       || '',
-      'Website'      : r.website     || '',
-      'Location'     : r.location    || '',
-      'CEO'          : r.ceo         || '',
-      'CEO Email'    : r.ceo_email   || '',
-      'CMO'          : r.cmo         || '',
-      'CMO Email'    : r.cmo_email   || '',
-      'CFO'          : r.cfo         || '',
-      'CFO Email'    : r.cfo_email   || '',
-      'VP'           : r.vp          || '',
-      'VP Email'     : r.vp_email    || '',
-      'President'    : r.president   || '',
-      'President Email': r.president_email || '',
-      'Emails (extra)': (r.emails || []).join(', '),
+      '#'             : i + 1,
+      'Business Name' : r.name      || '',
+      'Phone'         : r.phone     || '',
+      'CEO / Owner'   : r.ceo       || '',
+      'Email'         : r.ceo_email || '',
+      'Website'       : r.website   || '',
+      'Address'       : r.address   || '',
+      'Category'      : r.category  || bizType,
+      'Location'      : location,
     }));
 
     const ws = XLSX.utils.json_to_sheet(rows);
-    ws['!cols'] = [
-      {wch:4},{wch:30},{wch:18},{wch:30},{wch:25},{wch:30},{wch:25},{wch:30},{wch:25},{wch:30},{wch:25},{wch:30},{wch:25},{wch:30},{wch:25}
-    ];
+    ws['!cols'] = [{wch:4},{wch:34},{wch:18},{wch:26},{wch:32},{wch:30},{wch:36},{wch:16},{wch:22}];
 
     const range = XLSX.utils.decode_range(ws['!ref']);
     for (let C = range.s.c; C <= range.e.c; C++) {
-      const addr = XLSX.utils.encode_cell({ r: 0, c: C });
+      const addr = XLSX.utils.encode_cell({ r:0, c:C });
       if (ws[addr]) ws[addr].s = { font: { bold: true } };
     }
 
-    const wb  = XLSX.utils.book_new();
+    const wb = XLSX.utils.book_new();
     XLSX.utils.book_append_sheet(wb, ws, 'Businesses');
 
-    const date = new Date().toISOString().slice(0,10);
-    XLSX.writeFile(wb, `websites_${date}.xlsx`);
+    const date    = new Date().toISOString().slice(0,10);
+    const safeBiz = bizType.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
+    const safeLoc = location.replace(/[\s,]+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
+    XLSX.writeFile(wb, `${safeBiz}_${safeLoc}_${date}.xlsx`);
+
+    document.getElementById('exportBtn').className = 'export-btn done-state';
+    document.getElementById('exportTxt').textContent = '✓ Downloaded!';
+    setTimeout(() => {
+      document.getElementById('exportBtn').className = 'export-btn';
+      document.getElementById('exportTxt').textContent = 'Download Excel';
+    }, 3000);
   }
 </script>
 </body>
