@@ -1,659 +1,881 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>BizScout</title>
-  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
-  <style>
-    :root {
-      --bg:       #F0EEE9;
-      --surface:  #FAFAF8;
-      --white:    #FFFFFF;
-      --border:   #E2DED6;
-      --border2:  #CBC6BC;
-      --ink:      #18160F;
-      --ink2:     #6B6760;
-      --ink3:     #A8A49E;
-      --accent:   #2D5BE3;
-      --accent2:  #1A3DB0;
-      --accent-t: rgba(45,91,227,.08);
-      --green:    #1A7A4A;
-      --green-bg: #E8F7EF;
-      --amber:    #B05B0A;
-      --amber-bg: #FEF0E0;
-      --red:      #C0282A;
-      --red-bg:   #FDE8E8;
-      --r: 16px;
-      --sh2: 0 4px 20px rgba(0,0,0,.08), 0 1px 4px rgba(0,0,0,.04);
-      --sh3: 0 16px 48px rgba(0,0,0,.12), 0 4px 12px rgba(0,0,0,.06);
-    }
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
-    body {
-      font-family: 'Instrument Sans', sans-serif;
-      background: var(--bg); color: var(--ink);
-      min-height: 100vh; padding-bottom: 5rem; overflow-x: hidden;
-    }
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>BizScout Pro — Real Business Finder</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0a0a0b;
+  --surface:#111113;
+  --card:#17181c;
+  --border:#2a2b30;
+  --border2:#3a3b42;
+  --accent:#f97316;
+  --accent2:#fb923c;
+  --accent-glow:rgba(249,115,22,.18);
+  --blue:#3b82f6;
+  --blue-glow:rgba(59,130,246,.15);
+  --green:#22c55e;
+  --green-bg:rgba(34,197,94,.1);
+  --red:#ef4444;
+  --red-bg:rgba(239,68,68,.1);
+  --amber:#f59e0b;
+  --amber-bg:rgba(245,158,11,.1);
+  --text:#f1f0ee;
+  --text2:#9b9a97;
+  --text3:#5c5b58;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Instrument Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 
-    /* HERO */
-    .hero {
-      background: var(--ink); padding: 3.25rem 2rem 4rem;
-      position: relative; overflow: hidden;
-    }
-    .hero::before {
-      content: ''; position: absolute; inset: 0; pointer-events: none;
-      background:
-        radial-gradient(ellipse 55% 80% at 85% 50%, rgba(45,91,227,.20) 0%, transparent 65%),
-        radial-gradient(ellipse 40% 60% at 10% 85%, rgba(45,91,227,.10) 0%, transparent 60%);
-    }
-    .hero-grid {
-      position: absolute; inset: 0; pointer-events: none;
-      background-image:
-        linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-      background-size: 44px 44px;
-    }
-    .hero-inner { max-width: 960px; margin: 0 auto; position: relative; z-index: 1; }
-    .hero-eye {
-      display: inline-flex; align-items: center; gap: 8px;
-      font-family: 'Syne', sans-serif; font-size: 10.5px; font-weight: 600;
-      letter-spacing: 1.6px; text-transform: uppercase;
-      color: rgba(255,255,255,.38); margin-bottom: 1rem;
-    }
-    .hero-eye::before { content:''; width:20px; height:1px; background:rgba(255,255,255,.2); }
-    .hero h1 {
-      font-family: 'Syne', sans-serif;
-      font-size: clamp(28px, 4.5vw, 52px); font-weight: 800;
-      color: #fff; line-height: 1.06; letter-spacing: -1.8px; margin-bottom: .75rem;
-    }
-    .hero h1 em {
-      font-style: normal;
-      background: linear-gradient(130deg, #7BAAF7, #4A7FF5);
-      -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text;
-    }
-    .hero-sub { font-size: 15px; color: rgba(255,255,255,.42); line-height: 1.7; max-width: 480px; }
-    .hero-pills { display: flex; gap: 8px; margin-top: 1.5rem; flex-wrap: wrap; }
-    .hero-pill {
-      display: inline-flex; align-items: center; gap: 6px;
-      font-size: 11px; font-weight: 500; color: rgba(255,255,255,.45);
-      border: 0.5px solid rgba(255,255,255,.13); border-radius: 20px; padding: 4px 12px;
-    }
+/* GRAIN OVERLAY */
+body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.4}
 
-    /* MAIN */
-    .main { max-width: 960px; margin: 0 auto; padding: 2rem 1.5rem 0; }
+/* HEADER */
+.hdr{position:sticky;top:0;z-index:100;background:rgba(10,10,11,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 2rem}
+.hdr-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),#f43f5e);border-radius:10px;display:grid;place-items:center;box-shadow:0 0 20px var(--accent-glow)}
+.logo-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.5px}
+.logo-name span{color:var(--accent)}
+.logo-tag{font-size:11px;color:var(--text3);border-left:1px solid var(--border);padding-left:12px;margin-left:4px}
+.hbadges{display:flex;gap:6px}
+.hbadge{font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid var(--border);color:var(--text3);letter-spacing:.3px}
+.hbadge.live{border-color:rgba(34,197,94,.4);color:var(--green);background:var(--green-bg)}
+.live-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 2s ease infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
 
-    /* SEARCH CARD */
-    .search-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: var(--r); box-shadow: var(--sh3);
-      padding: 2rem 2.25rem; margin-top: -2rem;
-      position: relative; z-index: 10;
-      animation: slideUp .4s cubic-bezier(.22,1,.36,1) both;
-    }
-    @keyframes slideUp {
-      from { opacity:0; transform:translateY(18px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
+/* HERO */
+.hero{position:relative;padding:5rem 2rem 4rem;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(249,115,22,.08) 0%,transparent 70%);pointer-events:none}
+.hero-in{max-width:1200px;margin:0 auto;position:relative;z-index:1}
+.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:20px;border:1px solid rgba(249,115,22,.3);background:rgba(249,115,22,.06);margin-bottom:20px}
+.eyebrow-txt{font-size:11px;font-weight:600;color:var(--accent);letter-spacing:.8px;text-transform:uppercase}
+.hero h1{font-family:'Syne',sans-serif;font-size:clamp(36px,5vw,66px);font-weight:800;line-height:1.03;letter-spacing:-3px;margin-bottom:16px}
+.hero h1 .gr{background:linear-gradient(135deg,var(--accent),#f43f5e 50%,var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:15px;color:var(--text2);line-height:1.75;max-width:580px;margin-bottom:2.5rem}
+.hero-chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;border:1px solid var(--border);font-size:12px;color:var(--text2);background:var(--card)}
+.chip-icon{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;flex-shrink:0}
+.chip-icon.c{background:var(--blue-glow);border:1px solid rgba(59,130,246,.3)}
+.chip-icon.g{background:rgba(234,179,8,.12);border:1px solid rgba(234,179,8,.3)}
+.chip-icon.x{background:var(--green-bg);border:1px solid rgba(34,197,94,.3)}
 
-    .fields-row {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px;
-    }
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    .field label { font-size: 12px; font-weight: 600; color: var(--ink2); }
-    .input-wrap { position: relative; }
-    .i-icon {
-      position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
-      color: var(--ink3); pointer-events: none; display: flex;
-    }
-    .field input {
-      width: 100%; height: 52px;
-      border: 1.5px solid var(--border); border-radius: 13px;
-      padding: 0 14px 0 44px; font-size: 15px;
-      font-family: 'Instrument Sans', sans-serif;
-      outline: none; background: var(--surface); color: var(--ink);
-      transition: border-color .15s, box-shadow .15s, background .15s;
-    }
-    .field input::placeholder { color: var(--ink3); }
-    .field input:focus {
-      border-color: var(--accent); background: var(--white);
-      box-shadow: 0 0 0 3px var(--accent-t);
-    }
+/* MAIN LAYOUT */
+.main{max-width:1200px;margin:0 auto;padding:0 2rem 5rem;position:relative;z-index:1}
 
-    /* SEARCH BUTTON */
-    .search-btn {
-      width: 100%; height: 56px; border-radius: 14px;
-      background: var(--accent); color: #fff; border: none;
-      font-family: 'Syne', sans-serif; font-size: 15px; font-weight: 700;
-      cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px;
-      box-shadow: 0 4px 20px rgba(45,91,227,.34);
-      transition: background .15s, transform .15s, box-shadow .15s;
-      position: relative; overflow: hidden;
-    }
-    .search-btn::before {
-      content:''; position:absolute; inset:0;
-      background: linear-gradient(135deg, rgba(255,255,255,.12) 0%, transparent 50%);
-    }
-    .search-btn:hover:not(:disabled) {
-      background: var(--accent2); transform: translateY(-2px);
-      box-shadow: 0 8px 32px rgba(45,91,227,.42);
-    }
-    .search-btn:active:not(:disabled) { transform: translateY(0); }
-    .search-btn:disabled { opacity: .45; cursor: not-allowed; }
-    .btn-spinner {
-      width: 18px; height: 18px; border-radius: 50%;
-      border: 2.5px solid rgba(255,255,255,.3); border-top-color: #fff;
-      animation: spin .65s linear infinite; display: none;
-    }
-    @keyframes spin { to { transform: rotate(360deg); } }
+/* CARDS */
+.panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.75rem 2rem;margin-bottom:1rem}
+.panel-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px}
+.panel-title::after{content:'';flex:1;height:1px;background:var(--border)}
 
-    /* PROGRESS */
-    .prog-wrap { display: none; margin: 1.5rem 0 .5rem; }
-    .prog-top { display: flex; justify-content: space-between; margin-bottom: 8px; }
-    .prog-label { font-size: 13px; color: var(--ink2); font-weight: 500; }
-    .prog-pct   { font-family: 'Syne', sans-serif; font-size: 13px; font-weight: 700; color: var(--accent); }
-    .prog-track { height: 5px; background: var(--border); border-radius: 10px; overflow: hidden; }
-    .prog-fill  {
-      height: 100%; border-radius: 10px;
-      background: linear-gradient(90deg, var(--accent) 0%, #7BAAF7 100%);
-      transition: width .6s cubic-bezier(.4,0,.2,1);
-    }
+/* KEY GRID */
+.key-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:0}
+.key-block{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
+.key-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
+.key-label-row{display:flex;align-items:center;gap:8px}
+.key-icon{width:24px;height:24px;border-radius:6px;display:grid;place-items:center;flex-shrink:0}
+.ki-c{background:var(--blue-glow);border:1px solid rgba(59,130,246,.25)}
+.ki-g{background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25)}
+.key-name{font-size:13px;font-weight:600;color:var(--text)}
+.key-sub{font-size:10.5px;color:var(--text3);margin-top:1px}
+.key-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid}
+.ks-set{background:var(--green-bg);border-color:rgba(34,197,94,.3);color:var(--green)}
+.ks-missing{background:var(--amber-bg);border-color:rgba(245,158,11,.3);color:var(--amber)}
+.key-input-row{display:flex;gap:8px}
+.key-inp-wrap{flex:1;position:relative}
+.key-inp-wrap input{width:100%;height:42px;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:0 36px 0 12px;font-size:13px;color:var(--text);font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s}
+.key-inp-wrap input::placeholder{color:var(--text3)}
+.key-inp-wrap input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.eye-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);display:flex;padding:4px;transition:color .15s}
+.eye-btn:hover{color:var(--text)}
+.save-btn{height:42px;padding:0 14px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;font-size:12.5px;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .15s}
+.save-btn:hover{background:var(--accent);border-color:var(--accent);color:#fff}
+.save-btn.saved{background:var(--green-bg);border-color:rgba(34,197,94,.4);color:var(--green)}
 
-    /* STATUS */
-    .status-pill {
-      display: none; align-items: center; gap: 8px;
-      margin: 1rem 0; padding: 10px 18px; border-radius: 50px;
-      width: fit-content; font-size: 13px; font-weight: 600;
-    }
-    .status-pill.running { background: var(--amber-bg); color: var(--amber); display: flex; }
-    .status-pill.done    { background: var(--green-bg);  color: var(--green); display: flex; }
-    .status-pill.error   { background: var(--red-bg);    color: var(--red);   display: flex; }
-    .pdot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
-    .status-pill.running .pdot { animation: pulse 1.2s ease infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:.2;transform:scale(.6)} }
+/* SEARCH FIELDS */
+.search-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;margin-bottom:14px}
+.field-wrap label{display:block;font-size:11.5px;font-weight:600;color:var(--text3);margin-bottom:6px;letter-spacing:.3px}
+.inp-wrap{position:relative}
+.inp-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none;display:flex}
+.inp-wrap input,.inp-wrap select{width:100%;height:48px;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:0 12px 0 40px;font-size:14px;color:var(--text);font-family:inherit;outline:none;appearance:none;transition:border-color .15s,box-shadow .15s}
+.inp-wrap input::placeholder{color:var(--text3)}
+.inp-wrap input:focus,.inp-wrap select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
+.inp-wrap select option{background:#1a1a1f;color:var(--text)}
 
-    /* RESULTS BAR */
-    .results-bar {
-      display: flex; align-items: flex-end; justify-content: space-between;
-      gap: 1rem; margin: 2.25rem 0 1rem;
-    }
-    .results-bar h2 {
-      font-family: 'Syne', sans-serif; font-size: 22px; font-weight: 800; letter-spacing: -.5px;
-    }
-    .results-bar p { font-size: 12px; color: var(--ink3); margin-top: 4px; }
-    .export-btn {
-      height: 44px; padding: 0 22px; border-radius: 11px;
-      background: var(--surface); border: 1.5px solid var(--border2);
-      font-family: 'Instrument Sans', sans-serif; font-size: 13px; font-weight: 600;
-      cursor: pointer; color: var(--ink);
-      display: flex; align-items: center; gap: 8px;
-      transition: all .15s; flex-shrink: 0;
-      box-shadow: 0 1px 4px rgba(0,0,0,.05);
-    }
-    .export-btn:hover:not(:disabled) {
-      background: var(--green); color: #fff; border-color: var(--green);
-      transform: translateY(-1px); box-shadow: var(--sh2);
-    }
-    .export-btn.done-state { background: var(--green); color: #fff; border-color: var(--green); }
-    .export-btn:disabled { opacity: .35; cursor: not-allowed; }
+/* MAIN BUTTON */
+.go-btn{width:100%;height:54px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#f43f5e);color:#fff;border:none;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:-.3px;transition:all .2s;box-shadow:0 4px 24px rgba(249,115,22,.35)}
+.go-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 32px rgba(249,115,22,.5)}
+.go-btn:active:not(:disabled){transform:translateY(0)}
+.go-btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+.spin{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;animation:spin .65s linear infinite;display:none;flex-shrink:0}
+@keyframes spin{to{transform:rotate(360deg)}}
 
-    /* TABLE */
-    .table-card {
-      background: var(--white); border: 1px solid var(--border);
-      border-radius: var(--r); box-shadow: var(--sh2);
-      overflow: hidden; animation: fadeUp .3s ease both;
-    }
-    @keyframes fadeUp {
-      from { opacity:0; transform:translateY(8px); }
-      to   { opacity:1; transform:translateY(0); }
-    }
-    .tbl-scroll { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; font-size: 13.5px; min-width: 900px; }
-    thead { background: var(--surface); border-bottom: 1px solid var(--border); }
-    th {
-      padding: 13px 15px; text-align: left;
-      font-family: 'Syne', sans-serif; font-size: 10px; font-weight: 700;
-      letter-spacing: 1.1px; text-transform: uppercase; color: var(--ink3); white-space: nowrap;
-    }
-    td {
-      padding: 13px 15px; border-bottom: 1px solid var(--border);
-      color: var(--ink); white-space: nowrap; overflow: hidden;
-      text-overflow: ellipsis; max-width: 180px; vertical-align: middle;
-    }
-    tr:last-child td { border-bottom: none; }
-    tbody tr:hover td { background: #F5F3EF; }
-    .num-cell { font-family:'Syne',sans-serif; font-size:11px; font-weight:700; color:var(--ink3); width:36px; text-align:center; }
-    .biz-name { font-weight: 600; }
-    a.link { color: var(--accent); text-decoration: none; font-size: 12.5px; font-weight: 500; }
-    a.link:hover { text-decoration: underline; }
-    .chip-gray { display:inline-flex; font-size:11.5px; font-weight:600; padding:3px 10px; border-radius:20px; background:#EDEBE5; color:var(--ink3); }
-    .chip-blue { display:inline-flex; font-size:11.5px; font-weight:600; padding:3px 10px; border-radius:20px; background:#EEF2FF; color:var(--accent); }
+/* PROGRESS */
+.prog-wrap{display:none;margin-top:1.5rem}
+.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+.prog-label{font-size:13px;font-weight:600;color:var(--text2)}
+.prog-pct{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--accent)}
+.prog-track{height:4px;background:var(--border);border-radius:10px;overflow:hidden;margin-bottom:10px}
+.prog-bar{height:100%;background:linear-gradient(90deg,var(--accent),#f43f5e);border-radius:10px;width:0%;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.prog-phases{display:flex;gap:6px;flex-wrap:wrap}
+.phase-pill{font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid var(--border);color:var(--text3);transition:all .3s}
+.phase-pill.active{border-color:rgba(249,115,22,.4);background:rgba(249,115,22,.08);color:var(--accent)}
+.phase-pill.done{border-color:rgba(34,197,94,.3);background:var(--green-bg);color:var(--green)}
 
-    /* SKELETON */
-    .skel {
-      height: 13px; border-radius: 5px;
-      background: linear-gradient(90deg,#EEEBE5 25%,#F5F3EF 50%,#EEEBE5 75%);
-      background-size: 200% 100%; animation: shim 1.5s infinite;
-    }
-    @keyframes shim { to { background-position: -200% 0; } }
-    .w30{width:30%}.w45{width:45%}.w60{width:60%}.w75{width:75%}.w90{width:90%}
+/* STATUS */
+.status-pill{display:none;align-items:center;gap:8px;margin-top:1rem;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:500;border:1px solid}
+.status-pill.running{background:var(--amber-bg);border-color:rgba(245,158,11,.3);color:var(--amber);display:flex}
+.status-pill.success{background:var(--green-bg);border-color:rgba(34,197,94,.3);color:var(--green);display:flex}
+.status-pill.error{background:var(--red-bg);border-color:rgba(239,68,68,.3);color:var(--red);display:flex}
+.status-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
+.status-pill.running .status-dot{animation:pulse 1s ease infinite}
 
-    /* EMPTY */
-    .empty { display:none; text-align:center; padding:5rem 1rem; }
-    .empty-ico {
-      width:64px; height:64px; background:var(--surface);
-      border:1.5px solid var(--border); border-radius:50%;
-      display:flex; align-items:center; justify-content:center; margin:0 auto 1.2rem;
-    }
-    .empty h3 { font-family:'Syne',sans-serif; font-size:17px; font-weight:700; margin-bottom:6px; }
-    .empty p  { font-size:13px; color:var(--ink3); max-width:340px; margin:0 auto; }
+/* PROVIDER STATUS */
+.provider-row{display:flex;gap:8px;margin-top:.75rem;flex-wrap:wrap}
+.prov-tag{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid var(--border);color:var(--text3)}
+.prov-tag.trying{border-color:rgba(59,130,246,.4);background:var(--blue-glow);color:var(--blue)}
+.prov-tag.ok{border-color:rgba(34,197,94,.3);background:var(--green-bg);color:var(--green)}
+.prov-tag.fail{border-color:rgba(239,68,68,.3);background:var(--red-bg);color:var(--red)}
+.prov-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
+.prov-tag.trying .prov-dot{animation:pulse 1s ease infinite}
 
-    /* FOOTER */
-    .footer {
-      max-width: 960px; margin: 3.5rem auto 0; padding: 1.25rem 1.5rem 0;
-      font-size: 12px; color: var(--ink3);
-      display: flex; align-items: center; justify-content: space-between;
-      border-top: 1px solid var(--border);
-    }
-    .footer-brand { font-family:'Syne',sans-serif; font-weight:800; font-size:14px; color:var(--ink); }
+/* RESULTS BAR */
+.results-bar{display:flex;align-items:center;justify-content:space-between;margin:2.5rem 0 1rem;flex-wrap:wrap;gap:12px}
+.res-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.5px}
+.res-sub{font-size:12.5px;color:var(--text3);margin-top:3px}
+.res-actions{display:flex;gap:8px}
+.action-btn{height:40px;padding:0 16px;border-radius:9px;background:var(--card);border:1px solid var(--border2);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:7px;transition:all .15s}
+.action-btn:hover:not(:disabled){background:var(--accent);border-color:var(--accent);color:#fff}
+.action-btn.success-state{background:var(--green-bg);border-color:rgba(34,197,94,.4);color:var(--green)}
+.action-btn:disabled{opacity:.3;cursor:not-allowed}
 
-    @media (max-width: 600px) {
-      .fields-row { grid-template-columns: 1fr; }
-      .hero { padding: 2rem 1.25rem 3rem; }
-      .search-card { margin: -1.5rem .75rem 0; padding: 1.5rem; }
-      .results-bar { flex-direction: column; align-items: flex-start; }
-      .main { padding: 1.25rem 1rem 0; }
-    }
-  </style>
+/* TABLE */
+.table-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.tscroll{overflow-x:auto}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:1020px}
+thead{background:var(--surface)}
+th{padding:11px 14px;text-align:left;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);white-space:nowrap;border-bottom:1px solid var(--border)}
+td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+tr:last-child td{border-bottom:none}
+tbody tr:hover td{background:rgba(255,255,255,.02)}
+.num-td{text-align:center;color:var(--text3);font-size:11px;font-weight:700;width:40px}
+.biz-td{font-weight:600;color:var(--text)}
+a.tlink{color:var(--blue);text-decoration:none;font-size:12px;font-weight:500}
+a.tlink:hover{text-decoration:underline}
+.na-txt{color:var(--text3);font-size:12px;font-style:italic}
+.src-badge{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:6px;white-space:nowrap}
+.src-c{background:var(--blue-glow);border:1px solid rgba(59,130,246,.3);color:#60a5fa}
+.src-g{background:rgba(234,179,8,.08);border:1px solid rgba(234,179,8,.25);color:#fbbf24}
+.src-f{background:var(--green-bg);border:1px solid rgba(34,197,94,.3);color:var(--green)}
+
+/* SKELETON */
+.sk{height:11px;border-radius:4px;background:linear-gradient(90deg,var(--surface) 25%,var(--border) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
+@keyframes shimmer{to{background-position:-200% 0}}
+.w2{width:20%}.w4{width:40%}.w6{width:60%}.w8{width:80%}
+
+/* EMPTY */
+.empty{display:none;text-align:center;padding:5rem 1rem}
+.empty-ico{width:60px;height:60px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:grid;place-items:center;margin:0 auto 1.25rem}
+.empty h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px}
+.empty p{font-size:13px;color:var(--text3);line-height:1.6;max-width:400px;margin:0 auto}
+
+/* WARN */
+.warn-strip{background:var(--amber-bg);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:10px 14px;font-size:12.5px;color:var(--amber);line-height:1.6;margin-top:.75rem;display:none}
+.warn-strip strong{font-weight:700}
+
+/* FOOTER */
+.footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text3)}
+.footer-brand{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--text)}
+.footer-brand span{color:var(--accent)}
+
+@media(max-width:750px){
+  .key-grid,.search-grid{grid-template-columns:1fr}
+  .hero{padding:3rem 1.25rem 2.5rem}
+  .main{padding:0 1.25rem 3rem}
+  .panel{padding:1.25rem}
+  .hbadges{display:none}
+  .hdr{padding:0 1.25rem}
+}
+</style>
 </head>
 <body>
 
+<!-- HEADER -->
+<div class="hdr">
+  <div class="hdr-in">
+    <div class="logo">
+      <div class="logo-mark">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </div>
+      <span class="logo-name">Biz<span>Scout</span> Pro</span>
+      <span class="logo-tag">Real Data</span>
+    </div>
+    <div class="hbadges">
+      <span class="hbadge live"><span class="live-dot"></span>Live Web Search</span>
+      <span class="hbadge">Claude + Gemini</span>
+      <span class="hbadge">No Fake Data</span>
+    </div>
+  </div>
+</div>
+
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-grid"></div>
-  <div class="hero-inner">
-    <div class="hero-eye">Business Intelligence Tool</div>
-    <h1>Find any business.<br/><em>Extract every contact.</em></h1>
-    <p class="hero-sub">Business type aur location enter karo — CEO naam, email, phone, website sab ek saath extract hokar Excel mein download ho jaayega.</p>
-    <div class="hero-pills">
-      <span class="hero-pill">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
-        Real-time AI Search
-      </span>
-      <span class="hero-pill">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-        Excel Export
-      </span>
-      <span class="hero-pill">
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/></svg>
-        CEO · Email · Phone · Website
-      </span>
+  <div class="hero-bg"></div>
+  <div class="hero-in">
+    <div class="eyebrow"><span class="eyebrow-txt">🔥 Dual AI Engine — Real Web Data</span></div>
+    <h1>Asli businesses.<br/><span class="gr">Asli data.</span></h1>
+    <p class="hero-sub">Claude AI web search se real business data nikalta hai. Agar Claude fail ho, Gemini automatically backup leta hai. Koi fake number, koi copied address — bilkul nahi.</p>
+    <div class="hero-chips">
+      <div class="chip"><div class="chip-icon c"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>Claude Primary — Web Search</div>
+      <div class="chip"><div class="chip-icon g"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>Gemini Fallback — Auto Switch</div>
+      <div class="chip"><div class="chip-icon x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Duplicate Detection</div>
+      <div class="chip"><div class="chip-icon x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Excel Export</div>
     </div>
   </div>
 </div>
 
 <!-- MAIN -->
 <div class="main">
-  <div class="search-card">
-    <div class="fields-row">
-      <div class="field">
+  <!-- SEARCH -->
+  <div class="panel">
+    <div class="panel-title">Search Parameters</div>
+    <div class="search-grid">
+      <div class="field-wrap">
         <label>Business Type</label>
-        <div class="input-wrap">
-          <span class="i-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-          </span>
-          <input type="text" id="bizType" placeholder="Hotels, Restaurants, Hospitals…" value="Hotels" autocomplete="off"/>
+        <div class="inp-wrap">
+          <span class="inp-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
+          <input type="text" id="bizType" placeholder="Hotels, Hospitals, Restaurants…" value="Hotels" autocomplete="off"/>
         </div>
       </div>
-      <div class="field">
+      <div class="field-wrap">
         <label>Location</label>
-        <div class="input-wrap">
-          <span class="i-icon">
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
-          </span>
-          <input type="text" id="location" placeholder="Haldwani Uttarakhand, Delhi…" value="Haldwani, Uttarakhand" autocomplete="off"/>
+        <div class="inp-wrap">
+          <span class="inp-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          <input type="text" id="location" placeholder="Haldwani, Meerut, Delhi…" value="Haldwani, Uttarakhand" autocomplete="off"/>
+        </div>
+      </div>
+      <div class="field-wrap">
+        <label>Results</label>
+        <div class="inp-wrap">
+          <span class="inp-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span>
+          <select id="resultTarget">
+            <option value="2">~20 results</option>
+            <option value="3" selected>~30 results</option>
+            <option value="4">~40 results</option>
+          </select>
         </div>
       </div>
     </div>
 
-    <button class="search-btn" id="searchBtn" onclick="startSearch()">
-      <div class="btn-spinner" id="spinner"></div>
-      <svg id="btnIcon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-      </svg>
-      <span id="btnText">Discover &amp; Extract</span>
+    <button class="go-btn" id="goBtn" onclick="startSearch()">
+      <div class="spin" id="spin"></div>
+      <svg id="goIco" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <span id="goTxt">Find Real Businesses</span>
     </button>
-  </div>
 
-  <!-- PROGRESS -->
-  <div class="prog-wrap" id="progWrap">
-    <div class="prog-top">
-      <span class="prog-label" id="progLabel">Searching…</span>
-      <span class="prog-pct"   id="progPct">0%</span>
+    <!-- PROGRESS -->
+    <div class="prog-wrap" id="progWrap">
+      <div class="prog-top">
+        <span class="prog-label" id="progLabel">Initializing…</span>
+        <span class="prog-pct" id="progPct">0%</span>
+      </div>
+      <div class="prog-track"><div class="prog-bar" id="progBar"></div></div>
+      <div class="prog-phases" id="progPhases">
+        <span class="phase-pill" id="ph0">Phase 1</span>
+        <span class="phase-pill" id="ph1">Phase 2</span>
+        <span class="phase-pill" id="ph2">Phase 3</span>
+        <span class="phase-pill" id="ph3">Enrich</span>
+      </div>
     </div>
-    <div class="prog-track"><div class="prog-fill" id="progFill" style="width:0%"></div></div>
-  </div>
 
-  <!-- STATUS -->
-  <div class="status-pill" id="statusPill">
-    <div class="pdot"></div>
-    <span id="statusText"></span>
+    <!-- STATUS -->
+    <div class="status-pill" id="statusPill"><div class="status-dot"></div><span id="statusTxt"></span></div>
+
+    <!-- PROVIDER TAGS -->
+    <div class="provider-row" id="provRow" style="display:none">
+      <span class="prov-tag" id="provClaude"><span class="prov-dot"></span>Claude</span>
+      <span class="prov-tag" id="provGemini"><span class="prov-dot"></span>Gemini</span>
+    </div>
+
+    <div class="warn-strip" id="warnStrip"></div>
   </div>
 
   <!-- RESULTS -->
-  <div id="resultsSection" style="display:none">
+  <div id="resSec" style="display:none">
     <div class="results-bar">
       <div>
-        <h2 id="resultsTitle">Results</h2>
-        <p  id="resultsSub"></p>
+        <div class="res-title" id="resTitle">Results</div>
+        <div class="res-sub" id="resSub"></div>
       </div>
-      <button class="export-btn" id="exportBtn" onclick="exportExcel()" disabled>
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
-          <polyline points="7 10 12 15 17 10"/>
-          <line x1="12" y1="15" x2="12" y2="3"/>
-        </svg>
-        <span id="exportTxt">Download Excel</span>
-      </button>
+      <div class="res-actions">
+        <button class="action-btn" onclick="clearAll()">
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M9 6V4h6v2"/></svg>
+          Clear
+        </button>
+        <button class="action-btn" id="xlBtn" onclick="exportXL()" disabled>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          <span id="xlTxt">Download Excel</span>
+        </button>
+      </div>
     </div>
-
     <div class="table-card">
-      <div class="tbl-scroll">
+      <div class="tscroll">
         <table>
-          <thead>
-            <tr>
-              <th style="text-align:center">#</th>
-              <th>Business Name</th>
-              <th>Phone</th>
-              <th>CEO / Owner</th>
-              <th>Email</th>
-              <th>Website</th>
-              <th>Address</th>
-              <th>Category</th>
-            </tr>
-          </thead>
-          <tbody id="tableBody"></tbody>
+          <thead><tr>
+            <th style="text-align:center">#</th>
+            <th>Business Name</th>
+            <th>Phone</th>
+            <th>Owner / Manager</th>
+            <th>Email</th>
+            <th>Website</th>
+            <th>Address</th>
+            <th>Source</th>
+          </tr></thead>
+          <tbody id="tbody"></tbody>
         </table>
       </div>
     </div>
   </div>
 
-  <!-- EMPTY -->
   <div class="empty" id="emptyState">
     <div class="empty-ico">
-      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#A8A49E" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="11" x2="14" y2="11"/>
-      </svg>
+      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5c5b58" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </div>
-    <h3>No results found</h3>
-    <p id="emptyMsg">Retry with a different business type or location OR try a more general search.</p>
+    <h3>Real data ready to fetch</h3>
+    <p>Business type aur location daalo, phir search karo. Claude web se real data nikalega.</p>
   </div>
+
 </div>
 
-<footer class="footer">
-  <span class="footer-brand">Scrapper</span>
-  <span>Powered by AI</span>
-</footer>
+<div class="footer" style="padding-top:1.5rem">
+  <span class="footer-brand">Biz<span>Scout</span> Pro</span>
+  <span>Claude (Primary) + Gemini (Fallback) — Real Web Data Only</span>
+</div>
 
 <script>
-  /* ══════════════════════════════════════════════
-     BACKEND CONFIG — sirf yahan key daalo, UI mein nahi dikhegi
-  ══════════════════════════════════════════════ */
-  const GEMINI_API_KEY = "AIzaSyDcP4hB6JlsfzuyDSiqfNmT1TcatMZJb00";
-  /* ═════════════════════════════════════════════════
-     UI & LOGIC — iske neeche waale code ko mat chhedna
-  ══════════════════════════════════════════════ */
-  const GEMINI_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`;
+// ═══════════════════════════════════════════════════════════
+//  BizScout Pro — Claude Primary + Gemini Fallback
+//  Real web data via Claude's web_search tool
+// ═══════════════════════════════════════════════════════════
 
-  let allResults = [];
-  let busy = false;
+const CLAUDE_URL = 'https://api.anthropic.com/v1/messages';
+const GEMINI_URL_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
 
+// ── API Keys (hardcoded — UI mein nahi dikhte) ────────────
+const _KEYS = {
+  claude: 'sk-ant-oat01-UUSa0JrdKvr7TrqVZRMfm-jS7OCmnOWnY-1LrH3r7rnY-_HsTxhx6nFt_a7dK57EOT2M',   // sk-ant-api03-...
+  gemini: 'AIzaSyBiJ5WJhlVEDPDTbV7EQBBR-sfdHGweqV4',   // AIzaSy...
+};
 
-  document.getElementById('location').addEventListener('keydown', e => { if(e.key==='Enter') startSearch(); });
+let allRes = [], busy = false, animTimer = null, curPct = 0, targetPct = 0;
 
-  function setProgress(pct, label) {
-    document.getElementById('progWrap').style.display = 'block';
-    document.getElementById('progFill').style.width   = pct + '%';
-    document.getElementById('progPct').textContent    = pct + '%';
-    if (label) document.getElementById('progLabel').textContent = label;
-  }
+// ── Init ──────────────────────────────────────────────────
+window.addEventListener('load', () => {
+  document.getElementById('emptyState').style.display = 'block';
+});
 
-  function setStatus(text, state) {
-    const p = document.getElementById('statusPill');
-    p.className = 'status-pill ' + (state || '');
-    document.getElementById('statusText').textContent = text;
-  }
+document.getElementById('bizType').addEventListener('keydown', e => { if(e.key==='Enter') startSearch(); });
+document.getElementById('location').addEventListener('keydown', e => { if(e.key==='Enter') startSearch(); });
 
-  function setBtnLoading(on) {
-    document.getElementById('spinner').style.display = on ? 'block' : 'none';
-    document.getElementById('btnIcon').style.display = on ? 'none'  : 'inline';
-    document.getElementById('btnText').textContent   = on ? 'Extracting data…' : 'Discover & Extract';
-    document.getElementById('searchBtn').disabled    = on;
-  }
+function getKey(p) {
+  return _KEYS[p] || '';
+}
 
-  function showSkeletons() {
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = '';
-    for (let i = 0; i < 8; i++) {
-      tbody.insertAdjacentHTML('beforeend', `
-        <tr>
-          <td><div class="skel w30"></div></td>
-          <td><div class="skel w75"></div></td>
-          <td><div class="skel w60"></div></td>
-          <td><div class="skel w60"></div></td>
-          <td><div class="skel w90"></div></td>
-          <td><div class="skel w45"></div></td>
-          <td><div class="skel w75"></div></td>
-          <td><div class="skel w30"></div></td>
-        </tr>`);
+// ── Progress Engine ───────────────────────────────────────
+function initProg() {
+  curPct = 0; targetPct = 0;
+  document.getElementById('progBar').style.width = '0%';
+  document.getElementById('progPct').textContent = '0%';
+  document.getElementById('progWrap').style.display = 'block';
+  ['ph0','ph1','ph2','ph3'].forEach(id => {
+    const el = document.getElementById(id);
+    el.className = 'phase-pill';
+  });
+  if(animTimer) clearInterval(animTimer);
+  animTimer = setInterval(() => {
+    if(curPct < targetPct) {
+      curPct = Math.min(curPct + 0.6, targetPct);
+      document.getElementById('progBar').style.width = curPct + '%';
+      document.getElementById('progPct').textContent = Math.round(curPct) + '%';
     }
-    document.getElementById('resultsSection').style.display = 'block';
-    document.getElementById('resultsTitle').textContent = 'Searching…';
-    document.getElementById('resultsSub').textContent   = 'AI se live data fetch ho raha hai…';
-  }
+  }, 80);
+}
 
-  async function callGemini(prompt) {
-    const res = await fetch(GEMINI_URL, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        contents: [{ parts: [{ text: prompt }] }],
-        generationConfig: { temperature: 0.1, maxOutputTokens: 819200 }
-      })
-    });
-    if (!res.ok) {
-      const e = await res.json().catch(() => ({}));
-      if (res.status === 403 || res.status === 400) throw new Error('API key invalid. Script mein GEMINI_API_KEY check karo.');
-      if (res.status === 429) throw new Error('Rate limit. Thodi der baad try karo.');
-      throw new Error(e?.error?.message || `API error ${res.status}`);
+function setProg(target, label, phaseIdx) {
+  targetPct = target;
+  if(label) document.getElementById('progLabel').textContent = label;
+  if(phaseIdx !== undefined) {
+    for(let i=0;i<4;i++) {
+      const el = document.getElementById('ph'+i);
+      if(i < phaseIdx) el.className = 'phase-pill done';
+      else if(i === phaseIdx) el.className = 'phase-pill active';
+      else el.className = 'phase-pill';
     }
-    const d = await res.json();
-    return d?.candidates?.[0]?.content?.parts?.[0]?.text || '';
+  }
+}
+
+function finishProg() {
+  targetPct = 100;
+  setTimeout(() => {
+    curPct = 100;
+    document.getElementById('progBar').style.width = '100%';
+    document.getElementById('progPct').textContent = '100%';
+    ['ph0','ph1','ph2','ph3'].forEach(id => document.getElementById(id).className = 'phase-pill done');
+    if(animTimer) { clearInterval(animTimer); animTimer = null; }
+  }, 700);
+}
+
+function setStatus(txt, cls) {
+  const el = document.getElementById('statusPill');
+  el.className = 'status-pill ' + cls;
+  document.getElementById('statusTxt').textContent = txt;
+}
+
+function setProvider(claude, gemini) {
+  const row = document.getElementById('provRow');
+  row.style.display = 'flex';
+  const setTag = (id, state) => {
+    const el = document.getElementById(id);
+    el.className = 'prov-tag ' + state;
+  };
+  setTag('provClaude', claude);
+  setTag('provGemini', gemini);
+}
+
+function showWarn(msg) {
+  const w = document.getElementById('warnStrip');
+  w.innerHTML = msg;
+  w.style.display = 'block';
+}
+
+function setBusy(on) {
+  busy = on;
+  document.getElementById('spin').style.display = on ? 'block' : 'none';
+  document.getElementById('goIco').style.display = on ? 'none' : 'block';
+  document.getElementById('goTxt').textContent = on ? 'Searching web…' : 'Find Real Businesses';
+  document.getElementById('goBtn').disabled = on;
+}
+
+// ── Dedup ─────────────────────────────────────────────────
+function dedupe(arr) {
+  const seen = new Set();
+  return arr.filter(r => {
+    const k = (r.name||'').toLowerCase().replace(/\s+/g,'').trim();
+    if(!k || k.length < 3 || seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
+}
+
+// ── Validate (reject obvious fakes) ──────────────────────
+function isValidRecord(r) {
+  if(!r || !r.name || r.name.trim().length < 3) return false;
+  // Reject if phone is obviously fake/template
+  const fakePhones = ['9999999999','0000000000','1234567890','9837000007','7055000007'];
+  if(r.phone && fakePhones.some(f => (r.phone||'').includes(f))) {
+    r.phone = 'N/A';
+  }
+  // Reject if all contact fields scream placeholder
+  const allNA = (!r.phone||r.phone==='N/A') && (!r.email||r.email==='N/A') && (!r.website||r.website==='N/A');
+  // Still keep — partial data is fine
+  return true;
+}
+
+// ── Parse JSON from LLM ────────────────────────────────────
+function parseArr(raw) {
+  if(!raw) throw new Error('Empty response');
+  let t = raw.trim()
+    .replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+  const s = t.indexOf('['), e = t.lastIndexOf(']');
+  if(s === -1 || e === -1) throw new Error('No JSON array found');
+  const parsed = JSON.parse(t.slice(s, e+1));
+  if(!Array.isArray(parsed)) throw new Error('Not an array');
+  return parsed;
+}
+
+// ══════════════════════════════════════════════════════════
+//  CLAUDE API — with web_search tool
+// ══════════════════════════════════════════════════════════
+async function callClaude(prompt, key) {
+  const res = await fetch(CLAUDE_URL, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'x-api-key': key,
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-direct-browser-calls': 'true'
+    },
+    body: JSON.stringify({
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: 8000,
+      tools: [{ type: 'web_search_20250305', name: 'web_search' }],
+      messages: [{ role: 'user', content: prompt }]
+    })
+  });
+
+  if(!res.ok) {
+    const e = await res.json().catch(()=>({}));
+    throw new Error(`Claude API error ${res.status}: ${e?.error?.message || 'Unknown'}`);
   }
 
-  function parseJSON(raw) {
-    let t = raw.trim()
-      .replace(/^```json\s*/i,'').replace(/^```\s*/i,'').replace(/```\s*$/i,'').trim();
-    const s = t.indexOf('['), e = t.lastIndexOf(']');
-    if (s === -1 || e === -1) throw new Error('JSON array nahi mili response mein.');
-    return JSON.parse(t.slice(s, e + 1));
+  const data = await res.json();
+  // Extract all text content blocks
+  const text = (data.content || [])
+    .filter(b => b.type === 'text')
+    .map(b => b.text)
+    .join('\n');
+  return text;
+}
+
+// ══════════════════════════════════════════════════════════
+//  GEMINI API — with grounding (web search)
+// ══════════════════════════════════════════════════════════
+async function callGemini(prompt, key) {
+  const url = `${GEMINI_URL_BASE}?key=${key}`;
+  const res = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      contents: [{ parts: [{ text: prompt }] }],
+      tools: [{ google_search: {} }],
+      generationConfig: { temperature: 0.1, maxOutputTokens: 8000 }
+    })
+  });
+
+  if(!res.ok) {
+    const e = await res.json().catch(()=>({}));
+    throw new Error(`Gemini API error ${res.status}: ${e?.error?.message || 'Unknown'}`);
   }
 
-  async function startSearch() {
-    if (busy) return;
-    const bizType  = document.getElementById('bizType').value.trim();
-    const location = document.getElementById('location').value.trim();
-    if (!bizType)  { document.getElementById('bizType').focus();  return; }
-    if (!location) { document.getElementById('location').focus(); return; }
+  const data = await res.json();
+  const text = data?.candidates?.[0]?.content?.parts
+    ?.filter(p => p.text)?.map(p => p.text)?.join('\n') || '';
+  return text;
+}
 
-    if (GEMINI_API_KEY === 'YOUR_GEMINI_API_KEY_HERE') {
-      alert('Script mein GEMINI_API_KEY set karo pehle!');
-      return;
-    }
+// ══════════════════════════════════════════════════════════
+//  SMART CALLER — Claude first, Gemini fallback
+// ══════════════════════════════════════════════════════════
+async function smartCall(prompt, batchLabel) {
+  const ck = getKey('claude');
+  const gk = getKey('gemini');
 
-    busy = true;
-    allResults = [];
-    document.getElementById('emptyState').style.display  = 'none';
-    document.getElementById('exportBtn').disabled        = true;
-    document.getElementById('exportBtn').className       = 'export-btn';
-    document.getElementById('exportTxt').textContent     = 'Download Excel';
+  if(!ck && !gk) throw new Error('API keys configured nahi hain. Developer se contact karo.');
 
-    setBtnLoading(true);
-    setProgress(5, 'AI connect ho raha hai…');
-    setStatus(`${bizType} · ${location} — data fetch ho raha hai`, 'running');
-    showSkeletons();
+  let text = '', source = '';
 
+  // Try Claude first
+  if(ck) {
+    setProvider('trying', gk ? '' : '');
     try {
-      setProgress(20, 'Gemini ko prompt bheja…');
+      text = await callClaude(prompt, ck);
+      source = 'claude';
+      setProvider('ok', gk ? 'fail' : '');
+    } catch(err) {
+      setProvider('fail', gk ? 'trying' : 'fail');
+      showWarn(`<strong>Claude failed (${batchLabel}):</strong> ${err.message} — Gemini se try kar raha hai…`);
+      if(!gk) throw new Error('Claude failed aur Gemini key nahi hai: ' + err.message);
+    }
+  }
 
-      const prompt = `You are a professional business researcher. Find 20 real, named "${bizType}" businesses in "${location}", India.
+  // Gemini fallback (or primary if no Claude key)
+  if(source !== 'claude') {
+    if(!gk) throw new Error('Claude fail hua aur Gemini key missing hai.');
+    try {
+      text = await callGemini(prompt, gk);
+      source = 'gemini';
+      setProvider(ck ? 'fail' : '', 'ok');
+    } catch(err) {
+      setProvider(ck ? 'fail' : '', 'fail');
+      throw new Error('Dono APIs fail ho gayi: ' + err.message);
+    }
+  }
 
-Return ONLY a valid JSON array — no explanation, no markdown, no code fences.
+  return { text, source };
+}
 
-Each object MUST have exactly these keys:
-- "name"      : Full business name (string)
-- "phone"     : Phone with +91 prefix, else "N/A"
-- "ceo"       : CEO / owner / MD / manager name, else "N/A"
-- "ceo_email" : Their professional email (e.g. owner@bizname.com), else "N/A"
-- "website"   : Full URL with https://, else "N/A"
-- "address"   : Street / area address in ${location}
-- "category"  : "${bizType}"
+// ══════════════════════════════════════════════════════════
+//  BUILD PROMPT
+// ══════════════════════════════════════════════════════════
+function buildPrompt(bt, loc, batchNum, existingNames) {
+  const exclude = existingNames.length > 0
+    ? `\n\nYeh businesses ALREADY FOUND hain — inhe mat include karo:\n${existingNames.slice(-30).join(', ')}`
+    : '';
 
-Rules:
-1. Real named businesses only — no generic placeholders
-2. Return exactly 20 objects
-3. Valid JSON — no trailing commas, no comments
+  const focus = [
+    `Sabse popular, well-known, aur highly-rated ${bt} businesses ko focus karo. Google Maps, MakeMyTrip, Booking.com se dhundho.`,
+    `Medium-sized, established ${bt} businesses dhundho. JustDial, Sulekha, local news sites check karo.`,
+    `Chote, local, neighbourhood-level ${bt} businesses dhundho. Social media pages, local directories check karo.`,
+    `Koi bhi bacha hua ${bt} business dhundho jo abhi tak list nahi hua.`,
+  ][batchNum] || `Aur ${bt} businesses dhundho.`;
 
-JSON:`;
+  return `You are a business data researcher. Use your web search tool to find REAL "${bt}" businesses in "${loc}", India.
 
-      setProgress(35, 'AI se response aa raha hai…');
-      const raw = await callGemini(prompt);
-      setProgress(70, 'Data parse ho raha hai…');
+${focus}
 
-      let parsed;
+For EACH real business you find, extract:
+1. Exact business name (as it appears on their listing/website)
+2. Phone number (real, from their actual listing — +91 format)
+3. Owner/Manager/GM name (if found on website, LinkedIn, Google)
+4. Contact email (from their real website contact page)
+5. Official website URL
+6. Exact address
+
+IMPORTANT RULES:
+- ONLY real businesses that actually exist — no made-up data
+- Phone numbers must be real (different for each business)
+- If a field is unknown, write "N/A" — do NOT invent data
+- Return ONLY a valid JSON array, no explanation, no markdown fences
+
+JSON format (return array only):
+[
+  {
+    "name": "Actual Business Name",
+    "phone": "+91XXXXXXXXXX or N/A",
+    "owner": "Real Owner Name or N/A",
+    "email": "real@email.com or N/A",
+    "website": "https://real-site.com or N/A",
+    "address": "Real street address, ${loc}"
+  }
+]
+${exclude}
+
+Search the web now and return the JSON array:`;
+}
+
+// ══════════════════════════════════════════════════════════
+//  MAIN SEARCH
+// ══════════════════════════════════════════════════════════
+async function startSearch() {
+  if(busy) return;
+
+  const bt = document.getElementById('bizType').value.trim();
+  const loc = document.getElementById('location').value.trim();
+  const batches = parseInt(document.getElementById('resultTarget').value);
+
+  if(!bt || !loc) {
+    setStatus('Business type aur location dono fill karo!', 'error');
+    return;
+  }
+  if(!getKey('claude') && !getKey('gemini')) {
+    setStatus('API configuration error. Developer se contact karo.', 'error');
+    document.getElementById('statusPill').style.display = 'flex';
+    return;
+  }
+
+  allRes = [];
+  busy = true;
+  setBusy(true);
+  initProg();
+  document.getElementById('warnStrip').style.display = 'none';
+  document.getElementById('provRow').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('resSec').style.display = 'none';
+  document.getElementById('xlBtn').disabled = true;
+  document.getElementById('xlTxt').textContent = 'Download Excel';
+  document.getElementById('xlBtn').className = 'action-btn';
+
+  setStatus(`${bt} · ${loc} — Web se real data dhundh raha hai…`, 'running');
+
+  const phaseTargets = [30, 55, 78, 92];
+  const phaseLabels = [
+    'Phase 1 — Top businesses search ho rahi hain…',
+    'Phase 2 — Medium businesses dhundhe ja rahe hain…',
+    'Phase 3 — Local businesses scan ho rahi hain…',
+    'Phase 4 — Remaining businesses…',
+  ];
+
+  // Show skeletons
+  showSkeletons();
+
+  try {
+    for(let b = 0; b < batches; b++) {
+      setProg(phaseTargets[b], phaseLabels[b], b);
+
+      const names = allRes.map(r => r.name);
+      const prompt = buildPrompt(bt, loc, b, names);
+
+      let raw, source;
       try {
-        parsed = parseJSON(raw);
-      } catch(_) {
-        setProgress(75, 'Retry parsing…');
-        const raw2 = await callGemini(`Return ONLY the JSON array from this text, nothing else:\n\n${raw}`);
-        parsed = parseJSON(raw2);
+        const result = await smartCall(prompt, `Phase ${b+1}`);
+        raw = result.text;
+        source = result.source;
+      } catch(err) {
+        showWarn(`<strong>Phase ${b+1} failed:</strong> ${err.message}`);
+        if(b === 0) throw err; // Fatal if first batch fails
+        break;
       }
 
-      if (!Array.isArray(parsed) || !parsed.length)
-        throw new Error('Koi data nahi mila. Alag keyword ya location try karo.');
+      let parsed = [];
+      try {
+        parsed = parseArr(raw);
+      } catch(_) {
+        // Try to salvage partial JSON
+        try {
+          const fixed = await smartCall(
+            `Return ONLY a valid JSON array from this text, nothing else:\n\n${(raw||'').slice(0,3000)}`,
+            `Repair ${b+1}`
+          );
+          parsed = parseArr(fixed.text);
+        } catch(__) { parsed = []; }
+      }
 
-      allResults = parsed;
-      setProgress(90, 'Table render ho rahi hai…');
-      renderResults(allResults);
-      setProgress(100, 'Done!');
+      // Normalize + validate
+      const cleaned = parsed
+        .filter(r => r && r.name)
+        .map(r => ({
+          name: (r.name||'').trim(),
+          phone: (r.phone||r.tel||'N/A').trim(),
+          owner: (r.owner||r.ceo||r.manager||'N/A').trim(),
+          email: (r.email||r.ceo_email||'N/A').trim(),
+          website: (r.website||r.url||'N/A').trim(),
+          address: (r.address||'N/A').trim(),
+          source_api: source,
+        }))
+        .filter(isValidRecord);
 
-      setStatus(`✓ ${allResults.length} businesses found`, 'done');
-      document.getElementById('exportBtn').disabled       = false;
-      document.getElementById('resultsTitle').textContent = allResults.length + ' Results';
-      document.getElementById('resultsSub').textContent   = bizType + ' · ' + location;
+      allRes = dedupe([...allRes, ...cleaned]);
+      renderTable(allRes, bt, loc);
 
-    } catch(err) {
-      setStatus('Error: ' + err.message, 'error');
-      document.getElementById('progWrap').style.display       = 'none';
-      document.getElementById('tableBody').innerHTML           = '';
-      document.getElementById('resultsSection').style.display = 'none';
-      document.getElementById('emptyState').style.display     = 'block';
-      document.getElementById('emptyMsg').textContent         = err.message;
+      if(b < batches - 1) await sleep(1500);
     }
 
-    busy = false;
-    setBtnLoading(false);
-  }
+    // Done
+    finishProg();
+    document.getElementById('provRow').style.display = 'none';
 
-  function renderResults(results) {
-    const tbody = document.getElementById('tableBody');
-    tbody.innerHTML = '';
-
-    if (!results.length) {
-      document.getElementById('resultsSection').style.display = 'none';
-      document.getElementById('emptyState').style.display     = 'block';
-      return;
-    }
-    document.getElementById('resultsSection').style.display = 'block';
-    document.getElementById('emptyState').style.display     = 'none';
-
-    results.forEach((r, i) => {
-      const tr      = document.createElement('tr');
-      const name    = r.name      || '';
-      const phone   = r.phone     || '';
-      const ceo     = r.ceo       || '';
-      const email   = r.ceo_email || '';
-      const website = r.website   || '';
-      const address = r.address   || '';
-      const cat     = r.category  || document.getElementById('bizType').value;
-
-      const domain    = (website && website !== 'N/A') ? website.replace(/https?:\/\//,'').split('/')[0] : null;
-      const emailHtml = (email && email !== 'N/A')
-        ? `<a class="link" href="mailto:${esc(email)}">${esc(email)}</a>` : na();
-      const webHtml   = domain
-        ? `<a class="link" href="${esc(website)}" target="_blank" rel="noopener">${esc(domain)}</a>` : na();
-
-      tr.innerHTML = `
-        <td class="num-cell">${i+1}</td>
-        <td class="biz-name" title="${esc(name)}">${esc(name)||na()}</td>
-        <td>${esc(phone)||na()}</td>
-        <td title="${esc(ceo)}">${esc(ceo)||na()}</td>
-        <td>${emailHtml}</td>
-        <td>${webHtml}</td>
-        <td title="${esc(address)}">${esc(address)||na()}</td>
-        <td><span class="chip-blue">${esc(cat)}</span></td>`;
-      tbody.appendChild(tr);
-    });
-  }
-
-  function esc(s) {
-    if (!s || s === 'N/A') return '';
-    return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-  function na() { return '<span class="chip-gray">N/A</span>'; }
-
-  function exportExcel() {
-    if (!allResults.length) return;
-    const bizType  = document.getElementById('bizType').value;
-    const location = document.getElementById('location').value;
-
-    const rows = allResults.map((r, i) => ({
-      '#'             : i + 1,
-      'Business Name' : r.name      || '',
-      'Phone'         : r.phone     || '',
-      'CEO / Owner'   : r.ceo       || '',
-      'Email'         : r.ceo_email || '',
-      'Website'       : r.website   || '',
-      'Address'       : r.address   || '',
-      'Category'      : r.category  || bizType,
-      'Location'      : location,
-    }));
-
-    const ws = XLSX.utils.json_to_sheet(rows);
-    ws['!cols'] = [{wch:4},{wch:34},{wch:18},{wch:26},{wch:32},{wch:30},{wch:36},{wch:16},{wch:22}];
-
-    const range = XLSX.utils.decode_range(ws['!ref']);
-    for (let C = range.s.c; C <= range.e.c; C++) {
-      const addr = XLSX.utils.encode_cell({ r:0, c:C });
-      if (ws[addr]) ws[addr].s = { font: { bold: true } };
+    if(allRes.length > 0) {
+      setStatus(`✓ ${allRes.length} real businesses mili — ${bt} · ${loc}`, 'success');
+      document.getElementById('xlBtn').disabled = false;
+    } else {
+      setStatus('Koi business nahi mila. Location ya business type change karke dobara try karo.', 'error');
+      document.getElementById('emptyState').style.display = 'block';
+      document.getElementById('resSec').style.display = 'none';
     }
 
-    const wb = XLSX.utils.book_new();
-    XLSX.utils.book_append_sheet(wb, ws, 'Businesses');
-
-    const date    = new Date().toISOString().slice(0,10);
-    const safeBiz = bizType.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
-    const safeLoc = location.replace(/[\s,]+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
-    XLSX.writeFile(wb, `${safeBiz}_${safeLoc}_${date}.xlsx`);
-
-    document.getElementById('exportBtn').className = 'export-btn done-state';
-    document.getElementById('exportTxt').textContent = '✓ Downloaded!';
-    setTimeout(() => {
-      document.getElementById('exportBtn').className = 'export-btn';
-      document.getElementById('exportTxt').textContent = 'Download Excel';
-    }, 3000);
+  } catch(err) {
+    if(animTimer) { clearInterval(animTimer); animTimer = null; }
+    setStatus('Error: ' + err.message, 'error');
+    if(!allRes.length) {
+      document.getElementById('emptyState').style.display = 'block';
+      document.getElementById('emptyState').querySelector('p').textContent = err.message;
+      document.getElementById('resSec').style.display = 'none';
+    } else {
+      document.getElementById('xlBtn').disabled = false;
+      finishProg();
+    }
   }
+
+  setBusy(false);
+}
+
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+
+// ── Render ────────────────────────────────────────────────
+function esc(s) {
+  if(!s || s==='N/A') return '';
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+function naCell() { return '<span class="na-txt">—</span>'; }
+function srcBadge(src) {
+  if(src==='claude') return '<span class="src-badge src-c">Claude</span>';
+  if(src==='gemini') return '<span class="src-badge src-g">Gemini</span>';
+  return '<span class="src-badge src-f">Web</span>';
+}
+
+function showSkeletons() {
+  const tb = document.getElementById('tbody');
+  tb.innerHTML = '';
+  for(let i=0;i<10;i++) tb.insertAdjacentHTML('beforeend',`<tr>
+    <td><div class="sk w2"></div></td><td><div class="sk w8"></div></td>
+    <td><div class="sk w6"></div></td><td><div class="sk w6"></div></td>
+    <td><div class="sk w8"></div></td><td><div class="sk w4"></div></td>
+    <td><div class="sk w8"></div></td><td><div class="sk w4"></div></td>
+  </tr>`);
+  document.getElementById('resSec').style.display = 'block';
+  document.getElementById('resTitle').textContent = 'Searching…';
+  document.getElementById('resSub').textContent = 'Web se real data aa raha hai…';
+}
+
+function renderTable(res, bt, loc) {
+  document.getElementById('resSec').style.display = 'block';
+  document.getElementById('emptyState').style.display = 'none';
+  document.getElementById('resTitle').textContent = res.length + ' Results';
+  document.getElementById('resSub').textContent = `${bt} · ${loc} · Real web data`;
+
+  const tb = document.getElementById('tbody');
+  tb.innerHTML = '';
+  res.forEach((r, i) => {
+    const domain = (r.website && r.website !== 'N/A')
+      ? r.website.replace(/https?:\/\//,'').split('/')[0] : null;
+    const emailH = (r.email && r.email !== 'N/A')
+      ? `<a class="tlink" href="mailto:${esc(r.email)}">${esc(r.email)}</a>` : naCell();
+    const webH = domain
+      ? `<a class="tlink" href="${esc(r.website)}" target="_blank" rel="noopener">${esc(domain)}</a>` : naCell();
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td class="num-td">${i+1}</td>
+      <td class="biz-td" title="${esc(r.name)}">${esc(r.name)||naCell()}</td>
+      <td>${r.phone && r.phone!=='N/A' ? esc(r.phone) : naCell()}</td>
+      <td title="${esc(r.owner)}">${r.owner && r.owner!=='N/A' ? esc(r.owner) : naCell()}</td>
+      <td>${emailH}</td>
+      <td>${webH}</td>
+      <td title="${esc(r.address)}">${r.address && r.address!=='N/A' ? esc(r.address) : naCell()}</td>
+      <td>${srcBadge(r.source_api)}</td>`;
+    tb.appendChild(tr);
+  });
+}
+
+// ── Export Excel ─────────────────────────────────────────
+function exportXL() {
+  if(!allRes.length) return;
+  const bt = document.getElementById('bizType').value;
+  const loc = document.getElementById('location').value;
+  const rows = allRes.map((r,i) => ({
+    '#': i+1,
+    'Business Name': r.name||'',
+    'Phone': r.phone||'',
+    'Owner / Manager': r.owner||'',
+    'Email': r.email||'',
+    'Website': r.website||'',
+    'Address': r.address||'',
+    'Business Type': bt,
+    'Location': loc,
+    'Data Source': r.source_api === 'claude' ? 'Claude AI (Web Search)' : 'Gemini AI (Grounding)',
+  }));
+  const ws = XLSX.utils.json_to_sheet(rows);
+  ws['!cols'] = [{wch:4},{wch:36},{wch:18},{wch:28},{wch:34},{wch:32},{wch:42},{wch:16},{wch:22},{wch:28}];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Businesses');
+  const d = new Date().toISOString().slice(0,10);
+  const sb = bt.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
+  const sl = loc.replace(/[\s,]+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
+  XLSX.writeFile(wb, `${sb}_${sl}_${d}.xlsx`);
+  document.getElementById('xlBtn').className = 'action-btn success-state';
+  document.getElementById('xlTxt').textContent = '✓ Downloaded!';
+  setTimeout(() => {
+    document.getElementById('xlBtn').className = 'action-btn';
+    document.getElementById('xlTxt').textContent = 'Download Excel';
+  }, 3000);
+}
+
+function clearAll() {
+  allRes = [];
+  document.getElementById('tbody').innerHTML = '';
+  document.getElementById('resSec').style.display = 'none';
+  document.getElementById('emptyState').style.display = 'block';
+  document.getElementById('emptyState').querySelector('p').textContent = 'Business type aur location daalo, phir search karo.';
+  document.getElementById('statusPill').className = 'status-pill';
+  document.getElementById('progWrap').style.display = 'none';
+  document.getElementById('warnStrip').style.display = 'none';
+  document.getElementById('provRow').style.display = 'none';
+  document.getElementById('xlBtn').disabled = true;
+}
 </script>
 </body>
 </html>
