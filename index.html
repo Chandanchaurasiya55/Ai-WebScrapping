@@ -4,337 +4,316 @@
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
 <title>BizScout Pro — Real Business Finder</title>
-<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --bg:#0a0a0b;
-  --surface:#111113;
-  --card:#17181c;
-  --border:#2a2b30;
-  --border2:#3a3b42;
-  --accent:#f97316;
-  --accent2:#fb923c;
-  --accent-glow:rgba(249,115,22,.18);
-  --blue:#3b82f6;
-  --blue-glow:rgba(59,130,246,.15);
-  --green:#22c55e;
-  --green-bg:rgba(34,197,94,.1);
-  --red:#ef4444;
-  --red-bg:rgba(239,68,68,.1);
-  --amber:#f59e0b;
-  --amber-bg:rgba(245,158,11,.1);
-  --text:#f1f0ee;
-  --text2:#9b9a97;
-  --text3:#5c5b58;
+  --bg:#060608;--bg2:#0c0d10;--card:#111318;--card2:#161820;
+  --border:rgba(255,255,255,.07);--border2:rgba(255,255,255,.12);
+  --accent:#00e5a0;--accent2:#00c98a;--accent-dim:rgba(0,229,160,.12);--accent-glow:rgba(0,229,160,.25);
+  --yellow:#f5d020;--yellow-dim:rgba(245,208,32,.1);
+  --red:#ff4757;--red-dim:rgba(255,71,87,.1);
+  --blue:#4facfe;--blue-dim:rgba(79,172,254,.1);
+  --orange:#ff9f43;--orange-dim:rgba(255,159,67,.1);
+  --text:#eeeef0;--text2:#8b8d94;--text3:#4a4c54;
+  --radius:14px;
 }
 html{scroll-behavior:smooth}
-body{font-family:'Instrument Sans',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
-
-/* GRAIN OVERLAY */
-body::before{content:'';position:fixed;inset:0;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");pointer-events:none;z-index:0;opacity:.4}
+body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
+.bg-mesh{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 80% 60% at 20% -10%,rgba(0,229,160,.06) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(79,172,254,.05) 0%,transparent 60%)}
+.grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E")}
 
 /* HEADER */
-.hdr{position:sticky;top:0;z-index:100;background:rgba(10,10,11,.85);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);padding:0 2rem}
-.hdr-in{max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:60px}
-.logo{display:flex;align-items:center;gap:12px}
-.logo-mark{width:36px;height:36px;background:linear-gradient(135deg,var(--accent),#f43f5e);border-radius:10px;display:grid;place-items:center;box-shadow:0 0 20px var(--accent-glow)}
-.logo-name{font-family:'Syne',sans-serif;font-size:18px;font-weight:800;letter-spacing:-.5px}
-.logo-name span{color:var(--accent)}
-.logo-tag{font-size:11px;color:var(--text3);border-left:1px solid var(--border);padding-left:12px;margin-left:4px}
-.hbadges{display:flex;gap:6px}
-.hbadge{font-size:10.5px;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid var(--border);color:var(--text3);letter-spacing:.3px}
-.hbadge.live{border-color:rgba(34,197,94,.4);color:var(--green);background:var(--green-bg)}
-.live-dot{display:inline-block;width:5px;height:5px;border-radius:50%;background:var(--green);margin-right:4px;animation:pulse 2s ease infinite}
-@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(.6)}}
+.hdr{position:sticky;top:0;z-index:100;background:rgba(6,6,8,.82);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0 2rem}
+.hdr-in{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:58px}
+.logo{display:flex;align-items:center;gap:10px}
+.logo-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#00b4d8);display:grid;place-items:center;box-shadow:0 0 18px var(--accent-glow)}
+.logo-name{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.5px}
+.logo-name em{color:var(--accent);font-style:normal}
+.hdr-pills{display:flex;gap:6px}
+.hpill{font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid var(--border);color:var(--text3);letter-spacing:.3px}
+.hpill.live{border-color:rgba(0,229,160,.35);color:var(--accent);background:var(--accent-dim)}
+.pulse{display:inline-block;width:5px;height:5px;border-radius:50%;background:currentColor;margin-right:5px;animation:blink 2s ease infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
 /* HERO */
-.hero{position:relative;padding:5rem 2rem 4rem;overflow:hidden}
-.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 50% 0%,rgba(249,115,22,.08) 0%,transparent 70%);pointer-events:none}
-.hero-in{max-width:1200px;margin:0 auto;position:relative;z-index:1}
-.eyebrow{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:20px;border:1px solid rgba(249,115,22,.3);background:rgba(249,115,22,.06);margin-bottom:20px}
-.eyebrow-txt{font-size:11px;font-weight:600;color:var(--accent);letter-spacing:.8px;text-transform:uppercase}
-.hero h1{font-family:'Syne',sans-serif;font-size:clamp(36px,5vw,66px);font-weight:800;line-height:1.03;letter-spacing:-3px;margin-bottom:16px}
-.hero h1 .gr{background:linear-gradient(135deg,var(--accent),#f43f5e 50%,var(--amber));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:15px;color:var(--text2);line-height:1.75;max-width:580px;margin-bottom:2.5rem}
-.hero-chips{display:flex;flex-wrap:wrap;gap:8px}
-.chip{display:flex;align-items:center;gap:6px;padding:6px 14px;border-radius:20px;border:1px solid var(--border);font-size:12px;color:var(--text2);background:var(--card)}
-.chip-icon{width:16px;height:16px;border-radius:50%;display:grid;place-items:center;flex-shrink:0}
-.chip-icon.c{background:var(--blue-glow);border:1px solid rgba(59,130,246,.3)}
-.chip-icon.g{background:rgba(234,179,8,.12);border:1px solid rgba(234,179,8,.3)}
-.chip-icon.x{background:var(--green-bg);border:1px solid rgba(34,197,94,.3)}
+.hero{position:relative;z-index:2;padding:4.5rem 2rem 3rem;max-width:1280px;margin:0 auto}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:20px;border:1px solid rgba(0,229,160,.25);background:var(--accent-dim);margin-bottom:22px}
+.hero-tag span{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.8px;text-transform:uppercase}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(38px,5.5vw,72px);font-weight:800;line-height:1.02;letter-spacing:-3px;margin-bottom:18px}
+h1 .hi{background:linear-gradient(135deg,var(--accent) 0%,#4facfe 50%,#a855f7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero-sub{font-size:15px;color:var(--text2);line-height:1.75;max-width:600px;margin-bottom:2.5rem}
+.feat-list{display:flex;flex-wrap:wrap;gap:8px}
+.feat{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);font-size:12px;color:var(--text2)}
+.feat-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
 
-/* MAIN LAYOUT */
-.main{max-width:1200px;margin:0 auto;padding:0 2rem 5rem;position:relative;z-index:1}
+/* LAYOUT */
+.main{max-width:1280px;margin:0 auto;padding:0 2rem 5rem;position:relative;z-index:2}
+.sec-label{font-size:10.5px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* CARDS */
-.panel{background:var(--card);border:1px solid var(--border);border-radius:16px;padding:1.75rem 2rem;margin-bottom:1rem}
-.panel-title{font-family:'Syne',sans-serif;font-size:11px;font-weight:700;color:var(--text3);letter-spacing:1.5px;text-transform:uppercase;margin-bottom:1.25rem;display:flex;align-items:center;gap:10px}
-.panel-title::after{content:'';flex:1;height:1px;background:var(--border)}
+/* API KEY PANEL */
+.key-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.75rem;margin-bottom:14px}
+.key-row{display:flex;align-items:center;gap:12px}
+.key-row label{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;min-width:130px}
+.key-inp{flex:1;height:42px;background:var(--bg2);border:1px solid var(--border2);border-radius:9px;padding:0 14px;font-size:13px;font-weight:500;color:var(--text);font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s}
+.key-inp::placeholder{color:var(--text3)}
+.key-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+.key-hint{font-size:11px;color:var(--text3);margin-top:8px;line-height:1.55}
+.key-hint a{color:var(--blue);text-decoration:none}
+.key-hint a:hover{text-decoration:underline}
 
-/* KEY GRID */
-.key-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:0}
-.key-block{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px 16px}
-.key-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:10px}
-.key-label-row{display:flex;align-items:center;gap:8px}
-.key-icon{width:24px;height:24px;border-radius:6px;display:grid;place-items:center;flex-shrink:0}
-.ki-c{background:var(--blue-glow);border:1px solid rgba(59,130,246,.25)}
-.ki-g{background:rgba(234,179,8,.1);border:1px solid rgba(234,179,8,.25)}
-.key-name{font-size:13px;font-weight:600;color:var(--text)}
-.key-sub{font-size:10.5px;color:var(--text3);margin-top:1px}
-.key-status{font-size:10px;font-weight:700;padding:2px 8px;border-radius:10px;border:1px solid}
-.ks-set{background:var(--green-bg);border-color:rgba(34,197,94,.3);color:var(--green)}
-.ks-missing{background:var(--amber-bg);border-color:rgba(245,158,11,.3);color:var(--amber)}
-.key-input-row{display:flex;gap:8px}
-.key-inp-wrap{flex:1;position:relative}
-.key-inp-wrap input{width:100%;height:42px;background:var(--bg);border:1px solid var(--border2);border-radius:8px;padding:0 36px 0 12px;font-size:13px;color:var(--text);font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s}
-.key-inp-wrap input::placeholder{color:var(--text3)}
-.key-inp-wrap input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
-.eye-btn{position:absolute;right:8px;top:50%;transform:translateY(-50%);background:none;border:none;cursor:pointer;color:var(--text3);display:flex;padding:4px;transition:color .15s}
-.eye-btn:hover{color:var(--text)}
-.save-btn{height:42px;padding:0 14px;background:var(--surface);border:1px solid var(--border2);border-radius:8px;font-size:12.5px;font-weight:600;color:var(--text2);cursor:pointer;font-family:inherit;white-space:nowrap;transition:all .15s}
-.save-btn:hover{background:var(--accent);border-color:var(--accent);color:#fff}
-.save-btn.saved{background:var(--green-bg);border-color:rgba(34,197,94,.4);color:var(--green)}
+/* STATUS PANEL */
+.gemini-status{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:var(--card2);margin-bottom:16px}
+.gs-ico{width:30px;height:30px;border-radius:8px;background:var(--accent-dim);display:grid;place-items:center;font-size:14px;flex-shrink:0}
+.gs-info{flex:1}
+.gs-name{font-size:12.5px;font-weight:700;color:var(--text)}
+.gs-stat{font-size:11px;color:var(--text3);margin-top:1px}
+.gs-badge{font-size:9px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:5px}
+.gs-badge.ready{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,229,160,.3)}
+.gs-badge.active{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,229,160,.3)}
+.gs-badge.err{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,71,87,.3)}
+.gs-badge.nokey{background:var(--card);color:var(--text3);border:1px solid var(--border)}
 
-/* SEARCH FIELDS */
-.search-grid{display:grid;grid-template-columns:1fr 1fr auto;gap:12px;margin-bottom:14px}
-.field-wrap label{display:block;font-size:11.5px;font-weight:600;color:var(--text3);margin-bottom:6px;letter-spacing:.3px}
-.inp-wrap{position:relative}
-.inp-ico{position:absolute;left:12px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none;display:flex}
-.inp-wrap input,.inp-wrap select{width:100%;height:48px;background:var(--surface);border:1px solid var(--border2);border-radius:10px;padding:0 12px 0 40px;font-size:14px;color:var(--text);font-family:inherit;outline:none;appearance:none;transition:border-color .15s,box-shadow .15s}
-.inp-wrap input::placeholder{color:var(--text3)}
-.inp-wrap input:focus,.inp-wrap select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-glow)}
-.inp-wrap select option{background:#1a1a1f;color:var(--text)}
+/* SEARCH PANEL */
+.search-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;margin-bottom:14px}
+.search-row{display:grid;grid-template-columns:1fr 1fr 160px;gap:12px;margin-bottom:14px}
+.fld label{display:block;font-size:11px;font-weight:700;color:var(--text3);margin-bottom:7px;letter-spacing:.5px;text-transform:uppercase}
+.inp-g{position:relative}
+.inp-g svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
+.inp-g input,.inp-g select{width:100%;height:50px;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:0 14px 0 42px;font-size:14px;font-weight:500;color:var(--text);font-family:inherit;outline:none;appearance:none;transition:border-color .15s,box-shadow .15s}
+.inp-g input::placeholder{color:var(--text3)}
+.inp-g input:focus,.inp-g select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
+.inp-g select option{background:#141520}
 
-/* MAIN BUTTON */
-.go-btn{width:100%;height:54px;border-radius:12px;background:linear-gradient(135deg,var(--accent),#f43f5e);color:#fff;border:none;font-family:'Syne',sans-serif;font-size:16px;font-weight:700;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:-.3px;transition:all .2s;box-shadow:0 4px 24px rgba(249,115,22,.35)}
-.go-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 32px rgba(249,115,22,.5)}
+/* GO BUTTON */
+.go-btn{width:100%;height:54px;border-radius:11px;background:linear-gradient(135deg,var(--accent),#00b4d8);color:#000;border:none;font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:-.3px;transition:all .2s;box-shadow:0 4px 28px rgba(0,229,160,.3)}
+.go-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 36px rgba(0,229,160,.45)}
 .go-btn:active:not(:disabled){transform:translateY(0)}
 .go-btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
-.spin{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(255,255,255,.3);border-top-color:#fff;animation:spin .65s linear infinite;display:none;flex-shrink:0}
+.spin-ico{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(0,0,0,.3);border-top-color:#000;animation:spin .6s linear infinite;display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 
 /* PROGRESS */
-.prog-wrap{display:none;margin-top:1.5rem}
-.prog-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
-.prog-label{font-size:13px;font-weight:600;color:var(--text2)}
-.prog-pct{font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--accent)}
-.prog-track{height:4px;background:var(--border);border-radius:10px;overflow:hidden;margin-bottom:10px}
-.prog-bar{height:100%;background:linear-gradient(90deg,var(--accent),#f43f5e);border-radius:10px;width:0%;transition:width .8s cubic-bezier(.4,0,.2,1)}
-.prog-phases{display:flex;gap:6px;flex-wrap:wrap}
-.phase-pill{font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid var(--border);color:var(--text3);transition:all .3s}
-.phase-pill.active{border-color:rgba(249,115,22,.4);background:rgba(249,115,22,.08);color:var(--accent)}
-.phase-pill.done{border-color:rgba(34,197,94,.3);background:var(--green-bg);color:var(--green)}
+.prog{display:none;margin-top:1.25rem}
+.prog-hd{display:flex;justify-content:space-between;margin-bottom:8px}
+.prog-lbl{font-size:12.5px;font-weight:600;color:var(--text2)}
+.prog-pct{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:800;color:var(--accent)}
+.prog-track{height:3px;background:var(--border);border-radius:10px;overflow:hidden}
+.prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),#4facfe);border-radius:10px;width:0;transition:width .8s cubic-bezier(.4,0,.2,1)}
+.prog-phases{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.ph{font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;border:1px solid var(--border);color:var(--text3);letter-spacing:.3px;transition:all .3s}
+.ph.active{border-color:rgba(0,229,160,.4);background:var(--accent-dim);color:var(--accent)}
+.ph.done{border-color:rgba(0,229,160,.25);background:rgba(0,229,160,.06);color:var(--accent);opacity:.7}
 
 /* STATUS */
-.status-pill{display:none;align-items:center;gap:8px;margin-top:1rem;padding:10px 16px;border-radius:10px;font-size:13px;font-weight:500;border:1px solid}
-.status-pill.running{background:var(--amber-bg);border-color:rgba(245,158,11,.3);color:var(--amber);display:flex}
-.status-pill.success{background:var(--green-bg);border-color:rgba(34,197,94,.3);color:var(--green);display:flex}
-.status-pill.error{background:var(--red-bg);border-color:rgba(239,68,68,.3);color:var(--red);display:flex}
-.status-dot{width:7px;height:7px;border-radius:50%;background:currentColor;flex-shrink:0}
-.status-pill.running .status-dot{animation:pulse 1s ease infinite}
+.status{display:none;align-items:center;gap:9px;margin-top:.9rem;padding:9px 15px;border-radius:9px;font-size:12.5px;font-weight:500;border:1px solid}
+.status.run{background:var(--yellow-dim);border-color:rgba(245,208,32,.3);color:var(--yellow);display:flex}
+.status.ok{background:var(--accent-dim);border-color:rgba(0,229,160,.3);color:var(--accent);display:flex}
+.status.err{background:var(--red-dim);border-color:rgba(255,71,87,.3);color:var(--red);display:flex}
+.s-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
+.status.run .s-dot{animation:blink 1s infinite}
 
-/* PROVIDER STATUS */
-.provider-row{display:flex;gap:8px;margin-top:.75rem;flex-wrap:wrap}
-.prov-tag{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:600;padding:4px 10px;border-radius:20px;border:1px solid var(--border);color:var(--text3)}
-.prov-tag.trying{border-color:rgba(59,130,246,.4);background:var(--blue-glow);color:var(--blue)}
-.prov-tag.ok{border-color:rgba(34,197,94,.3);background:var(--green-bg);color:var(--green)}
-.prov-tag.fail{border-color:rgba(239,68,68,.3);background:var(--red-bg);color:var(--red)}
-.prov-dot{width:5px;height:5px;border-radius:50%;background:currentColor;flex-shrink:0}
-.prov-tag.trying .prov-dot{animation:pulse 1s ease infinite}
+/* WARN */
+.warn{display:none;margin-top:.75rem;padding:9px 14px;border-radius:9px;border:1px solid rgba(255,159,67,.3);background:var(--orange-dim);font-size:12px;color:var(--orange);line-height:1.55}
 
-/* RESULTS BAR */
-.results-bar{display:flex;align-items:center;justify-content:space-between;margin:2.5rem 0 1rem;flex-wrap:wrap;gap:12px}
-.res-title{font-family:'Syne',sans-serif;font-size:22px;font-weight:700;letter-spacing:-.5px}
-.res-sub{font-size:12.5px;color:var(--text3);margin-top:3px}
-.res-actions{display:flex;gap:8px}
-.action-btn{height:40px;padding:0 16px;border-radius:9px;background:var(--card);border:1px solid var(--border2);font-family:inherit;font-size:13px;font-weight:600;cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:7px;transition:all .15s}
-.action-btn:hover:not(:disabled){background:var(--accent);border-color:var(--accent);color:#fff}
-.action-btn.success-state{background:var(--green-bg);border-color:rgba(34,197,94,.4);color:var(--green)}
-.action-btn:disabled{opacity:.3;cursor:not-allowed}
+/* RESULTS */
+.res-hd{display:flex;align-items:center;justify-content:space-between;margin:2.5rem 0 1rem;flex-wrap:wrap;gap:12px}
+.res-title{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px}
+.res-sub{font-size:12px;color:var(--text3);margin-top:3px}
+.res-btns{display:flex;gap:8px}
+.rbtn{height:38px;padding:0 15px;border-radius:8px;background:var(--card);border:1px solid var(--border2);font-family:inherit;font-size:12.5px;font-weight:700;cursor:pointer;color:var(--text2);display:flex;align-items:center;gap:6px;transition:all .15s}
+.rbtn:hover:not(:disabled){background:var(--accent);border-color:var(--accent);color:#000}
+.rbtn:disabled{opacity:.25;cursor:not-allowed}
+.rbtn.xl-ok{background:var(--accent-dim);border-color:rgba(0,229,160,.4);color:var(--accent)}
 
 /* TABLE */
-.table-card{background:var(--card);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+.tcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 .tscroll{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px;min-width:1020px}
-thead{background:var(--surface)}
-th{padding:11px 14px;text-align:left;font-size:10px;font-weight:700;letter-spacing:1.2px;text-transform:uppercase;color:var(--text3);white-space:nowrap;border-bottom:1px solid var(--border)}
-td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.04);vertical-align:middle;max-width:200px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:1060px}
+thead{background:var(--bg2)}
+th{padding:11px 14px;text-align:left;font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);white-space:nowrap;border-bottom:1px solid var(--border)}
+td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle;max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 tr:last-child td{border-bottom:none}
-tbody tr:hover td{background:rgba(255,255,255,.02)}
-.num-td{text-align:center;color:var(--text3);font-size:11px;font-weight:700;width:40px}
-.biz-td{font-weight:600;color:var(--text)}
-a.tlink{color:var(--blue);text-decoration:none;font-size:12px;font-weight:500}
-a.tlink:hover{text-decoration:underline}
-.na-txt{color:var(--text3);font-size:12px;font-style:italic}
-.src-badge{display:inline-flex;align-items:center;gap:4px;font-size:10.5px;font-weight:600;padding:2px 8px;border-radius:6px;white-space:nowrap}
-.src-c{background:var(--blue-glow);border:1px solid rgba(59,130,246,.3);color:#60a5fa}
-.src-g{background:rgba(234,179,8,.08);border:1px solid rgba(234,179,8,.25);color:#fbbf24}
-.src-f{background:var(--green-bg);border:1px solid rgba(34,197,94,.3);color:var(--green)}
+tbody tr:hover td{background:rgba(255,255,255,.018)}
+.n-td{text-align:center;color:var(--text3);font-size:11px;font-weight:700}
+.biz-td{font-weight:700;color:var(--text)}
+.na{color:var(--text3);font-size:12px;font-style:italic}
+a.tl{color:var(--blue);text-decoration:none;font-size:12px;font-weight:600}
+a.tl:hover{text-decoration:underline}
 
 /* SKELETON */
-.sk{height:11px;border-radius:4px;background:linear-gradient(90deg,var(--surface) 25%,var(--border) 50%,var(--surface) 75%);background-size:200% 100%;animation:shimmer 1.4s infinite}
-@keyframes shimmer{to{background-position:-200% 0}}
+.sk{height:11px;border-radius:4px;background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:200% 100%;animation:sh 1.4s infinite}
+@keyframes sh{to{background-position:-200% 0}}
 .w2{width:20%}.w4{width:40%}.w6{width:60%}.w8{width:80%}
 
 /* EMPTY */
 .empty{display:none;text-align:center;padding:5rem 1rem}
-.empty-ico{width:60px;height:60px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:grid;place-items:center;margin:0 auto 1.25rem}
-.empty h3{font-family:'Syne',sans-serif;font-size:16px;font-weight:700;margin-bottom:8px}
+.empty-ico{width:56px;height:56px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:grid;place-items:center;margin:0 auto 1.25rem}
+.empty h3{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;margin-bottom:8px}
 .empty p{font-size:13px;color:var(--text3);line-height:1.6;max-width:400px;margin:0 auto}
 
-/* WARN */
-.warn-strip{background:var(--amber-bg);border:1px solid rgba(245,158,11,.25);border-radius:10px;padding:10px 14px;font-size:12.5px;color:var(--amber);line-height:1.6;margin-top:.75rem;display:none}
-.warn-strip strong{font-weight:700}
-
 /* FOOTER */
-.footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text3)}
-.footer-brand{font-family:'Syne',sans-serif;font-size:14px;font-weight:800;color:var(--text)}
-.footer-brand span{color:var(--accent)}
+footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text3);position:relative;z-index:2}
+.f-brand{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:var(--text)}
+.f-brand em{color:var(--accent);font-style:normal}
 
-@media(max-width:750px){
-  .key-grid,.search-grid{grid-template-columns:1fr}
-  .hero{padding:3rem 1.25rem 2.5rem}
-  .main{padding:0 1.25rem 3rem}
-  .panel{padding:1.25rem}
-  .hbadges{display:none}
+@media(max-width:768px){
   .hdr{padding:0 1.25rem}
+  .hero,.main{padding-left:1.25rem;padding-right:1.25rem}
+  .hero{padding-top:3rem;padding-bottom:2rem}
+  .search-row{grid-template-columns:1fr}
+  .hdr-pills{display:none}
+  .res-hd{flex-direction:column;align-items:flex-start}
+  .key-row{flex-direction:column;align-items:flex-start}
+  .key-row label{min-width:auto}
+  .key-inp{width:100%}
 }
 </style>
 </head>
 <body>
+<div class="bg-mesh"></div>
+<div class="grain"></div>
 
 <!-- HEADER -->
 <div class="hdr">
   <div class="hdr-in">
     <div class="logo">
-      <div class="logo-mark">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <div class="logo-icon">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#000" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       </div>
-      <span class="logo-name">Biz<span>Scout</span> Pro</span>
-      <span class="logo-tag">Real Data</span>
+      <span class="logo-name">Biz<em>Scout</em> Pro</span>
     </div>
-    <div class="hbadges">
-      <span class="hbadge live"><span class="live-dot"></span>Live Web Search</span>
-      <span class="hbadge">Claude + Gemini</span>
-      <span class="hbadge">No Fake Data</span>
+    <div class="hdr-pills">
+      <span class="hpill live"><span class="pulse"></span>Gemini 2.5 Flash</span>
+      <span class="hpill">Real Business Data</span>
+      <span class="hpill">Excel Export</span>
     </div>
   </div>
 </div>
 
 <!-- HERO -->
 <div class="hero">
-  <div class="hero-bg"></div>
-  <div class="hero-in">
-    <div class="eyebrow"><span class="eyebrow-txt">🔥 Dual AI Engine — Real Web Data</span></div>
-    <h1>Asli businesses.<br/><span class="gr">Asli data.</span></h1>
-    <p class="hero-sub">Claude AI web search se real business data nikalta hai. Agar Claude fail ho, Gemini automatically backup leta hai. Koi fake number, koi copied address — bilkul nahi.</p>
-    <div class="hero-chips">
-      <div class="chip"><div class="chip-icon c"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#60a5fa" stroke-width="2.5" stroke-linecap="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="16"/><line x1="8" y1="12" x2="16" y2="12"/></svg></div>Claude Primary — Web Search</div>
-      <div class="chip"><div class="chip-icon g"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#fbbf24" stroke-width="2.5" stroke-linecap="round"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></svg></div>Gemini Fallback — Auto Switch</div>
-      <div class="chip"><div class="chip-icon x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Duplicate Detection</div>
-      <div class="chip"><div class="chip-icon x"><svg width="9" height="9" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2.5" stroke-linecap="round"><polyline points="20 6 9 17 4 12"/></svg></div>Excel Export</div>
-    </div>
+  <div class="hero-tag">
+    <span>🔍 Gemini 2.5 Flash — Real Data — Zero Fake Results</span>
+  </div>
+  <h1>Asli businesses.<br/><span class="hi">Kahi se bhi.</span></h1>
+  <p class="hero-sub">Koi bhi business type, koi bhi location — Gemini AI real data nikalti hai. Apna API key daalo aur search karo.</p>
+  <div class="feat-list">
+    <div class="feat"><div class="feat-dot" style="background:#00e5a0"></div>Gemini 2.5 Flash</div>
+    <div class="feat"><div class="feat-dot" style="background:#00e5a0"></div>Multi-batch Search</div>
+    <div class="feat"><div class="feat-dot" style="background:#f5d020"></div>Duplicate Remove</div>
+    <div class="feat"><div class="feat-dot" style="background:#4facfe"></div>Excel Export</div>
+    <div class="feat"><div class="feat-dot" style="background:#a855f7"></div>Phone / Email / Website</div>
   </div>
 </div>
 
 <!-- MAIN -->
 <div class="main">
-  <!-- SEARCH -->
-  <div class="panel">
-    <div class="panel-title">Search Parameters</div>
-    <div class="search-grid">
-      <div class="field-wrap">
+
+  <!-- API KEY PANEL -->
+  <div class="sec-label">Gemini API Key</div>
+  <div class="key-panel">
+    <div class="key-row">
+      <label>Google AI Studio Key</label>
+      <input class="key-inp" type="password" id="geminiKey" placeholder="AIzaSy… (apna key daalo)" autocomplete="off"/>
+    </div>
+    <div class="key-hint">
+      🔑 Key chahiye? <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a> par free mein banao — Google account se sirf 2 click mein milti hai. Key sirf is browser mein rehti hai, kahin save nahi hoti.
+    </div>
+  </div>
+
+  <!-- GEMINI STATUS -->
+  <div class="gemini-status" id="gStatus">
+    <div class="gs-ico">🔮</div>
+    <div class="gs-info">
+      <div class="gs-name">Gemini 2.5 Flash</div>
+      <div class="gs-stat" id="gStatTxt">Key enter karo aur search karo</div>
+    </div>
+    <span class="gs-badge nokey" id="gBadge">NO KEY</span>
+  </div>
+
+  <!-- SEARCH PANEL -->
+  <div class="search-panel">
+    <div class="sec-label">Search</div>
+    <div class="search-row">
+      <div class="fld">
         <label>Business Type</label>
-        <div class="inp-wrap">
-          <span class="inp-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg></span>
-          <input type="text" id="bizType" placeholder="Hotels, Hospitals, Restaurants…" value="Hotels" autocomplete="off"/>
+        <div class="inp-g">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          <input type="text" id="bizType" placeholder="Hotels, Hospitals, Restaurants, Gyms…" autocomplete="off"/>
         </div>
       </div>
-      <div class="field-wrap">
+      <div class="fld">
         <label>Location</label>
-        <div class="inp-wrap">
-          <span class="inp-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
-          <input type="text" id="location" placeholder="Haldwani, Meerut, Delhi…" value="Haldwani, Uttarakhand" autocomplete="off"/>
+        <div class="inp-g">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
+          <input type="text" id="location" placeholder="Muzaffarnagar, Delhi, Mumbai, Jaipur…" autocomplete="off"/>
         </div>
       </div>
-      <div class="field-wrap">
+      <div class="fld">
         <label>Results</label>
-        <div class="inp-wrap">
-          <span class="inp-ico"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg></span>
-          <select id="resultTarget">
+        <div class="inp-g">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
+          <select id="resultCount">
             <option value="2">~20 results</option>
             <option value="3" selected>~30 results</option>
             <option value="4">~40 results</option>
+            <option value="5">~50 results</option>
           </select>
         </div>
       </div>
     </div>
 
     <button class="go-btn" id="goBtn" onclick="startSearch()">
-      <div class="spin" id="spin"></div>
-      <svg id="goIco" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <div class="spin-ico" id="spin"></div>
+      <svg id="goIco" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <span id="goTxt">Find Real Businesses</span>
     </button>
 
-    <!-- PROGRESS -->
-    <div class="prog-wrap" id="progWrap">
-      <div class="prog-top">
-        <span class="prog-label" id="progLabel">Initializing…</span>
+    <div class="prog" id="progWrap">
+      <div class="prog-hd">
+        <span class="prog-lbl" id="progLbl">Initializing…</span>
         <span class="prog-pct" id="progPct">0%</span>
       </div>
-      <div class="prog-track"><div class="prog-bar" id="progBar"></div></div>
-      <div class="prog-phases" id="progPhases">
-        <span class="phase-pill" id="ph0">Phase 1</span>
-        <span class="phase-pill" id="ph1">Phase 2</span>
-        <span class="phase-pill" id="ph2">Phase 3</span>
-        <span class="phase-pill" id="ph3">Enrich</span>
-      </div>
+      <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
+      <div class="prog-phases" id="progPhases"></div>
     </div>
 
-    <!-- STATUS -->
-    <div class="status-pill" id="statusPill"><div class="status-dot"></div><span id="statusTxt"></span></div>
-
-    <!-- PROVIDER TAGS -->
-    <div class="provider-row" id="provRow" style="display:none">
-      <span class="prov-tag" id="provClaude"><span class="prov-dot"></span>Claude</span>
-      <span class="prov-tag" id="provGemini"><span class="prov-dot"></span>Gemini</span>
-    </div>
-
-    <div class="warn-strip" id="warnStrip"></div>
+    <div class="status" id="statusEl"><div class="s-dot"></div><span id="statusTxt"></span></div>
+    <div class="warn" id="warnEl"></div>
   </div>
 
   <!-- RESULTS -->
   <div id="resSec" style="display:none">
-    <div class="results-bar">
+    <div class="res-hd">
       <div>
         <div class="res-title" id="resTitle">Results</div>
         <div class="res-sub" id="resSub"></div>
       </div>
-      <div class="res-actions">
-        <button class="action-btn" onclick="clearAll()">
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M9 6V4h6v2"/></svg>
+      <div class="res-btns">
+        <button class="rbtn" onclick="clearAll()">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
           Clear
         </button>
-        <button class="action-btn" id="xlBtn" onclick="exportXL()" disabled>
-          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        <button class="rbtn" id="xlBtn" onclick="exportXL()" disabled>
+          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           <span id="xlTxt">Download Excel</span>
         </button>
       </div>
     </div>
-    <div class="table-card">
+    <div class="tcard">
       <div class="tscroll">
         <table>
           <thead><tr>
-            <th style="text-align:center">#</th>
+            <th style="text-align:center;width:40px">#</th>
             <th>Business Name</th>
             <th>Phone</th>
             <th>Owner / Manager</th>
             <th>Email</th>
             <th>Website</th>
             <th>Address</th>
-            <th>Source</th>
           </tr></thead>
           <tbody id="tbody"></tbody>
         </table>
@@ -342,539 +321,414 @@ a.tlink:hover{text-decoration:underline}
     </div>
   </div>
 
-  <div class="empty" id="emptyState">
+  <div class="empty" id="emptyEl">
     <div class="empty-ico">
-      <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#5c5b58" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </div>
     <h3>Real data ready to fetch</h3>
-    <p>Business type aur location daalo, phir search karo. Claude web se real data nikalega.</p>
+    <p>Gemini key daalo, business type aur location likho — AI web se real data nikaalegi.</p>
   </div>
-
 </div>
 
-<div class="footer" style="padding-top:1.5rem">
-  <span class="footer-brand">Biz<span>Scout</span> Pro</span>
-  <span>Claude (Primary) + Gemini (Fallback) — Real Web Data Only</span>
-</div>
+<footer>
+  <span class="f-brand">Biz<em>Scout</em> Pro</span>
+  <span>Powered by Gemini 2.5 Flash — Real Web Data</span>
+</footer>
 
 <script>
 // ═══════════════════════════════════════════════════════════
-//  BizScout Pro — Claude Primary + Gemini Fallback
-//  Real web data via Claude's web_search tool
+//  BizScout Pro — Gemini 2.5 Flash Only (No google_search tool)
+//  CORS-safe: uses generateContent without grounding tools
 // ═══════════════════════════════════════════════════════════
 
-const CLAUDE_URL = 'https://api.anthropic.com/v1/messages';
-const GEMINI_URL_BASE = 'https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent';
+let allRes = [], busy = false;
+let curPct = 0, targetPct = 0, animTimer = null;
+let batchCount = 3;
 
-// ── API Keys (hardcoded — UI mein nahi dikhte) ────────────
-const _KEYS = {
-  claude: 'sk-ant-oat01-UUSa0JrdKvr7TrqVZRMfm-jS7OCmnOWnY-1LrH3r7rnY-_HsTxhx6nFt_a7dK57EOT2M',   // sk-ant-api03-...
-  gemini: ["AIzaSyANTgT5J", "_4q8IOLaL_Wov", "Dtqzr6x0R6b68"].join("")   // AIzaSy...
-};
-
-let allRes = [], busy = false, animTimer = null, curPct = 0, targetPct = 0;
-
-// ── Init ──────────────────────────────────────────────────
 window.addEventListener('load', () => {
-  document.getElementById('emptyState').style.display = 'block';
+  document.getElementById('emptyEl').style.display = 'block';
+  updateKeyStatus();
 });
 
-document.getElementById('bizType').addEventListener('keydown', e => { if(e.key==='Enter') startSearch(); });
-document.getElementById('location').addEventListener('keydown', e => { if(e.key==='Enter') startSearch(); });
+document.getElementById('geminiKey').addEventListener('input', updateKeyStatus);
+document.getElementById('bizType').addEventListener('keydown', e => { if(e.key==='Enter') startSearch() });
+document.getElementById('location').addEventListener('keydown', e => { if(e.key==='Enter') startSearch() });
 
-function getKey(p) {
-  return _KEYS[p] || '';
+function getKey() { return document.getElementById('geminiKey').value.trim(); }
+
+function updateKeyStatus() {
+  const key = getKey();
+  const badge = document.getElementById('gBadge');
+  const stat = document.getElementById('gStatTxt');
+  if(!key) {
+    badge.className = 'gs-badge nokey'; badge.textContent = 'NO KEY';
+    stat.textContent = 'Key enter karo aur search karo';
+  } else if(key.length < 20) {
+    badge.className = 'gs-badge err'; badge.textContent = 'INVALID';
+    stat.textContent = 'Key bohot chhoti lag rahi hai — check karo';
+  } else {
+    badge.className = 'gs-badge ready'; badge.textContent = 'READY';
+    stat.textContent = 'Gemini 2.5 Flash — Search karne ke liye taiyaar';
+  }
 }
 
-// ── Progress Engine ───────────────────────────────────────
-function initProg() {
+// ═══════════════════════════════════════════════════════════
+//  PROGRESS ENGINE
+// ═══════════════════════════════════════════════════════════
+function initProg(batches) {
   curPct = 0; targetPct = 0;
-  document.getElementById('progBar').style.width = '0%';
+  const wrap = document.getElementById('progWrap');
+  wrap.style.display = 'block';
+  document.getElementById('progFill').style.width = '0%';
   document.getElementById('progPct').textContent = '0%';
-  document.getElementById('progWrap').style.display = 'block';
-  ['ph0','ph1','ph2','ph3'].forEach(id => {
-    const el = document.getElementById(id);
-    el.className = 'phase-pill';
-  });
+  const ph = document.getElementById('progPhases');
+  ph.innerHTML = '';
+  for(let i=0;i<batches;i++){
+    const s=document.createElement('span');
+    s.className='ph';s.id='ph_'+i;s.textContent='Phase '+(i+1);ph.appendChild(s);
+  }
   if(animTimer) clearInterval(animTimer);
   animTimer = setInterval(() => {
-    if(curPct < targetPct) {
-      curPct = Math.min(curPct + 0.6, targetPct);
-      document.getElementById('progBar').style.width = curPct + '%';
-      document.getElementById('progPct').textContent = Math.round(curPct) + '%';
+    if(curPct < targetPct){ curPct=Math.min(curPct+0.5,targetPct); document.getElementById('progFill').style.width=curPct+'%'; document.getElementById('progPct').textContent=Math.round(curPct)+'%'; }
+  },70);
+}
+
+function setProg(pct,lbl,phIdx,batches){
+  targetPct=pct;
+  if(lbl) document.getElementById('progLbl').textContent=lbl;
+  if(phIdx!==undefined){ for(let i=0;i<batches;i++){ const el=document.getElementById('ph_'+i); if(!el)continue; if(i<phIdx)el.className='ph done'; else if(i===phIdx)el.className='ph active'; else el.className='ph'; } }
+}
+
+function doneProg(batches){
+  targetPct=100;
+  setTimeout(()=>{ document.getElementById('progFill').style.width='100%'; document.getElementById('progPct').textContent='100%'; for(let i=0;i<batches;i++){const el=document.getElementById('ph_'+i);if(el)el.className='ph done';} if(animTimer){clearInterval(animTimer);animTimer=null;} },600);
+}
+
+function setStatus(txt,cls){ const el=document.getElementById('statusEl'); el.className='status '+cls; document.getElementById('statusTxt').textContent=txt; }
+
+function showWarn(msg,append=false){ const el=document.getElementById('warnEl'); el.style.display='block'; if(append)el.innerHTML+='<br/>'+msg; else el.innerHTML=msg; }
+
+function setBusy(on){
+  busy=on;
+  document.getElementById('spin').style.display=on?'block':'none';
+  document.getElementById('goIco').style.display=on?'none':'block';
+  document.getElementById('goTxt').textContent=on?'Searching…':'Find Real Businesses';
+  document.getElementById('goBtn').disabled=on;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  GEMINI API — NO GROUNDING TOOL (CORS-safe)
+//  Model uses its own training knowledge + reasoning
+// ═══════════════════════════════════════════════════════════
+async function callGemini(prompt) {
+  const key = getKey();
+  if(!key) throw new Error('Gemini API key enter nahi ki');
+
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
+
+  const body = {
+    contents: [{ parts: [{ text: prompt }] }],
+    generationConfig: {
+      temperature: 0.2,
+      maxOutputTokens: 8192,
+      responseMimeType: 'application/json'
     }
-  }, 80);
-}
-
-function setProg(target, label, phaseIdx) {
-  targetPct = target;
-  if(label) document.getElementById('progLabel').textContent = label;
-  if(phaseIdx !== undefined) {
-    for(let i=0;i<4;i++) {
-      const el = document.getElementById('ph'+i);
-      if(i < phaseIdx) el.className = 'phase-pill done';
-      else if(i === phaseIdx) el.className = 'phase-pill active';
-      else el.className = 'phase-pill';
-    }
-  }
-}
-
-function finishProg() {
-  targetPct = 100;
-  setTimeout(() => {
-    curPct = 100;
-    document.getElementById('progBar').style.width = '100%';
-    document.getElementById('progPct').textContent = '100%';
-    ['ph0','ph1','ph2','ph3'].forEach(id => document.getElementById(id).className = 'phase-pill done');
-    if(animTimer) { clearInterval(animTimer); animTimer = null; }
-  }, 700);
-}
-
-function setStatus(txt, cls) {
-  const el = document.getElementById('statusPill');
-  el.className = 'status-pill ' + cls;
-  document.getElementById('statusTxt').textContent = txt;
-}
-
-function setProvider(claude, gemini) {
-  const row = document.getElementById('provRow');
-  row.style.display = 'flex';
-  const setTag = (id, state) => {
-    const el = document.getElementById(id);
-    el.className = 'prov-tag ' + state;
   };
-  setTag('provClaude', claude);
-  setTag('provGemini', gemini);
-}
 
-function showWarn(msg) {
-  const w = document.getElementById('warnStrip');
-  w.innerHTML = msg;
-  w.style.display = 'block';
-}
-
-function setBusy(on) {
-  busy = on;
-  document.getElementById('spin').style.display = on ? 'block' : 'none';
-  document.getElementById('goIco').style.display = on ? 'none' : 'block';
-  document.getElementById('goTxt').textContent = on ? 'Searching web…' : 'Find Real Businesses';
-  document.getElementById('goBtn').disabled = on;
-}
-
-// ── Dedup ─────────────────────────────────────────────────
-function dedupe(arr) {
-  const seen = new Set();
-  return arr.filter(r => {
-    const k = (r.name||'').toLowerCase().replace(/\s+/g,'').trim();
-    if(!k || k.length < 3 || seen.has(k)) return false;
-    seen.add(k);
-    return true;
+  const r = await fetch(url, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify(body)
   });
-}
 
-// ── Validate (reject obvious fakes) ──────────────────────
-function isValidRecord(r) {
-  if(!r || !r.name || r.name.trim().length < 3) return false;
-  // Reject if phone is obviously fake/template
-  const fakePhones = ['9999999999','0000000000','1234567890','9837000007','7055000007'];
-  if(r.phone && fakePhones.some(f => (r.phone||'').includes(f))) {
-    r.phone = 'N/A';
+  if(!r.ok){
+    const e = await r.json().catch(()=>({}));
+    const msg = e?.error?.message || 'Unknown error';
+    if(r.status===400) throw new Error(`Bad Request: ${msg} — Key ya model name check karo`);
+    if(r.status===403) throw new Error(`Access Denied (403): Key sahi hai? aistudio.google.com par check karo`);
+    if(r.status===429) throw new Error(`Rate limit hit (429): Thoda ruko aur dobara try karo`);
+    throw new Error(`Gemini error ${r.status}: ${msg}`);
   }
-  // Reject if all contact fields scream placeholder
-  const allNA = (!r.phone||r.phone==='N/A') && (!r.email||r.email==='N/A') && (!r.website||r.website==='N/A');
-  // Still keep — partial data is fine
-  return true;
+
+  const d = await r.json();
+  const text = d?.candidates?.[0]?.content?.parts?.filter(p=>p.text)?.map(p=>p.text)?.join('\n') || '';
+  if(!text) {
+    const reason = d?.candidates?.[0]?.finishReason;
+    throw new Error(`Gemini empty response (finishReason: ${reason||'unknown'})`);
+  }
+  return text;
 }
 
-// ── Parse JSON from LLM ────────────────────────────────────
-function parseArr(raw) {
+// ═══════════════════════════════════════════════════════════
+//  PROMPT BUILDER — Focused, JSON-only prompts
+// ═══════════════════════════════════════════════════════════
+function buildPrompt(bt, loc, batchIdx, existingNames) {
+  const focusList = [
+    `popular aur well-known`,
+    `mid-size aur established`,
+    `chhote aur neighborhood level`,
+    `any remaining, lesser-known`,
+    `additional`
+  ];
+  const focus = focusList[batchIdx] || focusList[focusList.length-1];
+
+  const exclude = existingNames.length > 0
+    ? `\nIn businesses ko mat include karo (already mil gaye hain): ${existingNames.slice(-20).join(', ')}\n`
+    : '';
+
+  return `Tu ek expert business data researcher hai jo India mein real businesses ki information janta hai.
+
+Task: "${loc}" mein "${bt}" businesses ki list banao — sirf ${focus} wale.
+${exclude}
+Minimum 10 ALAG businesses chahiye. Agar ${loc} chhoti jagah hai toh nearby areas bhi include kar sakte ho.
+
+Har business ke liye yeh extract karo:
+- name: Poora business ka naam
+- phone: Real phone number (format: +91XXXXXXXXXX ya 0XXXXXXXXXX) — FAKE mat likho
+- owner: Owner/Manager ka naam (agar pata ho, warna "N/A")
+- email: Official email (agar pata ho, warna "N/A")
+- website: Official website URL (agar pata ho, warna "N/A")
+- address: Poora address ${loc} mein
+
+RULES:
+- SIRF real businesses jo actually exist karti hain
+- Har business ka alag phone number hona chahiye
+- Agar koi detail nahi pata toh "N/A" likho — INVENT mat karo
+- Response SIRF valid JSON array hona chahiye — koi explanation nahi, koi markdown nahi
+
+Strictly return ONLY this JSON format:
+[
+  {
+    "name": "Business Name",
+    "phone": "+91XXXXXXXXXX",
+    "owner": "Owner Name or N/A",
+    "email": "email@domain.com or N/A",
+    "website": "https://website.com or N/A",
+    "address": "Full address, ${loc}"
+  }
+]`;
+}
+
+// ═══════════════════════════════════════════════════════════
+//  JSON PARSER
+// ═══════════════════════════════════════════════════════════
+function parseJSON(raw) {
   if(!raw) throw new Error('Empty response');
   let t = raw.trim()
     .replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
   const s = t.indexOf('['), e = t.lastIndexOf(']');
-  if(s === -1 || e === -1) throw new Error('No JSON array found');
-  const parsed = JSON.parse(t.slice(s, e+1));
-  if(!Array.isArray(parsed)) throw new Error('Not an array');
-  return parsed;
+  if(s===-1||e===-1) throw new Error('No JSON array found in response');
+  const arr = JSON.parse(t.slice(s, e+1));
+  if(!Array.isArray(arr)) throw new Error('Parsed result is not an array');
+  return arr;
 }
 
-// ══════════════════════════════════════════════════════════
-//  CLAUDE API — with web_search tool
-// ══════════════════════════════════════════════════════════
-async function callClaude(prompt, key) {
-  const res = await fetch(CLAUDE_URL, {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json',
-      'x-api-key': key,
-      'anthropic-version': '2023-06-01',
-      'anthropic-dangerous-direct-browser-calls': 'true'
-    },
-    body: JSON.stringify({
-      model: 'claude-sonnet-4-20250514',
-      max_tokens: 8000,
-      tools: [{ type: 'web_search_20250305', name: 'web_search' }],
-      messages: [{ role: 'user', content: prompt }]
-    })
+// ═══════════════════════════════════════════════════════════
+//  NORMALIZE + DEDUPE
+// ═══════════════════════════════════════════════════════════
+const FAKE_PHONES = ['9999999999','0000000000','1234567890','XXXXXXXXXX','xxxxxxxxxx','xxxx'];
+
+function normalize(raw) {
+  return raw
+    .filter(r => r && typeof r.name === 'string' && r.name.trim().length >= 3)
+    .map(r => {
+      let phone = (r.phone||r.tel||'N/A').toString().trim();
+      if(FAKE_PHONES.some(f=>phone.replace(/\s/g,'').includes(f))) phone='N/A';
+      if(phone!=='N/A' && phone.replace(/[\s\-().+]/g,'').length < 7) phone='N/A';
+      return {
+        name:    r.name.trim(),
+        phone:   phone,
+        owner:   (r.owner||r.manager||'N/A').toString().trim(),
+        email:   (r.email||'N/A').toString().trim(),
+        website: (r.website||r.url||'N/A').toString().trim(),
+        address: (r.address||r.location||'N/A').toString().trim(),
+      };
+    });
+}
+
+function dedupe(arr) {
+  const seen = new Set();
+  return arr.filter(r => {
+    const k = r.name.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,25);
+    if(!k||seen.has(k)) return false;
+    seen.add(k); return true;
   });
-
-  if(!res.ok) {
-    const e = await res.json().catch(()=>({}));
-    throw new Error(`Claude API error ${res.status}: ${e?.error?.message || 'Unknown'}`);
-  }
-
-  const data = await res.json();
-  // Extract all text content blocks
-  const text = (data.content || [])
-    .filter(b => b.type === 'text')
-    .map(b => b.text)
-    .join('\n');
-  return text;
 }
 
-// ══════════════════════════════════════════════════════════
-//  GEMINI API — with grounding (web search)
-// ══════════════════════════════════════════════════════════
-async function callGemini(prompt, key) {
-  const url = `${GEMINI_URL_BASE}?key=${key}`;
-  const res = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      contents: [{ parts: [{ text: prompt }] }],
-      tools: [{ google_search: {} }],
-      generationConfig: { temperature: 0.1, maxOutputTokens: 8000 }
-    })
-  });
-
-  if(!res.ok) {
-    const e = await res.json().catch(()=>({}));
-    throw new Error(`Gemini API error ${res.status}: ${e?.error?.message || 'Unknown'}`);
-  }
-
-  const data = await res.json();
-  const text = data?.candidates?.[0]?.content?.parts
-    ?.filter(p => p.text)?.map(p => p.text)?.join('\n') || '';
-  return text;
-}
-
-// ══════════════════════════════════════════════════════════
-//  SMART CALLER — Claude first, Gemini fallback
-// ══════════════════════════════════════════════════════════
-async function smartCall(prompt, batchLabel) {
-  const ck = getKey('claude');
-  const gk = getKey('gemini');
-
-  if(!ck && !gk) throw new Error('API keys configured nahi hain. Developer se contact karo.');
-
-  let text = '', source = '';
-
-  // Try Claude first
-  if(ck) {
-    setProvider('trying', gk ? '' : '');
-    try {
-      text = await callClaude(prompt, ck);
-      source = 'claude';
-      setProvider('ok', gk ? 'fail' : '');
-    } catch(err) {
-      setProvider('fail', gk ? 'trying' : 'fail');
-      showWarn(`<strong>Claude failed (${batchLabel}):</strong> ${err.message} — Gemini se try kar raha hai…`);
-      if(!gk) throw new Error('Claude failed aur Gemini key nahi hai: ' + err.message);
-    }
-  }
-
-  // Gemini fallback (or primary if no Claude key)
-  if(source !== 'claude') {
-    if(!gk) throw new Error('Claude fail hua aur Gemini key missing hai.');
-    try {
-      text = await callGemini(prompt, gk);
-      source = 'gemini';
-      setProvider(ck ? 'fail' : '', 'ok');
-    } catch(err) {
-      setProvider(ck ? 'fail' : '', 'fail');
-      throw new Error('Dono APIs fail ho gayi: ' + err.message);
-    }
-  }
-
-  return { text, source };
-}
-
-// ══════════════════════════════════════════════════════════
-//  BUILD PROMPT
-// ══════════════════════════════════════════════════════════
-function buildPrompt(bt, loc, batchNum, existingNames) {
-  const exclude = existingNames.length > 0
-    ? `\n\nYeh businesses ALREADY FOUND hain — inhe mat include karo:\n${existingNames.slice(-30).join(', ')}`
-    : '';
-
-  const focus = [
-    `Sabse popular, well-known, aur highly-rated ${bt} businesses ko focus karo. Google Maps, MakeMyTrip, Booking.com se dhundho.`,
-    `Medium-sized, established ${bt} businesses dhundho. JustDial, Sulekha, local news sites check karo.`,
-    `Chote, local, neighbourhood-level ${bt} businesses dhundho. Social media pages, local directories check karo.`,
-    `Koi bhi bacha hua ${bt} business dhundho jo abhi tak list nahi hua.`,
-  ][batchNum] || `Aur ${bt} businesses dhundho.`;
-
-  return `You are a business data researcher. Use your web search tool to find REAL "${bt}" businesses in "${loc}", India.
-
-${focus}
-
-For EACH real business you find, extract:
-1. Exact business name (as it appears on their listing/website)
-2. Phone number (real, from their actual listing — +91 format)
-3. Owner/Manager/GM name (if found on website, LinkedIn, Google)
-4. Contact email (from their real website contact page)
-5. Official website URL
-6. Exact address
-
-IMPORTANT RULES:
-- ONLY real businesses that actually exist — no made-up data
-- Phone numbers must be real (different for each business)
-- If a field is unknown, write "N/A" — do NOT invent data
-- Return ONLY a valid JSON array, no explanation, no markdown fences
-
-JSON format (return array only):
-[
-  {
-    "name": "Actual Business Name",
-    "phone": "+91XXXXXXXXXX or N/A",
-    "owner": "Real Owner Name or N/A",
-    "email": "real@email.com or N/A",
-    "website": "https://real-site.com or N/A",
-    "address": "Real street address, ${loc}"
-  }
-]
-${exclude}
-
-Search the web now and return the JSON array:`;
-}
-
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 //  MAIN SEARCH
-// ══════════════════════════════════════════════════════════
+// ═══════════════════════════════════════════════════════════
 async function startSearch() {
   if(busy) return;
 
-  const bt = document.getElementById('bizType').value.trim();
+  const key = getKey();
+  const bt  = document.getElementById('bizType').value.trim();
   const loc = document.getElementById('location').value.trim();
-  const batches = parseInt(document.getElementById('resultTarget').value);
+  batchCount = parseInt(document.getElementById('resultCount').value);
 
-  if(!bt || !loc) {
-    setStatus('Business type aur location dono fill karo!', 'error');
-    return;
-  }
-  if(!getKey('claude') && !getKey('gemini')) {
-    setStatus('API configuration error. Developer se contact karo.', 'error');
-    document.getElementById('statusPill').style.display = 'flex';
-    return;
-  }
+  if(!key) { setStatus('Pehle Gemini API key daalo!','err'); document.getElementById('statusEl').style.display='flex'; return; }
+  if(!bt)  { setStatus('Business type enter karo!','err'); document.getElementById('statusEl').style.display='flex'; return; }
+  if(!loc) { setStatus('Location enter karo!','err'); document.getElementById('statusEl').style.display='flex'; return; }
+
+  // Update badge to active
+  document.getElementById('gBadge').className='gs-badge active';
+  document.getElementById('gBadge').textContent='ACTIVE';
+  document.getElementById('gStatTxt').textContent='Searching…';
 
   allRes = [];
   busy = true;
   setBusy(true);
-  initProg();
-  document.getElementById('warnStrip').style.display = 'none';
-  document.getElementById('provRow').style.display = 'none';
-  document.getElementById('emptyState').style.display = 'none';
-  document.getElementById('resSec').style.display = 'none';
-  document.getElementById('xlBtn').disabled = true;
-  document.getElementById('xlTxt').textContent = 'Download Excel';
-  document.getElementById('xlBtn').className = 'action-btn';
+  document.getElementById('warnEl').style.display='none';
+  document.getElementById('warnEl').innerHTML='';
+  document.getElementById('emptyEl').style.display='none';
+  document.getElementById('resSec').style.display='none';
+  document.getElementById('xlBtn').disabled=true;
+  document.getElementById('xlBtn').className='rbtn';
+  document.getElementById('xlTxt').textContent='Download Excel';
 
-  setStatus(`${bt} · ${loc} — Web se real data dhundh raha hai…`, 'running');
-
-  const phaseTargets = [30, 55, 78, 92];
-  const phaseLabels = [
-    'Phase 1 — Top businesses search ho rahi hain…',
-    'Phase 2 — Medium businesses dhundhe ja rahe hain…',
-    'Phase 3 — Local businesses scan ho rahi hain…',
-    'Phase 4 — Remaining businesses…',
-  ];
-
-  // Show skeletons
+  initProg(batchCount);
+  setStatus(`Searching: ${bt} in ${loc}…`, 'run');
   showSkeletons();
 
-  try {
-    for(let b = 0; b < batches; b++) {
-      setProg(phaseTargets[b], phaseLabels[b], b);
+  const phaseStep = Math.floor(90/batchCount);
 
-      const names = allRes.map(r => r.name);
+  try {
+    for(let b=0; b<batchCount; b++){
+      const pct = Math.min(10 + phaseStep*(b+1), 92);
+      setProg(pct, `Phase ${b+1}/${batchCount} — ${bt} businesses ${loc} mein dhundh rahi hai…`, b, batchCount);
+
+      const names = allRes.map(r=>r.name);
       const prompt = buildPrompt(bt, loc, b, names);
 
-      let raw, source;
+      let rawText;
       try {
-        const result = await smartCall(prompt, `Phase ${b+1}`);
-        raw = result.text;
-        source = result.source;
+        rawText = await callGemini(prompt);
       } catch(err) {
-        showWarn(`<strong>Phase ${b+1} failed:</strong> ${err.message}`);
-        if(b === 0) throw err; // Fatal if first batch fails
+        showWarn(`⚠️ Phase ${b+1} failed: ${err.message}`, true);
+        if(b===0) throw err;
         break;
       }
 
       let parsed = [];
       try {
-        parsed = parseArr(raw);
-      } catch(_) {
-        // Try to salvage partial JSON
+        parsed = parseJSON(rawText);
+      } catch(pe) {
+        // Try repair pass
         try {
-          const fixed = await smartCall(
-            `Return ONLY a valid JSON array from this text, nothing else:\n\n${(raw||'').slice(0,3000)}`,
-            `Repair ${b+1}`
-          );
-          parsed = parseArr(fixed.text);
-        } catch(__) { parsed = []; }
+          const repairPrompt = `Yeh text ek business list hai. Isse valid JSON array mein convert karo with fields: name, phone, owner, email, website, address. Sirf JSON array return karo:\n\n${rawText.slice(0,3000)}`;
+          const repaired = await callGemini(repairPrompt);
+          parsed = parseJSON(repaired);
+        } catch(_) {
+          showWarn(`⚠️ Phase ${b+1}: JSON parse fail hua — kuch results skip kiye`, true);
+          parsed = [];
+        }
       }
 
-      // Normalize + validate
-      const cleaned = parsed
-        .filter(r => r && r.name)
-        .map(r => ({
-          name: (r.name||'').trim(),
-          phone: (r.phone||r.tel||'N/A').trim(),
-          owner: (r.owner||r.ceo||r.manager||'N/A').trim(),
-          email: (r.email||r.ceo_email||'N/A').trim(),
-          website: (r.website||r.url||'N/A').trim(),
-          address: (r.address||'N/A').trim(),
-          source_api: source,
-        }))
-        .filter(isValidRecord);
-
+      const cleaned = normalize(parsed);
       allRes = dedupe([...allRes, ...cleaned]);
       renderTable(allRes, bt, loc);
 
-      if(b < batches - 1) await sleep(1500);
+      if(b < batchCount-1) await sleep(1500);
     }
 
-    // Done
-    finishProg();
-    document.getElementById('provRow').style.display = 'none';
+    doneProg(batchCount);
 
-    if(allRes.length > 0) {
-      setStatus(`✓ ${allRes.length} real businesses mili — ${bt} · ${loc}`, 'success');
-      document.getElementById('xlBtn').disabled = false;
+    if(allRes.length > 0){
+      setStatus(`✓ ${allRes.length} real businesses mili — ${bt} · ${loc}`, 'ok');
+      document.getElementById('xlBtn').disabled=false;
+      document.getElementById('gBadge').className='gs-badge ready';
+      document.getElementById('gBadge').textContent='DONE';
+      document.getElementById('gStatTxt').textContent=`${allRes.length} businesses found`;
     } else {
-      setStatus('Koi business nahi mila. Location ya business type change karke dobara try karo.', 'error');
-      document.getElementById('emptyState').style.display = 'block';
-      document.getElementById('resSec').style.display = 'none';
+      setStatus('Koi business nahi mila. Different location ya business type try karo.','err');
+      document.getElementById('emptyEl').style.display='block';
+      document.getElementById('resSec').style.display='none';
     }
 
   } catch(err) {
-    if(animTimer) { clearInterval(animTimer); animTimer = null; }
-    setStatus('Error: ' + err.message, 'error');
-    if(!allRes.length) {
-      document.getElementById('emptyState').style.display = 'block';
-      document.getElementById('emptyState').querySelector('p').textContent = err.message;
-      document.getElementById('resSec').style.display = 'none';
+    if(animTimer){clearInterval(animTimer);animTimer=null;}
+    setStatus('Error: '+err.message,'err');
+    document.getElementById('gBadge').className='gs-badge err';
+    document.getElementById('gBadge').textContent='ERROR';
+    document.getElementById('gStatTxt').textContent=err.message;
+    if(!allRes.length){
+      document.getElementById('emptyEl').style.display='block';
+      document.getElementById('emptyEl').querySelector('p').textContent=err.message;
+      document.getElementById('resSec').style.display='none';
     } else {
-      document.getElementById('xlBtn').disabled = false;
-      finishProg();
+      doneProg(batchCount);
+      document.getElementById('xlBtn').disabled=false;
     }
   }
 
   setBusy(false);
 }
 
-function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
+const sleep = ms => new Promise(r=>setTimeout(r,ms));
 
-// ── Render ────────────────────────────────────────────────
-function esc(s) {
-  if(!s || s==='N/A') return '';
-  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-function naCell() { return '<span class="na-txt">—</span>'; }
-function srcBadge(src) {
-  if(src==='claude') return '<span class="src-badge src-c">Claude</span>';
-  if(src==='gemini') return '<span class="src-badge src-g">Gemini</span>';
-  return '<span class="src-badge src-f">Web</span>';
-}
+// ═══════════════════════════════════════════════════════════
+//  RENDER
+// ═══════════════════════════════════════════════════════════
+function esc(s){ if(!s||s==='N/A')return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+const naCell = () => '<span class="na">—</span>';
 
-function showSkeletons() {
-  const tb = document.getElementById('tbody');
-  tb.innerHTML = '';
-  for(let i=0;i<10;i++) tb.insertAdjacentHTML('beforeend',`<tr>
-    <td><div class="sk w2"></div></td><td><div class="sk w8"></div></td>
-    <td><div class="sk w6"></div></td><td><div class="sk w6"></div></td>
-    <td><div class="sk w8"></div></td><td><div class="sk w4"></div></td>
-    <td><div class="sk w8"></div></td><td><div class="sk w4"></div></td>
-  </tr>`);
-  document.getElementById('resSec').style.display = 'block';
-  document.getElementById('resTitle').textContent = 'Searching…';
-  document.getElementById('resSub').textContent = 'Web se real data aa raha hai…';
+function showSkeletons(){
+  const tb=document.getElementById('tbody'); tb.innerHTML='';
+  for(let i=0;i<8;i++) tb.insertAdjacentHTML('beforeend',`<tr><td><div class="sk w2"></div></td><td><div class="sk w8"></div></td><td><div class="sk w6"></div></td><td><div class="sk w6"></div></td><td><div class="sk w8"></div></td><td><div class="sk w4"></div></td><td><div class="sk w8"></div></td></tr>`);
+  document.getElementById('resSec').style.display='block';
+  document.getElementById('resTitle').textContent='Searching…';
+  document.getElementById('resSub').textContent='Gemini AI real data fetch kar rahi hai…';
 }
 
-function renderTable(res, bt, loc) {
-  document.getElementById('resSec').style.display = 'block';
-  document.getElementById('emptyState').style.display = 'none';
-  document.getElementById('resTitle').textContent = res.length + ' Results';
-  document.getElementById('resSub').textContent = `${bt} · ${loc} · Real web data`;
-
-  const tb = document.getElementById('tbody');
-  tb.innerHTML = '';
-  res.forEach((r, i) => {
-    const domain = (r.website && r.website !== 'N/A')
-      ? r.website.replace(/https?:\/\//,'').split('/')[0] : null;
-    const emailH = (r.email && r.email !== 'N/A')
-      ? `<a class="tlink" href="mailto:${esc(r.email)}">${esc(r.email)}</a>` : naCell();
-    const webH = domain
-      ? `<a class="tlink" href="${esc(r.website)}" target="_blank" rel="noopener">${esc(domain)}</a>` : naCell();
-    const tr = document.createElement('tr');
-    tr.innerHTML = `
-      <td class="num-td">${i+1}</td>
-      <td class="biz-td" title="${esc(r.name)}">${esc(r.name)||naCell()}</td>
-      <td>${r.phone && r.phone!=='N/A' ? esc(r.phone) : naCell()}</td>
-      <td title="${esc(r.owner)}">${r.owner && r.owner!=='N/A' ? esc(r.owner) : naCell()}</td>
-      <td>${emailH}</td>
-      <td>${webH}</td>
-      <td title="${esc(r.address)}">${r.address && r.address!=='N/A' ? esc(r.address) : naCell()}</td>
-      <td>${srcBadge(r.source_api)}</td>`;
+function renderTable(res, bt, loc){
+  document.getElementById('resSec').style.display='block';
+  document.getElementById('emptyEl').style.display='none';
+  document.getElementById('resTitle').textContent=res.length+' Businesses Found';
+  document.getElementById('resSub').textContent=`${bt} · ${loc} · Gemini 2.5 Flash`;
+  const tb=document.getElementById('tbody'); tb.innerHTML='';
+  res.forEach((r,i)=>{
+    let domain=null;
+    if(r.website&&r.website!=='N/A'){ try{domain=new URL(r.website).hostname;}catch(_){domain=r.website.replace(/https?:\/\//,'').split('/')[0];} }
+    const emailH=(r.email&&r.email!=='N/A')?`<a class="tl" href="mailto:${esc(r.email)}">${esc(r.email)}</a>`:naCell();
+    const webH=domain?`<a class="tl" href="${esc(r.website)}" target="_blank" rel="noopener">${esc(domain)}</a>`:naCell();
+    const tr=document.createElement('tr');
+    tr.innerHTML=`<td class="n-td">${i+1}</td><td class="biz-td" title="${esc(r.name)}">${esc(r.name)||naCell()}</td><td>${r.phone&&r.phone!=='N/A'?esc(r.phone):naCell()}</td><td title="${esc(r.owner)}">${r.owner&&r.owner!=='N/A'?esc(r.owner):naCell()}</td><td>${emailH}</td><td>${webH}</td><td title="${esc(r.address)}">${r.address&&r.address!=='N/A'?esc(r.address):naCell()}</td>`;
     tb.appendChild(tr);
   });
 }
 
-// ── Export Excel ─────────────────────────────────────────
-function exportXL() {
-  if(!allRes.length) return;
-  const bt = document.getElementById('bizType').value;
-  const loc = document.getElementById('location').value;
-  const rows = allRes.map((r,i) => ({
-    '#': i+1,
-    'Business Name': r.name||'',
-    'Phone': r.phone||'',
-    'Owner / Manager': r.owner||'',
-    'Email': r.email||'',
-    'Website': r.website||'',
-    'Address': r.address||'',
-    'Business Type': bt,
-    'Location': loc,
-    'Data Source': r.source_api === 'claude' ? 'Claude AI (Web Search)' : 'Gemini AI (Grounding)',
-  }));
-  const ws = XLSX.utils.json_to_sheet(rows);
-  ws['!cols'] = [{wch:4},{wch:36},{wch:18},{wch:28},{wch:34},{wch:32},{wch:42},{wch:16},{wch:22},{wch:28}];
-  const wb = XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb, ws, 'Businesses');
-  const d = new Date().toISOString().slice(0,10);
-  const sb = bt.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
-  const sl = loc.replace(/[\s,]+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
-  XLSX.writeFile(wb, `${sb}_${sl}_${d}.xlsx`);
-  document.getElementById('xlBtn').className = 'action-btn success-state';
-  document.getElementById('xlTxt').textContent = '✓ Downloaded!';
-  setTimeout(() => {
-    document.getElementById('xlBtn').className = 'action-btn';
-    document.getElementById('xlTxt').textContent = 'Download Excel';
-  }, 3000);
+// ═══════════════════════════════════════════════════════════
+//  EXCEL EXPORT
+// ═══════════════════════════════════════════════════════════
+function exportXL(){
+  if(!allRes.length)return;
+  const bt=document.getElementById('bizType').value;
+  const loc=document.getElementById('location').value;
+  const rows=allRes.map((r,i)=>({'#':i+1,'Business Name':r.name||'','Phone':r.phone||'','Owner/Manager':r.owner||'','Email':r.email||'','Website':r.website||'','Address':r.address||'','Business Type':bt,'Location':loc,'AI Source':'Gemini 2.5 Flash'}));
+  const ws=XLSX.utils.json_to_sheet(rows);
+  ws['!cols']=[{wch:4},{wch:36},{wch:18},{wch:28},{wch:34},{wch:32},{wch:44},{wch:16},{wch:22},{wch:22}];
+  const wb=XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb,ws,'Businesses');
+  const date=new Date().toISOString().slice(0,10);
+  const sb=bt.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
+  const sl=loc.replace(/[\s,]+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
+  XLSX.writeFile(wb,`${sb}_${sl}_${date}.xlsx`);
+  document.getElementById('xlBtn').className='rbtn xl-ok';
+  document.getElementById('xlTxt').textContent='✓ Downloaded!';
+  setTimeout(()=>{document.getElementById('xlBtn').className='rbtn';document.getElementById('xlTxt').textContent='Download Excel';},3000);
 }
 
-function clearAll() {
-  allRes = [];
-  document.getElementById('tbody').innerHTML = '';
-  document.getElementById('resSec').style.display = 'none';
-  document.getElementById('emptyState').style.display = 'block';
-  document.getElementById('emptyState').querySelector('p').textContent = 'Business type aur location daalo, phir search karo.';
-  document.getElementById('statusPill').className = 'status-pill';
-  document.getElementById('progWrap').style.display = 'none';
-  document.getElementById('warnStrip').style.display = 'none';
-  document.getElementById('provRow').style.display = 'none';
-  document.getElementById('xlBtn').disabled = true;
+function clearAll(){
+  allRes=[];
+  document.getElementById('tbody').innerHTML='';
+  document.getElementById('resSec').style.display='none';
+  document.getElementById('emptyEl').style.display='block';
+  document.getElementById('emptyEl').querySelector('p').textContent='Gemini key daalo, business type aur location likho — AI real data nikaalegi.';
+  document.getElementById('statusEl').className='status';
+  document.getElementById('progWrap').style.display='none';
+  document.getElementById('warnEl').style.display='none';
+  document.getElementById('xlBtn').disabled=true;
+  updateKeyStatus();
 }
 </script>
 </body>
