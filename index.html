@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8"/>
 <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-<title>BizScout Pro — Real Business Finder</title>
+<title>BizScout Pro</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;500;600;700;800&display=swap" rel="stylesheet"/>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 <style>
@@ -22,80 +22,42 @@
 html{scroll-behavior:smooth}
 body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 .bg-mesh{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 80% 60% at 20% -10%,rgba(0,229,160,.06) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(79,172,254,.05) 0%,transparent 60%)}
-.grain{position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.35;background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E")}
 
-/* HEADER */
 .hdr{position:sticky;top:0;z-index:100;background:rgba(6,6,8,.82);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0 2rem}
 .hdr-in{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:58px}
 .logo{display:flex;align-items:center;gap:10px}
-.logo-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#00b4d8);display:grid;place-items:center;box-shadow:0 0 18px var(--accent-glow)}
+.logo-icon{width:34px;height:34px;border-radius:9px;background:linear-gradient(135deg,var(--accent),#00b4d8);display:grid;place-items:center}
 .logo-name{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;letter-spacing:-.5px}
 .logo-name em{color:var(--accent);font-style:normal}
-.hdr-pills{display:flex;gap:6px}
-.hpill{font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid var(--border);color:var(--text3);letter-spacing:.3px}
-.hpill.live{border-color:rgba(0,229,160,.35);color:var(--accent);background:var(--accent-dim)}
+.hpill{font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid rgba(0,229,160,.35);color:var(--accent);background:var(--accent-dim)}
 .pulse{display:inline-block;width:5px;height:5px;border-radius:50%;background:currentColor;margin-right:5px;animation:blink 2s ease infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
 
-/* HERO */
-.hero{position:relative;z-index:2;padding:4.5rem 2rem 3rem;max-width:1280px;margin:0 auto}
-.hero-tag{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:20px;border:1px solid rgba(0,229,160,.25);background:var(--accent-dim);margin-bottom:22px}
+.hero{position:relative;z-index:2;padding:3.5rem 2rem 2rem;max-width:1280px;margin:0 auto}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:20px;border:1px solid rgba(0,229,160,.25);background:var(--accent-dim);margin-bottom:18px}
 .hero-tag span{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.8px;text-transform:uppercase}
-h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(38px,5.5vw,72px);font-weight:800;line-height:1.02;letter-spacing:-3px;margin-bottom:18px}
+h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(32px,5vw,60px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:12px}
 h1 .hi{background:linear-gradient(135deg,var(--accent) 0%,#4facfe 50%,#a855f7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-.hero-sub{font-size:15px;color:var(--text2);line-height:1.75;max-width:600px;margin-bottom:2.5rem}
-.feat-list{display:flex;flex-wrap:wrap;gap:8px}
-.feat{display:flex;align-items:center;gap:6px;padding:5px 12px;border-radius:8px;border:1px solid var(--border);background:var(--card);font-size:12px;color:var(--text2)}
-.feat-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.hero-sub{font-size:14px;color:var(--text2);line-height:1.7;max-width:550px}
 
-/* LAYOUT */
 .main{max-width:1280px;margin:0 auto;padding:0 2rem 5rem;position:relative;z-index:2}
-.sec-label{font-size:10.5px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:var(--text3);margin-bottom:14px;display:flex;align-items:center;gap:10px}
-.sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
 
-/* API KEY PANEL */
-.key-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.25rem 1.75rem;margin-bottom:14px}
-.key-row{display:flex;align-items:center;gap:12px}
-.key-row label{font-size:11px;font-weight:700;color:var(--text3);letter-spacing:.5px;text-transform:uppercase;white-space:nowrap;min-width:130px}
-.key-inp{flex:1;height:42px;background:var(--bg2);border:1px solid var(--border2);border-radius:9px;padding:0 14px;font-size:13px;font-weight:500;color:var(--text);font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s}
-.key-inp::placeholder{color:var(--text3)}
-.key-inp:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
-.key-hint{font-size:11px;color:var(--text3);margin-top:8px;line-height:1.55}
-.key-hint a{color:var(--blue);text-decoration:none}
-.key-hint a:hover{text-decoration:underline}
-
-/* STATUS PANEL */
-.gemini-status{display:flex;align-items:center;gap:10px;padding:10px 16px;border-radius:10px;border:1px solid var(--border);background:var(--card2);margin-bottom:16px}
-.gs-ico{width:30px;height:30px;border-radius:8px;background:var(--accent-dim);display:grid;place-items:center;font-size:14px;flex-shrink:0}
-.gs-info{flex:1}
-.gs-name{font-size:12.5px;font-weight:700;color:var(--text)}
-.gs-stat{font-size:11px;color:var(--text3);margin-top:1px}
-.gs-badge{font-size:9px;font-weight:700;letter-spacing:.5px;padding:3px 9px;border-radius:5px}
-.gs-badge.ready{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,229,160,.3)}
-.gs-badge.active{background:var(--accent-dim);color:var(--accent);border:1px solid rgba(0,229,160,.3)}
-.gs-badge.err{background:var(--red-dim);color:var(--red);border:1px solid rgba(255,71,87,.3)}
-.gs-badge.nokey{background:var(--card);color:var(--text3);border:1px solid var(--border)}
-
-/* SEARCH PANEL */
-.search-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;margin-bottom:14px}
-.search-row{display:grid;grid-template-columns:1fr 1fr 160px;gap:12px;margin-bottom:14px}
+.search-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;margin-bottom:14px;margin-top:2rem}
+.search-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
 .fld label{display:block;font-size:11px;font-weight:700;color:var(--text3);margin-bottom:7px;letter-spacing:.5px;text-transform:uppercase}
 .inp-g{position:relative}
 .inp-g svg{position:absolute;left:13px;top:50%;transform:translateY(-50%);color:var(--text3);pointer-events:none}
-.inp-g input,.inp-g select{width:100%;height:50px;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:0 14px 0 42px;font-size:14px;font-weight:500;color:var(--text);font-family:inherit;outline:none;appearance:none;transition:border-color .15s,box-shadow .15s}
+.inp-g input{width:100%;height:50px;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:0 14px 0 42px;font-size:14px;font-weight:500;color:var(--text);font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s}
 .inp-g input::placeholder{color:var(--text3)}
-.inp-g input:focus,.inp-g select:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
-.inp-g select option{background:#141520}
+.inp-g input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
 
-/* GO BUTTON */
-.go-btn{width:100%;height:54px;border-radius:11px;background:linear-gradient(135deg,var(--accent),#00b4d8);color:#000;border:none;font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:-.3px;transition:all .2s;box-shadow:0 4px 28px rgba(0,229,160,.3)}
-.go-btn:hover:not(:disabled){transform:translateY(-2px);box-shadow:0 8px 36px rgba(0,229,160,.45)}
+.go-btn{width:100%;height:54px;border-radius:11px;background:linear-gradient(135deg,var(--accent),#00b4d8);color:#000;border:none;font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:-.3px;transition:all .2s}
+.go-btn:hover:not(:disabled){transform:translateY(-2px)}
 .go-btn:active:not(:disabled){transform:translateY(0)}
-.go-btn:disabled{opacity:.35;cursor:not-allowed;box-shadow:none}
+.go-btn:disabled{opacity:.35;cursor:not-allowed}
 .spin-ico{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(0,0,0,.3);border-top-color:#000;animation:spin .6s linear infinite;display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
 
-/* PROGRESS */
 .prog{display:none;margin-top:1.25rem}
 .prog-hd{display:flex;justify-content:space-between;margin-bottom:8px}
 .prog-lbl{font-size:12.5px;font-weight:600;color:var(--text2)}
@@ -107,7 +69,6 @@ h1 .hi{background:linear-gradient(135deg,var(--accent) 0%,#4facfe 50%,#a855f7 10
 .ph.active{border-color:rgba(0,229,160,.4);background:var(--accent-dim);color:var(--accent)}
 .ph.done{border-color:rgba(0,229,160,.25);background:rgba(0,229,160,.06);color:var(--accent);opacity:.7}
 
-/* STATUS */
 .status{display:none;align-items:center;gap:9px;margin-top:.9rem;padding:9px 15px;border-radius:9px;font-size:12.5px;font-weight:500;border:1px solid}
 .status.run{background:var(--yellow-dim);border-color:rgba(245,208,32,.3);color:var(--yellow);display:flex}
 .status.ok{background:var(--accent-dim);border-color:rgba(0,229,160,.3);color:var(--accent);display:flex}
@@ -115,10 +76,8 @@ h1 .hi{background:linear-gradient(135deg,var(--accent) 0%,#4facfe 50%,#a855f7 10
 .s-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
 .status.run .s-dot{animation:blink 1s infinite}
 
-/* WARN */
 .warn{display:none;margin-top:.75rem;padding:9px 14px;border-radius:9px;border:1px solid rgba(255,159,67,.3);background:var(--orange-dim);font-size:12px;color:var(--orange);line-height:1.55}
 
-/* RESULTS */
 .res-hd{display:flex;align-items:center;justify-content:space-between;margin:2.5rem 0 1rem;flex-wrap:wrap;gap:12px}
 .res-title{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px}
 .res-sub{font-size:12px;color:var(--text3);margin-top:3px}
@@ -128,10 +87,9 @@ h1 .hi{background:linear-gradient(135deg,var(--accent) 0%,#4facfe 50%,#a855f7 10
 .rbtn:disabled{opacity:.25;cursor:not-allowed}
 .rbtn.xl-ok{background:var(--accent-dim);border-color:rgba(0,229,160,.4);color:var(--accent)}
 
-/* TABLE */
 .tcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 .tscroll{overflow-x:auto}
-table{width:100%;border-collapse:collapse;font-size:13px;min-width:1060px}
+table{width:100%;border-collapse:collapse;font-size:13px;min-width:900px}
 thead{background:var(--bg2)}
 th{padding:11px 14px;text-align:left;font-size:9.5px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;color:var(--text3);white-space:nowrap;border-bottom:1px solid var(--border)}
 td{padding:12px 14px;border-bottom:1px solid rgba(255,255,255,.03);vertical-align:middle;max-width:210px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
@@ -143,18 +101,15 @@ tbody tr:hover td{background:rgba(255,255,255,.018)}
 a.tl{color:var(--blue);text-decoration:none;font-size:12px;font-weight:600}
 a.tl:hover{text-decoration:underline}
 
-/* SKELETON */
 .sk{height:11px;border-radius:4px;background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:200% 100%;animation:sh 1.4s infinite}
 @keyframes sh{to{background-position:-200% 0}}
 .w2{width:20%}.w4{width:40%}.w6{width:60%}.w8{width:80%}
 
-/* EMPTY */
-.empty{display:none;text-align:center;padding:5rem 1rem}
+.empty{display:none;text-align:center;padding:4rem 1rem}
 .empty-ico{width:56px;height:56px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:grid;place-items:center;margin:0 auto 1.25rem}
 .empty h3{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;margin-bottom:8px}
 .empty p{font-size:13px;color:var(--text3);line-height:1.6;max-width:400px;margin:0 auto}
 
-/* FOOTER */
 footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text3);position:relative;z-index:2}
 .f-brand{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:var(--text)}
 .f-brand em{color:var(--accent);font-style:normal}
@@ -162,21 +117,13 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
 @media(max-width:768px){
   .hdr{padding:0 1.25rem}
   .hero,.main{padding-left:1.25rem;padding-right:1.25rem}
-  .hero{padding-top:3rem;padding-bottom:2rem}
   .search-row{grid-template-columns:1fr}
-  .hdr-pills{display:none}
-  .res-hd{flex-direction:column;align-items:flex-start}
-  .key-row{flex-direction:column;align-items:flex-start}
-  .key-row label{min-width:auto}
-  .key-inp{width:100%}
 }
 </style>
 </head>
 <body>
 <div class="bg-mesh"></div>
-<div class="grain"></div>
 
-<!-- HEADER -->
 <div class="hdr">
   <div class="hdr-in">
     <div class="logo">
@@ -185,58 +132,18 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
       </div>
       <span class="logo-name">Biz<em>Scout</em> Pro</span>
     </div>
-    <div class="hdr-pills">
-      <span class="hpill live"><span class="pulse"></span>Gemini 2.5 Flash</span>
-      <span class="hpill">Real Business Data</span>
-      <span class="hpill">Excel Export</span>
-    </div>
+    <span class="hpill"><span class="pulse"></span>Gemini AI Live</span>
   </div>
 </div>
 
-<!-- HERO -->
 <div class="hero">
-  <div class="hero-tag">
-    <span>🔍 Gemini 2.5 Flash — Real Data — Zero Fake Results</span>
-  </div>
+  <div class="hero-tag"><span>Real Business Data — Zero Fake Results</span></div>
   <h1>Asli businesses.<br/><span class="hi">Kahi se bhi.</span></h1>
-  <p class="hero-sub">Koi bhi business type, koi bhi location — Gemini AI real data nikalti hai. Apna API key daalo aur search karo.</p>
-  <div class="feat-list">
-    <div class="feat"><div class="feat-dot" style="background:#00e5a0"></div>Gemini 2.5 Flash</div>
-    <div class="feat"><div class="feat-dot" style="background:#00e5a0"></div>Multi-batch Search</div>
-    <div class="feat"><div class="feat-dot" style="background:#f5d020"></div>Duplicate Remove</div>
-    <div class="feat"><div class="feat-dot" style="background:#4facfe"></div>Excel Export</div>
-    <div class="feat"><div class="feat-dot" style="background:#a855f7"></div>Phone / Email / Website</div>
-  </div>
+  <p class="hero-sub">Business type aur location daalo — Gemini AI real data nikalti hai with phone, email, address.</p>
 </div>
 
-<!-- MAIN -->
 <div class="main">
-
-  <!-- API KEY PANEL -->
-  <div class="sec-label">Gemini API Key</div>
-  <div class="key-panel">
-    <div class="key-row">
-      <label>Google AI Studio Key</label>
-      <input class="key-inp" type="password" id="geminiKey" placeholder="AIzaSy… (apna key daalo)" autocomplete="off"/>
-    </div>
-    <div class="key-hint">
-      🔑 Key chahiye? <a href="https://aistudio.google.com/app/apikey" target="_blank">aistudio.google.com</a> par free mein banao — Google account se sirf 2 click mein milti hai. Key sirf is browser mein rehti hai, kahin save nahi hoti.
-    </div>
-  </div>
-
-  <!-- GEMINI STATUS -->
-  <div class="gemini-status" id="gStatus">
-    <div class="gs-ico">🔮</div>
-    <div class="gs-info">
-      <div class="gs-name">Gemini 2.5 Flash</div>
-      <div class="gs-stat" id="gStatTxt">Key enter karo aur search karo</div>
-    </div>
-    <span class="gs-badge nokey" id="gBadge">NO KEY</span>
-  </div>
-
-  <!-- SEARCH PANEL -->
   <div class="search-panel">
-    <div class="sec-label">Search</div>
     <div class="search-row">
       <div class="fld">
         <label>Business Type</label>
@@ -250,18 +157,6 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
         <div class="inp-g">
           <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/></svg>
           <input type="text" id="location" placeholder="Muzaffarnagar, Delhi, Mumbai, Jaipur…" autocomplete="off"/>
-        </div>
-      </div>
-      <div class="fld">
-        <label>Results</label>
-        <div class="inp-g">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></svg>
-          <select id="resultCount">
-            <option value="2">~20 results</option>
-            <option value="3" selected>~30 results</option>
-            <option value="4">~40 results</option>
-            <option value="5">~50 results</option>
-          </select>
         </div>
       </div>
     </div>
@@ -285,7 +180,6 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
     <div class="warn" id="warnEl"></div>
   </div>
 
-  <!-- RESULTS -->
   <div id="resSec" style="display:none">
     <div class="res-hd">
       <div>
@@ -293,12 +187,8 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
         <div class="res-sub" id="resSub"></div>
       </div>
       <div class="res-btns">
-        <button class="rbtn" onclick="clearAll()">
-          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/></svg>
-          Clear
-        </button>
+        <button class="rbtn" onclick="clearAll()">Clear</button>
         <button class="rbtn" id="xlBtn" onclick="exportXL()" disabled>
-          <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
           <span id="xlTxt">Download Excel</span>
         </button>
       </div>
@@ -321,91 +211,58 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
     </div>
   </div>
 
-  <div class="empty" id="emptyEl">
+  <div class="empty" id="emptyEl" style="display:block">
     <div class="empty-ico">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </div>
     <h3>Real data ready to fetch</h3>
-    <p>Gemini key daalo, business type aur location likho — AI web se real data nikaalegi.</p>
+    <p>Business type aur location daalo — Gemini AI real data nikalegi.</p>
   </div>
 </div>
 
 <footer>
   <span class="f-brand">Biz<em>Scout</em> Pro</span>
-  <span>Powered by Gemini 2.5 Flash — Real Web Data</span>
+  <span>Powered by Gemini AI — Real Web Data</span>
 </footer>
 
 <script>
-// ═══════════════════════════════════════════════════════════
-//  BizScout Pro — Gemini 2.5 Flash Only (No google_search tool)
-//  CORS-safe: uses generateContent without grounding tools
-// ═══════════════════════════════════════════════════════════
-
+const GEMINI_KEY = 'AIzaSyDhZmp697vxfNlElK4boq0u0714SDqJJyo';
+const BATCH_COUNT = 3;
 let allRes = [], busy = false;
 let curPct = 0, targetPct = 0, animTimer = null;
-let batchCount = 3;
 
-window.addEventListener('load', () => {
-  document.getElementById('emptyEl').style.display = 'block';
-  updateKeyStatus();
-});
-
-document.getElementById('geminiKey').addEventListener('input', updateKeyStatus);
 document.getElementById('bizType').addEventListener('keydown', e => { if(e.key==='Enter') startSearch() });
 document.getElementById('location').addEventListener('keydown', e => { if(e.key==='Enter') startSearch() });
 
-function getKey() { return document.getElementById('geminiKey').value.trim(); }
-
-function updateKeyStatus() {
-  const key = getKey();
-  const badge = document.getElementById('gBadge');
-  const stat = document.getElementById('gStatTxt');
-  if(!key) {
-    badge.className = 'gs-badge nokey'; badge.textContent = 'NO KEY';
-    stat.textContent = 'Key enter karo aur search karo';
-  } else if(key.length < 20) {
-    badge.className = 'gs-badge err'; badge.textContent = 'INVALID';
-    stat.textContent = 'Key bohot chhoti lag rahi hai — check karo';
-  } else {
-    badge.className = 'gs-badge ready'; badge.textContent = 'READY';
-    stat.textContent = 'Gemini 2.5 Flash — Search karne ke liye taiyaar';
-  }
-}
-
-// ═══════════════════════════════════════════════════════════
-//  PROGRESS ENGINE
-// ═══════════════════════════════════════════════════════════
-function initProg(batches) {
+function initProg() {
   curPct = 0; targetPct = 0;
-  const wrap = document.getElementById('progWrap');
-  wrap.style.display = 'block';
+  document.getElementById('progWrap').style.display = 'block';
   document.getElementById('progFill').style.width = '0%';
   document.getElementById('progPct').textContent = '0%';
   const ph = document.getElementById('progPhases');
   ph.innerHTML = '';
-  for(let i=0;i<batches;i++){
+  for(let i=0;i<BATCH_COUNT;i++){
     const s=document.createElement('span');
     s.className='ph';s.id='ph_'+i;s.textContent='Phase '+(i+1);ph.appendChild(s);
   }
   if(animTimer) clearInterval(animTimer);
-  animTimer = setInterval(() => {
+  animTimer = setInterval(()=>{
     if(curPct < targetPct){ curPct=Math.min(curPct+0.5,targetPct); document.getElementById('progFill').style.width=curPct+'%'; document.getElementById('progPct').textContent=Math.round(curPct)+'%'; }
   },70);
 }
 
-function setProg(pct,lbl,phIdx,batches){
+function setProg(pct,lbl,phIdx){
   targetPct=pct;
   if(lbl) document.getElementById('progLbl').textContent=lbl;
-  if(phIdx!==undefined){ for(let i=0;i<batches;i++){ const el=document.getElementById('ph_'+i); if(!el)continue; if(i<phIdx)el.className='ph done'; else if(i===phIdx)el.className='ph active'; else el.className='ph'; } }
+  if(phIdx!==undefined){ for(let i=0;i<BATCH_COUNT;i++){ const el=document.getElementById('ph_'+i); if(!el)continue; if(i<phIdx)el.className='ph done'; else if(i===phIdx)el.className='ph active'; else el.className='ph'; } }
 }
 
-function doneProg(batches){
+function doneProg(){
   targetPct=100;
-  setTimeout(()=>{ document.getElementById('progFill').style.width='100%'; document.getElementById('progPct').textContent='100%'; for(let i=0;i<batches;i++){const el=document.getElementById('ph_'+i);if(el)el.className='ph done';} if(animTimer){clearInterval(animTimer);animTimer=null;} },600);
+  setTimeout(()=>{ document.getElementById('progFill').style.width='100%'; document.getElementById('progPct').textContent='100%'; for(let i=0;i<BATCH_COUNT;i++){const el=document.getElementById('ph_'+i);if(el)el.className='ph done';} if(animTimer){clearInterval(animTimer);animTimer=null;} },600);
 }
 
 function setStatus(txt,cls){ const el=document.getElementById('statusEl'); el.className='status '+cls; document.getElementById('statusTxt').textContent=txt; }
-
 function showWarn(msg,append=false){ const el=document.getElementById('warnEl'); el.style.display='block'; if(append)el.innerHTML+='<br/>'+msg; else el.innerHTML=msg; }
 
 function setBusy(on){
@@ -416,168 +273,79 @@ function setBusy(on){
   document.getElementById('goBtn').disabled=on;
 }
 
-// ═══════════════════════════════════════════════════════════
-//  GEMINI API — NO GROUNDING TOOL (CORS-safe)
-//  Model uses its own training knowledge + reasoning
-// ═══════════════════════════════════════════════════════════
-async function callGemini(prompt) {
-  const key = getKey();
-  if(!key) throw new Error('Gemini API key enter nahi ki');
+// Try multiple model names in order
+const MODELS = [
+  'gemini-2.5-flash',
+  'gemini-2.0-flash',
+];
 
-  const url = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${key}`;
-
+async function callGemini(prompt, modelIdx=0) {
+  const model = MODELS[modelIdx] || MODELS[MODELS.length-1];
+  const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
   const body = {
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: {
-      temperature: 0.2,
-      maxOutputTokens: 8192,
-      responseMimeType: 'application/json'
-    }
+    generationConfig: { temperature: 0.2, maxOutputTokens: 8192, responseMimeType: 'application/json' }
   };
-
-  const r = await fetch(url, {
-    method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(body)
-  });
-
+  const r = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
   if(!r.ok){
     const e = await r.json().catch(()=>({}));
     const msg = e?.error?.message || 'Unknown error';
-    if(r.status===400) throw new Error(`Bad Request: ${msg} — Key ya model name check karo`);
-    if(r.status===403) throw new Error(`Access Denied (403): Key sahi hai? aistudio.google.com par check karo`);
-    if(r.status===429) throw new Error(`Rate limit hit (429): Thoda ruko aur dobara try karo`);
-    throw new Error(`Gemini error ${r.status}: ${msg}`);
+    if((r.status===503||r.status===404) && modelIdx < MODELS.length-1){
+      return callGemini(prompt, modelIdx+1);
+    }
+    if(r.status===429) throw new Error('Rate limit — thoda wait karo aur dobara try karo');
+    if(r.status===403) throw new Error('API key invalid — check karo');
+    throw new Error(`API error ${r.status}: ${msg}`);
   }
-
   const d = await r.json();
   const text = d?.candidates?.[0]?.content?.parts?.filter(p=>p.text)?.map(p=>p.text)?.join('\n') || '';
-  if(!text) {
-    const reason = d?.candidates?.[0]?.finishReason;
-    throw new Error(`Gemini empty response (finishReason: ${reason||'unknown'})`);
-  }
+  if(!text) throw new Error(`Empty response (finishReason: ${d?.candidates?.[0]?.finishReason||'unknown'})`);
   return text;
 }
 
-// ═══════════════════════════════════════════════════════════
-//  PROMPT BUILDER — Focused, JSON-only prompts
-// ═══════════════════════════════════════════════════════════
 function buildPrompt(bt, loc, batchIdx, existingNames) {
-  const focusList = [
-    `popular aur well-known`,
-    `mid-size aur established`,
-    `chhote aur neighborhood level`,
-    `any remaining, lesser-known`,
-    `additional`
-  ];
+  const focusList = ['popular aur well-known', 'mid-size aur established', 'chhote aur neighborhood level'];
   const focus = focusList[batchIdx] || focusList[focusList.length-1];
-
-  const exclude = existingNames.length > 0
-    ? `\nIn businesses ko mat include karo (already mil gaye hain): ${existingNames.slice(-20).join(', ')}\n`
-    : '';
-
-  return `Tu ek expert business data researcher hai jo India mein real businesses ki information janta hai.
-
+  const exclude = existingNames.length > 0 ? `\nPehle se mila hua: ${existingNames.slice(-20).join(', ')}\nIn businesses ko SKIP karo.\n` : '';
+  return `Tu ek expert business data researcher hai.
 Task: "${loc}" mein "${bt}" businesses ki list banao — sirf ${focus} wale.
 ${exclude}
-Minimum 10 ALAG businesses chahiye. Agar ${loc} chhoti jagah hai toh nearby areas bhi include kar sakte ho.
-
-Har business ke liye yeh extract karo:
-- name: Poora business ka naam
-- phone: Real phone number (format: +91XXXXXXXXXX ya 0XXXXXXXXXX) — FAKE mat likho
-- owner: Owner/Manager ka naam (agar pata ho, warna "N/A")
-- email: Official email (agar pata ho, warna "N/A")
-- website: Official website URL (agar pata ho, warna "N/A")
-- address: Poora address ${loc} mein
-
-RULES:
-- SIRF real businesses jo actually exist karti hain
-- Har business ka alag phone number hona chahiye
-- Agar koi detail nahi pata toh "N/A" likho — INVENT mat karo
-- Response SIRF valid JSON array hona chahiye — koi explanation nahi, koi markdown nahi
-
-Strictly return ONLY this JSON format:
-[
-  {
-    "name": "Business Name",
-    "phone": "+91XXXXXXXXXX",
-    "owner": "Owner Name or N/A",
-    "email": "email@domain.com or N/A",
-    "website": "https://website.com or N/A",
-    "address": "Full address, ${loc}"
-  }
-]`;
+Minimum 10 ALAG businesses chahiye.
+Har business ke liye extract karo: name, phone (+91 format), owner (ya N/A), email (ya N/A), website (ya N/A), address.
+RULES: Sirf real businesses. Fake phone mat likho. Missing info = "N/A".
+Response SIRF valid JSON array:
+[{"name":"...","phone":"...","owner":"...","email":"...","website":"...","address":"..."}]`;
 }
 
-// ═══════════════════════════════════════════════════════════
-//  JSON PARSER
-// ═══════════════════════════════════════════════════════════
 function parseJSON(raw) {
-  if(!raw) throw new Error('Empty response');
-  let t = raw.trim()
-    .replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
-  const s = t.indexOf('['), e = t.lastIndexOf(']');
-  if(s===-1||e===-1) throw new Error('No JSON array found in response');
-  const arr = JSON.parse(t.slice(s, e+1));
-  if(!Array.isArray(arr)) throw new Error('Parsed result is not an array');
-  return arr;
+  let t = raw.trim().replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
+  const s=t.indexOf('['), e=t.lastIndexOf(']');
+  if(s===-1||e===-1) throw new Error('No JSON array found');
+  return JSON.parse(t.slice(s,e+1));
 }
 
-// ═══════════════════════════════════════════════════════════
-//  NORMALIZE + DEDUPE
-// ═══════════════════════════════════════════════════════════
-const FAKE_PHONES = ['9999999999','0000000000','1234567890','XXXXXXXXXX','xxxxxxxxxx','xxxx'];
-
-function normalize(raw) {
-  return raw
-    .filter(r => r && typeof r.name === 'string' && r.name.trim().length >= 3)
-    .map(r => {
-      let phone = (r.phone||r.tel||'N/A').toString().trim();
-      if(FAKE_PHONES.some(f=>phone.replace(/\s/g,'').includes(f))) phone='N/A';
-      if(phone!=='N/A' && phone.replace(/[\s\-().+]/g,'').length < 7) phone='N/A';
-      return {
-        name:    r.name.trim(),
-        phone:   phone,
-        owner:   (r.owner||r.manager||'N/A').toString().trim(),
-        email:   (r.email||'N/A').toString().trim(),
-        website: (r.website||r.url||'N/A').toString().trim(),
-        address: (r.address||r.location||'N/A').toString().trim(),
-      };
-    });
-}
-
-function dedupe(arr) {
-  const seen = new Set();
-  return arr.filter(r => {
-    const k = r.name.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,25);
-    if(!k||seen.has(k)) return false;
-    seen.add(k); return true;
+const FAKE_PHONES=['9999999999','0000000000','1234567890','XXXXXXXXXX','xxxxxxxxxx'];
+function normalize(raw){
+  return raw.filter(r=>r&&typeof r.name==='string'&&r.name.trim().length>=3).map(r=>{
+    let phone=(r.phone||'N/A').toString().trim();
+    if(FAKE_PHONES.some(f=>phone.replace(/\s/g,'').includes(f)))phone='N/A';
+    if(phone!=='N/A'&&phone.replace(/[\s\-().+]/g,'').length<7)phone='N/A';
+    return {name:r.name.trim(),phone,owner:(r.owner||'N/A').toString().trim(),email:(r.email||'N/A').toString().trim(),website:(r.website||'N/A').toString().trim(),address:(r.address||'N/A').toString().trim()};
   });
 }
+function dedupe(arr){
+  const seen=new Set();
+  return arr.filter(r=>{const k=r.name.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,25);if(!k||seen.has(k))return false;seen.add(k);return true;});
+}
 
-// ═══════════════════════════════════════════════════════════
-//  MAIN SEARCH
-// ═══════════════════════════════════════════════════════════
 async function startSearch() {
   if(busy) return;
+  const bt=document.getElementById('bizType').value.trim();
+  const loc=document.getElementById('location').value.trim();
+  if(!bt){setStatus('Business type enter karo!','err');document.getElementById('statusEl').style.display='flex';return;}
+  if(!loc){setStatus('Location enter karo!','err');document.getElementById('statusEl').style.display='flex';return;}
 
-  const key = getKey();
-  const bt  = document.getElementById('bizType').value.trim();
-  const loc = document.getElementById('location').value.trim();
-  batchCount = parseInt(document.getElementById('resultCount').value);
-
-  if(!key) { setStatus('Pehle Gemini API key daalo!','err'); document.getElementById('statusEl').style.display='flex'; return; }
-  if(!bt)  { setStatus('Business type enter karo!','err'); document.getElementById('statusEl').style.display='flex'; return; }
-  if(!loc) { setStatus('Location enter karo!','err'); document.getElementById('statusEl').style.display='flex'; return; }
-
-  // Update badge to active
-  document.getElementById('gBadge').className='gs-badge active';
-  document.getElementById('gBadge').textContent='ACTIVE';
-  document.getElementById('gStatTxt').textContent='Searching…';
-
-  allRes = [];
-  busy = true;
-  setBusy(true);
+  allRes=[];busy=true;setBusy(true);
   document.getElementById('warnEl').style.display='none';
   document.getElementById('warnEl').innerHTML='';
   document.getElementById('emptyEl').style.display='none';
@@ -586,109 +354,72 @@ async function startSearch() {
   document.getElementById('xlBtn').className='rbtn';
   document.getElementById('xlTxt').textContent='Download Excel';
 
-  initProg(batchCount);
-  setStatus(`Searching: ${bt} in ${loc}…`, 'run');
+  initProg();
+  setStatus(`Searching: ${bt} in ${loc}…`,'run');
   showSkeletons();
 
-  const phaseStep = Math.floor(90/batchCount);
+  const phaseStep = Math.floor(90/BATCH_COUNT);
 
   try {
-    for(let b=0; b<batchCount; b++){
-      const pct = Math.min(10 + phaseStep*(b+1), 92);
-      setProg(pct, `Phase ${b+1}/${batchCount} — ${bt} businesses ${loc} mein dhundh rahi hai…`, b, batchCount);
-
-      const names = allRes.map(r=>r.name);
-      const prompt = buildPrompt(bt, loc, b, names);
-
+    for(let b=0;b<BATCH_COUNT;b++){
+      const pct=Math.min(10+phaseStep*(b+1),92);
+      setProg(pct,`Phase ${b+1}/${BATCH_COUNT} — ${bt} in ${loc}…`,b);
+      const names=allRes.map(r=>r.name);
+      const prompt=buildPrompt(bt,loc,b,names);
       let rawText;
-      try {
-        rawText = await callGemini(prompt);
-      } catch(err) {
-        showWarn(`⚠️ Phase ${b+1} failed: ${err.message}`, true);
-        if(b===0) throw err;
-        break;
+      try { rawText=await callGemini(prompt); }
+      catch(err){ showWarn(`⚠️ Phase ${b+1} failed: ${err.message}`,true); if(b===0)throw err; break; }
+      let parsed=[];
+      try { parsed=parseJSON(rawText); }
+      catch(pe){
+        try{
+          const repaired=await callGemini(`Convert this to valid JSON array with fields name,phone,owner,email,website,address. Return ONLY JSON array:\n${rawText.slice(0,2000)}`);
+          parsed=parseJSON(repaired);
+        }catch(_){ showWarn(`⚠️ Phase ${b+1}: parse fail`,true); parsed=[]; }
       }
-
-      let parsed = [];
-      try {
-        parsed = parseJSON(rawText);
-      } catch(pe) {
-        // Try repair pass
-        try {
-          const repairPrompt = `Yeh text ek business list hai. Isse valid JSON array mein convert karo with fields: name, phone, owner, email, website, address. Sirf JSON array return karo:\n\n${rawText.slice(0,3000)}`;
-          const repaired = await callGemini(repairPrompt);
-          parsed = parseJSON(repaired);
-        } catch(_) {
-          showWarn(`⚠️ Phase ${b+1}: JSON parse fail hua — kuch results skip kiye`, true);
-          parsed = [];
-        }
-      }
-
-      const cleaned = normalize(parsed);
-      allRes = dedupe([...allRes, ...cleaned]);
-      renderTable(allRes, bt, loc);
-
-      if(b < batchCount-1) await sleep(1500);
+      allRes=dedupe([...allRes,...normalize(parsed)]);
+      renderTable(allRes,bt,loc);
+      if(b<BATCH_COUNT-1) await new Promise(r=>setTimeout(r,1500));
     }
 
-    doneProg(batchCount);
-
-    if(allRes.length > 0){
-      setStatus(`✓ ${allRes.length} real businesses mili — ${bt} · ${loc}`, 'ok');
+    doneProg();
+    if(allRes.length>0){
+      setStatus(`✓ ${allRes.length} real businesses found — ${bt} · ${loc}`,'ok');
       document.getElementById('xlBtn').disabled=false;
-      document.getElementById('gBadge').className='gs-badge ready';
-      document.getElementById('gBadge').textContent='DONE';
-      document.getElementById('gStatTxt').textContent=`${allRes.length} businesses found`;
     } else {
-      setStatus('Koi business nahi mila. Different location ya business type try karo.','err');
+      setStatus('Koi business nahi mila. Different location ya type try karo.','err');
       document.getElementById('emptyEl').style.display='block';
       document.getElementById('resSec').style.display='none';
     }
-
-  } catch(err) {
+  } catch(err){
     if(animTimer){clearInterval(animTimer);animTimer=null;}
     setStatus('Error: '+err.message,'err');
-    document.getElementById('gBadge').className='gs-badge err';
-    document.getElementById('gBadge').textContent='ERROR';
-    document.getElementById('gStatTxt').textContent=err.message;
-    if(!allRes.length){
-      document.getElementById('emptyEl').style.display='block';
-      document.getElementById('emptyEl').querySelector('p').textContent=err.message;
-      document.getElementById('resSec').style.display='none';
-    } else {
-      doneProg(batchCount);
-      document.getElementById('xlBtn').disabled=false;
-    }
+    if(!allRes.length){ document.getElementById('emptyEl').style.display='block'; document.getElementById('resSec').style.display='none'; }
+    else { doneProg(); document.getElementById('xlBtn').disabled=false; }
   }
-
   setBusy(false);
 }
 
-const sleep = ms => new Promise(r=>setTimeout(r,ms));
-
-// ═══════════════════════════════════════════════════════════
-//  RENDER
-// ═══════════════════════════════════════════════════════════
 function esc(s){ if(!s||s==='N/A')return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-const naCell = () => '<span class="na">—</span>';
+const naCell=()=>'<span class="na">—</span>';
 
 function showSkeletons(){
-  const tb=document.getElementById('tbody'); tb.innerHTML='';
+  const tb=document.getElementById('tbody');tb.innerHTML='';
   for(let i=0;i<8;i++) tb.insertAdjacentHTML('beforeend',`<tr><td><div class="sk w2"></div></td><td><div class="sk w8"></div></td><td><div class="sk w6"></div></td><td><div class="sk w6"></div></td><td><div class="sk w8"></div></td><td><div class="sk w4"></div></td><td><div class="sk w8"></div></td></tr>`);
   document.getElementById('resSec').style.display='block';
   document.getElementById('resTitle').textContent='Searching…';
   document.getElementById('resSub').textContent='Gemini AI real data fetch kar rahi hai…';
 }
 
-function renderTable(res, bt, loc){
+function renderTable(res,bt,loc){
   document.getElementById('resSec').style.display='block';
   document.getElementById('emptyEl').style.display='none';
   document.getElementById('resTitle').textContent=res.length+' Businesses Found';
-  document.getElementById('resSub').textContent=`${bt} · ${loc} · Gemini 2.5 Flash`;
-  const tb=document.getElementById('tbody'); tb.innerHTML='';
+  document.getElementById('resSub').textContent=`${bt} · ${loc} · Gemini AI`;
+  const tb=document.getElementById('tbody');tb.innerHTML='';
   res.forEach((r,i)=>{
     let domain=null;
-    if(r.website&&r.website!=='N/A'){ try{domain=new URL(r.website).hostname;}catch(_){domain=r.website.replace(/https?:\/\//,'').split('/')[0];} }
+    if(r.website&&r.website!=='N/A'){try{domain=new URL(r.website).hostname;}catch(_){domain=r.website.replace(/https?:\/\//,'').split('/')[0];}}
     const emailH=(r.email&&r.email!=='N/A')?`<a class="tl" href="mailto:${esc(r.email)}">${esc(r.email)}</a>`:naCell();
     const webH=domain?`<a class="tl" href="${esc(r.website)}" target="_blank" rel="noopener">${esc(domain)}</a>`:naCell();
     const tr=document.createElement('tr');
@@ -697,22 +428,17 @@ function renderTable(res, bt, loc){
   });
 }
 
-// ═══════════════════════════════════════════════════════════
-//  EXCEL EXPORT
-// ═══════════════════════════════════════════════════════════
 function exportXL(){
   if(!allRes.length)return;
   const bt=document.getElementById('bizType').value;
   const loc=document.getElementById('location').value;
-  const rows=allRes.map((r,i)=>({'#':i+1,'Business Name':r.name||'','Phone':r.phone||'','Owner/Manager':r.owner||'','Email':r.email||'','Website':r.website||'','Address':r.address||'','Business Type':bt,'Location':loc,'AI Source':'Gemini 2.5 Flash'}));
+  const rows=allRes.map((r,i)=>({'#':i+1,'Business Name':r.name,'Phone':r.phone,'Owner/Manager':r.owner,'Email':r.email,'Website':r.website,'Address':r.address,'Business Type':bt,'Location':loc}));
   const ws=XLSX.utils.json_to_sheet(rows);
-  ws['!cols']=[{wch:4},{wch:36},{wch:18},{wch:28},{wch:34},{wch:32},{wch:44},{wch:16},{wch:22},{wch:22}];
+  ws['!cols']=[{wch:4},{wch:36},{wch:18},{wch:28},{wch:34},{wch:32},{wch:44},{wch:16},{wch:22}];
   const wb=XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(wb,ws,'Businesses');
   const date=new Date().toISOString().slice(0,10);
-  const sb=bt.replace(/\s+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
-  const sl=loc.replace(/[\s,]+/g,'_').replace(/[^a-zA-Z0-9_]/g,'');
-  XLSX.writeFile(wb,`${sb}_${sl}_${date}.xlsx`);
+  XLSX.writeFile(wb,`${bt.replace(/\s+/g,'_')}_${loc.replace(/[\s,]+/g,'_')}_${date}.xlsx`);
   document.getElementById('xlBtn').className='rbtn xl-ok';
   document.getElementById('xlTxt').textContent='✓ Downloaded!';
   setTimeout(()=>{document.getElementById('xlBtn').className='rbtn';document.getElementById('xlTxt').textContent='Download Excel';},3000);
@@ -723,12 +449,10 @@ function clearAll(){
   document.getElementById('tbody').innerHTML='';
   document.getElementById('resSec').style.display='none';
   document.getElementById('emptyEl').style.display='block';
-  document.getElementById('emptyEl').querySelector('p').textContent='Gemini key daalo, business type aur location likho — AI real data nikaalegi.';
   document.getElementById('statusEl').className='status';
   document.getElementById('progWrap').style.display='none';
   document.getElementById('warnEl').style.display='none';
   document.getElementById('xlBtn').disabled=true;
-  updateKeyStatus();
 }
 </script>
 </body>
