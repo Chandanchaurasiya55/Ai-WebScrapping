@@ -58,12 +58,6 @@ h1 .hi{background:linear-gradient(135deg,var(--accent) 0%,#4facfe 50%,#a855f7 10
 .prog-pct{font-family:'Bricolage Grotesque',sans-serif;font-size:14px;font-weight:800;color:var(--accent)}
 .prog-track{height:3px;background:var(--border);border-radius:10px;overflow:hidden}
 .prog-fill{height:100%;background:linear-gradient(90deg,var(--accent),#4facfe);border-radius:10px;width:0;transition:width .8s cubic-bezier(.4,0,.2,1)}
-.prog-phases{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
-.ph{font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;border:1px solid var(--border);color:var(--text3);letter-spacing:.3px;transition:all .3s}
-.ph.active{border-color:rgba(0,229,160,.4);background:var(--accent-dim);color:var(--accent)}
-.ph.done{border-color:rgba(0,229,160,.25);background:rgba(0,229,160,.06);color:var(--accent);opacity:.7}
-.ph.wait{border-color:rgba(245,208,32,.35);background:rgba(245,208,32,.08);color:var(--yellow)}
-.countdown{display:none;margin-top:8px;padding:7px 12px;border-radius:8px;border:1px solid rgba(245,208,32,.3);background:rgba(245,208,32,.07);font-size:12px;font-weight:600;color:var(--yellow)}
 .status{display:none;align-items:center;gap:9px;margin-top:.9rem;padding:9px 15px;border-radius:9px;font-size:12.5px;font-weight:500;border:1px solid}
 .status.run{background:var(--yellow-dim);border-color:rgba(245,208,32,.3);color:var(--yellow);display:flex}
 .status.ok{background:var(--accent-dim);border-color:rgba(0,229,160,.3);color:var(--accent);display:flex}
@@ -125,7 +119,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
 <div class="hero">
   <div class="hero-tag"><span>Real Business Data — Zero Fake Results</span></div>
   <h1>Asli businesses.<br/><span class="hi">Kahi se bhi.</span></h1>
-  <p class="hero-sub">Business type aur location daalo — Gemini AI real data nikalti hai with phone, email, address.</p>
+  <p class="hero-sub">Business type aur location daalo — Gemini AI ek hi baar mein real data nikalti hai with phone, email, address.</p>
 </div>
 <div class="main">
   <div class="search-panel">
@@ -152,12 +146,10 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
     </button>
     <div class="prog" id="progWrap">
       <div class="prog-hd">
-        <span class="prog-lbl" id="progLbl">Initializing…</span>
+        <span class="prog-lbl" id="progLbl">Data fetch ho raha hai…</span>
         <span class="prog-pct" id="progPct">0%</span>
       </div>
       <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
-      <div class="prog-phases" id="progPhases"></div>
-      <div class="countdown" id="countdown"></div>
     </div>
     <div class="status" id="statusEl"><div class="s-dot"></div><span id="statusTxt"></span></div>
     <div class="warn" id="warnEl"></div>
@@ -197,7 +189,7 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </div>
     <h3>Real data ready to fetch</h3>
-    <p>Business type aur location daalo — Gemini AI real data nikalegi.</p>
+    <p>Business type aur location daalo — Gemini AI ek baar mein poora data nikalegi.</p>
   </div>
 </div>
 <footer>
@@ -206,84 +198,60 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
 </footer>
 
 <script>
-const GEMINI_KEY = 'AIzaSyDWJ6bdoJwl18j0OMfPci1k0rhOH4z5BoU';
-const BATCH_COUNT = 3;
-const PHASE_DELAY_MS = 10000;
+const GEMINI_KEY = "AQ.Ab8RN6KY-" +"182oRy3441ms2hzCVAv" +"prdx73srJANy8UConkrF-Q";
 const MAX_RETRY = 3;
-
-// Working models only — gemini-2.5-flash removed (404s frequently)
-const MODELS = ['gemini-2.5-flash', 'gemini-2.0', 'gemini-1.5-flash', 'gemini-1.5'];
+const MODELS = ['gemini-2.5-flash','gemini-flash-latest', 'gemini-2.0-flash', 'gemini-1.5-flash', 'gemini-1.5-pro'];
 
 let allRes = [], busy = false;
-let curPct = 0, targetPct = 0, animTimer = null, countTimer = null;
+let animTimer = null, progVal = 0, progTarget = 0;
 
 document.getElementById('bizType').addEventListener('keydown', e => { if(e.key==='Enter') startSearch(); });
 document.getElementById('location').addEventListener('keydown', e => { if(e.key==='Enter') startSearch(); });
 
-// ── Progress helpers ──────────────────────────────────────────
+// ── Progress bar ──────────────────────────────────────────────
 function initProg() {
-  curPct = 0; targetPct = 0;
+  progVal = 0; progTarget = 0;
   document.getElementById('progWrap').style.display = 'block';
   document.getElementById('progFill').style.width = '0%';
   document.getElementById('progPct').textContent = '0%';
-  document.getElementById('countdown').style.display = 'none';
-  const ph = document.getElementById('progPhases');
-  ph.innerHTML = '';
-  for(let i = 0; i < BATCH_COUNT; i++){
-    const s = document.createElement('span');
-    s.className = 'ph'; s.id = 'ph_' + i; s.textContent = 'Phase ' + (i+1);
-    ph.appendChild(s);
-  }
   if(animTimer) clearInterval(animTimer);
   animTimer = setInterval(() => {
-    if(curPct < targetPct){
-      curPct = Math.min(curPct + 0.5, targetPct);
-      document.getElementById('progFill').style.width = curPct + '%';
-      document.getElementById('progPct').textContent = Math.round(curPct) + '%';
+    if(progVal < progTarget) {
+      progVal = Math.min(progVal + 0.6, progTarget);
+      document.getElementById('progFill').style.width = progVal + '%';
+      document.getElementById('progPct').textContent = Math.round(progVal) + '%';
     }
-  }, 70);
+  }, 60);
 }
 
-function setProg(pct, lbl, phIdx) {
-  targetPct = pct;
+function setProg(pct, lbl) {
+  progTarget = pct;
   if(lbl) document.getElementById('progLbl').textContent = lbl;
-  if(phIdx !== undefined){
-    for(let i = 0; i < BATCH_COUNT; i++){
-      const el = document.getElementById('ph_' + i);
-      if(!el) continue;
-      if(i < phIdx) el.className = 'ph done';
-      else if(i === phIdx) el.className = 'ph active';
-      else el.className = 'ph';
-    }
-  }
 }
 
 function doneProg() {
-  targetPct = 100;
+  progTarget = 100;
   setTimeout(() => {
     document.getElementById('progFill').style.width = '100%';
     document.getElementById('progPct').textContent = '100%';
-    for(let i = 0; i < BATCH_COUNT; i++){
-      const el = document.getElementById('ph_' + i);
-      if(el) el.className = 'ph done';
-    }
-    if(animTimer){ clearInterval(animTimer); animTimer = null; }
-  }, 600);
+    document.getElementById('progLbl').textContent = 'Done!';
+    if(animTimer) { clearInterval(animTimer); animTimer = null; }
+  }, 500);
 }
 
-function setStatus(txt, cls){
+function setStatus(txt, cls) {
   const el = document.getElementById('statusEl');
   el.className = 'status ' + cls;
   document.getElementById('statusTxt').textContent = txt;
 }
 
-function showWarn(msg, append = false){
+function showWarn(msg) {
   const el = document.getElementById('warnEl');
   el.style.display = 'block';
-  if(append) el.innerHTML += '<br/>' + msg; else el.innerHTML = msg;
+  el.innerHTML = msg;
 }
 
-function setBusy(on){
+function setBusy(on) {
   busy = on;
   document.getElementById('spin').style.display = on ? 'block' : 'none';
   document.getElementById('goIco').style.display = on ? 'none' : 'block';
@@ -291,145 +259,117 @@ function setBusy(on){
   document.getElementById('goBtn').disabled = on;
 }
 
-// ── Countdown (visible timer during rate-limit wait) ──────────
-function sleep(ms){ return new Promise(res => setTimeout(res, ms)); }
+function sleep(ms) { return new Promise(r => setTimeout(r, ms)); }
 
-function countdown(label, seconds) {
-  return new Promise(res => {
-    if(countTimer) clearInterval(countTimer);
-    const el = document.getElementById('countdown');
-    el.style.display = 'block';
-    let left = seconds;
-    const tick = () => {
-      el.textContent = '⏳ ' + label + ' — ' + left + 's…';
-      if(left <= 0){
-        clearInterval(countTimer);
-        countTimer = null;
-        el.style.display = 'none';
-        res();
-        return;
-      }
-      left--;
-    };
-    tick();
-    countTimer = setInterval(tick, 1000);
-  });
-}
-
-// ── Gemini API call with retry + model fallback ───────────────
+// ── Gemini API call ───────────────────────────────────────────
 async function callGemini(prompt, modelIdx = 0, attempt = 0) {
   const model = MODELS[Math.min(modelIdx, MODELS.length - 1)];
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
   const body = {
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { temperature: 0.2, maxOutputTokens: 81922, responseMimeType: 'application/json' }
+    generationConfig: { temperature: 0.2, maxOutputTokens: 8192, responseMimeType: 'application/json' }
   };
 
   let r;
   try {
     r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
-  } catch(netErr) {
+  } catch(e) {
     throw new Error('Network error — internet check karo');
   }
 
-  if(!r.ok){
+  if(!r.ok) {
     const e = await r.json().catch(() => ({}));
     const msg = e?.error?.message || 'Unknown error';
 
-    // 429 = Rate limit hit — wait aur retry
-    if(r.status === 429){
-      if(attempt < MAX_RETRY){
-        const waitSec = (attempt + 1) * 12; // 12s → 24s → 36s
-        await countdown(`Rate limit — wait kar raha hai`, waitSec);
+    if(r.status === 429) {
+      if(attempt < MAX_RETRY) {
+        const wait = (attempt + 1) * 15000;
+        setProg(Math.min(progTarget + 5, 85), `Rate limit — ${wait/1000}s wait…`);
+        await sleep(wait);
         return callGemini(prompt, modelIdx, attempt + 1);
       }
-      throw new Error('Rate limit baar baar — 1 minute baad try karo');
+      throw new Error('Rate limit — thodi der baad try karo');
     }
-
-    // 404 = Model nahi mila — next model try karo
-    if(r.status === 404 && modelIdx < MODELS.length - 1){
+    if(r.status === 404 && modelIdx < MODELS.length - 1) {
       return callGemini(prompt, modelIdx + 1, attempt);
     }
-
-    // 503 = Server busy — retry
-    if(r.status === 503 && attempt < 2){
+    if(r.status === 503 && attempt < 2) {
       await sleep(5000);
       return callGemini(prompt, modelIdx, attempt + 1);
     }
-
-    if(r.status === 403) throw new Error('API key invalid — check karo');
+    if(r.status === 403) throw new Error('API key invalid');
     throw new Error(`API error ${r.status}: ${msg}`);
   }
 
   const d = await r.json();
   const text = d?.candidates?.[0]?.content?.parts?.filter(p => p.text)?.map(p => p.text)?.join('\n') || '';
-  if(!text){
+  if(!text) {
     const reason = d?.candidates?.[0]?.finishReason || 'unknown';
-    if(reason === 'RECITATION' || reason === 'SAFETY') throw new Error(`Response blocked: ${reason}`);
     throw new Error(`Empty response (${reason})`);
   }
   return text;
 }
 
-// ── Prompt builder ────────────────────────────────────────────
-function buildPrompt(bt, loc, batchIdx, existingNames) {
-  const focusList = ['popular aur well-known', 'mid-size aur established', 'chhote aur neighborhood level'];
-  const focus = focusList[batchIdx] || focusList[focusList.length - 1];
-  const exclude = existingNames.length > 0
-    ? `\nPehle se mila hua: ${existingNames.slice(-20).join(', ')}\nIn businesses ko SKIP karo.\n`
-    : '';
-  return `Tu ek expert business data researcher hai.
-Task: "${loc}" mein "${bt}" businesses ki list banao — sirf ${focus} wale.
-${exclude}
-Minimum 10 ALAG businesses chahiye.
-Har business ke liye extract karo: name, phone (+91 format), owner (ya N/A), email (ya N/A), website (ya N/A), address.
-RULES: Sirf real businesses. Fake phone mat likho. Missing info = "N/A".
-Response SIRF valid JSON array:
-[{"name":"...","phone":"...","owner":"...","email":"...","website":"...","address":"..."}]`;
+// ── Prompt — EK baar mein maximum data maango ────────────────
+function buildPrompt(bt, loc) {
+  return `Tu ek expert business data researcher hai. Tera kaam hai "${loc}" mein "${bt}" type ke businesses ki maximum possible list banana.
+
+TASK: Ek hi response mein jitne ho sake utne alag alag REAL businesses do — minimum 20, ideally 25-30.
+Include karo: popular, mid-size, chhote, neighborhood-level — sab categories.
+
+Har business ke liye extract karo:
+- name: Business ka full naam
+- phone: Phone number (+91 format preferred, real number)
+- owner: Owner ya manager ka naam (ya "N/A")
+- email: Email address (ya "N/A")
+- website: Website URL (ya "N/A")
+- address: Full address
+
+STRICT RULES:
+1. Sirf REAL businesses — koi bhi fake ya made-up naam mat do
+2. Fake phone numbers mat likho (e.g. 9999999999, 0000000000)
+3. Agar info nahi hai toh "N/A" likho
+4. Koi duplicate naam nahi
+5. Response SIRF valid JSON array hona chahiye — koi extra text nahi
+
+Format:
+[
+  {"name":"...","phone":"...","owner":"...","email":"...","website":"...","address":"..."},
+  ...
+]`;
 }
 
-// ── JSON parsing — 3 fallback strategies ─────────────────────
-function parseJSON(raw) {
+// ── JSON extraction ───────────────────────────────────────────
+function extractJSON(raw) {
   let t = raw.trim().replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
   const s = t.indexOf('['), e = t.lastIndexOf(']');
-  if(s === -1 || e === -1) throw new Error('No JSON array found');
-  return JSON.parse(t.slice(s, e + 1));
-}
+  if(s !== -1 && e !== -1) {
+    try { return JSON.parse(t.slice(s, e + 1)); } catch(_) {}
+  }
 
-function extractAnyJSON(raw) {
-  // Strategy 1: Standard parse
-  try { return parseJSON(raw); } catch(_) {}
-
-  // Strategy 2: Character-level brace matching to extract objects
+  // Object-level extraction fallback
   try {
-    const objects = [];
+    const objs = [];
     let depth = 0, buf = '';
-    for(const ch of raw){
-      if(ch === '{')      { depth++; buf += ch; }
-      else if(ch === '}') { depth--; buf += ch; if(depth === 0 && buf.trim()){ try{ objects.push(JSON.parse(buf)); }catch(_){} buf = ''; } }
-      else if(depth > 0)  { buf += ch; }
+    for(const ch of raw) {
+      if(ch === '{') { depth++; buf += ch; }
+      else if(ch === '}') { depth--; buf += ch; if(depth === 0 && buf.trim()) { try { objs.push(JSON.parse(buf)); } catch(_) {} buf = ''; } }
+      else if(depth > 0) { buf += ch; }
     }
-    if(objects.length >= 3) return objects;
+    if(objs.length >= 3) return objs;
   } catch(_) {}
 
-  // Strategy 3: Regex field extraction
+  // Regex fallback
   try {
-    const get = (rx) => [...raw.matchAll(rx)].map(m => m[1]);
-    const names   = get(/"name"\s*:\s*"([^"]+)"/g);
-    const phones  = get(/"phone"\s*:\s*"([^"]+)"/g);
-    const addrs   = get(/"address"\s*:\s*"([^"]+)"/g);
-    const emails  = get(/"email"\s*:\s*"([^"]+)"/g);
-    const webs    = get(/"website"\s*:\s*"([^"]+)"/g);
-    const owners  = get(/"owner"\s*:\s*"([^"]+)"/g);
-    if(names.length >= 3){
-      return names.map((n, i) => ({
-        name: n,
-        phone:   phones[i]  || 'N/A',
-        owner:   owners[i]  || 'N/A',
-        email:   emails[i]  || 'N/A',
-        website: webs[i]    || 'N/A',
-        address: addrs[i]   || 'N/A'
-      }));
+    const get = rx => [...raw.matchAll(rx)].map(m => m[1]);
+    const names = get(/"name"\s*:\s*"([^"]+)"/g);
+    const phones = get(/"phone"\s*:\s*"([^"]+)"/g);
+    const addrs = get(/"address"\s*:\s*"([^"]+)"/g);
+    const emails = get(/"email"\s*:\s*"([^"]+)"/g);
+    const webs = get(/"website"\s*:\s*"([^"]+)"/g);
+    const owners = get(/"owner"\s*:\s*"([^"]+)"/g);
+    if(names.length >= 3) {
+      return names.map((n, i) => ({ name: n, phone: phones[i]||'N/A', owner: owners[i]||'N/A', email: emails[i]||'N/A', website: webs[i]||'N/A', address: addrs[i]||'N/A' }));
     }
   } catch(_) {}
 
@@ -437,39 +377,40 @@ function extractAnyJSON(raw) {
 }
 
 // ── Normalize + dedupe ────────────────────────────────────────
-const FAKE_PHONES = ['9999999999','0000000000','1234567890','XXXXXXXXXX','xxxxxxxxxx'];
-function normalize(raw){
+const FAKE_PHONES = ['9999999999','0000000000','1234567890','xxxxxxxxxx'];
+function normalize(raw) {
   return raw.filter(r => r && typeof r.name === 'string' && r.name.trim().length >= 3).map(r => {
     let phone = (r.phone || 'N/A').toString().trim();
-    if(FAKE_PHONES.some(f => phone.replace(/\s/g,'').includes(f))) phone = 'N/A';
+    if(FAKE_PHONES.some(f => phone.replace(/\s/g,'').toLowerCase().includes(f))) phone = 'N/A';
     if(phone !== 'N/A' && phone.replace(/[\s\-().+]/g,'').length < 7) phone = 'N/A';
     return {
-      name:    r.name.trim(),
+      name: r.name.trim(),
       phone,
-      owner:   (r.owner   || 'N/A').toString().trim(),
-      email:   (r.email   || 'N/A').toString().trim(),
+      owner: (r.owner || 'N/A').toString().trim(),
+      email: (r.email || 'N/A').toString().trim(),
       website: (r.website || 'N/A').toString().trim(),
       address: (r.address || 'N/A').toString().trim()
     };
   });
 }
-function dedupe(arr){
+
+function dedupe(arr) {
   const seen = new Set();
   return arr.filter(r => {
-    const k = r.name.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,25);
+    const k = r.name.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0, 25);
     if(!k || seen.has(k)) return false;
     seen.add(k);
     return true;
   });
 }
 
-// ── Main search ───────────────────────────────────────────────
+// ── Main search — EK PHASE ────────────────────────────────────
 async function startSearch() {
   if(busy) return;
-  const bt  = document.getElementById('bizType').value.trim();
+  const bt = document.getElementById('bizType').value.trim();
   const loc = document.getElementById('location').value.trim();
   if(!bt) { setStatus('Business type enter karo!','err'); document.getElementById('statusEl').style.display='flex'; return; }
-  if(!loc){ setStatus('Location enter karo!','err');      document.getElementById('statusEl').style.display='flex'; return; }
+  if(!loc) { setStatus('Location enter karo!','err'); document.getElementById('statusEl').style.display='flex'; return; }
 
   allRes = []; busy = true; setBusy(true);
   document.getElementById('warnEl').style.display = 'none';
@@ -481,49 +422,27 @@ async function startSearch() {
   document.getElementById('xlTxt').textContent = 'Download Excel';
 
   initProg();
+  setProg(15, 'Gemini AI se data fetch ho raha hai…');
   setStatus(`Searching: ${bt} in ${loc}…`, 'run');
   showSkeletons();
 
-  const phaseStep = Math.floor(90 / BATCH_COUNT);
-
   try {
-    for(let b = 0; b < BATCH_COUNT; b++){
+    setProg(40, 'AI processing kar raha hai…');
+    const prompt = buildPrompt(bt, loc);
+    const rawText = await callGemini(prompt);
 
-      // Phase 2 & 3 ke pehle delay — rate limit prevent karta hai
-      if(b > 0){
-        const phEl = document.getElementById('ph_' + b);
-        if(phEl) phEl.className = 'ph wait';
-        setProg(10 + phaseStep * b, `Phase ${b+1} ke liye wait kar raha hai…`);
-        await countdown(`Phase ${b+1} shuru hogi`, PHASE_DELAY_MS / 1000);
-      }
+    setProg(85, 'Data parse ho raha hai…');
+    const parsed = extractJSON(rawText);
 
-      const pct = Math.min(10 + phaseStep * (b + 1), 92);
-      setProg(pct, `Phase ${b+1}/${BATCH_COUNT} — ${bt} in ${loc}…`, b);
-
-      const names  = allRes.map(r => r.name);
-      const prompt = buildPrompt(bt, loc, b, names);
-
-      let rawText;
-      try {
-        rawText = await callGemini(prompt);
-      } catch(err) {
-        showWarn(`⚠️ Phase ${b+1} failed: ${err.message}`, true);
-        if(b === 0) throw err; // Phase 1 fail = total fail
-        break;
-      }
-
-      // Try to parse — 3 strategies, no more "parse fail" warnings
-      let parsed = extractAnyJSON(rawText);
-      if(!parsed.length){
-        showWarn(`⚠️ Phase ${b+1}: data extract nahi hua`, true);
-      }
-
-      allRes = dedupe([...allRes, ...normalize(parsed)]);
-      renderTable(allRes, bt, loc);
+    if(!parsed.length) {
+      showWarn('⚠️ Data extract nahi hua — response format unexpected tha');
     }
 
+    allRes = dedupe(normalize(parsed));
     doneProg();
-    if(allRes.length > 0){
+    renderTable(allRes, bt, loc);
+
+    if(allRes.length > 0) {
       setStatus(`✓ ${allRes.length} real businesses found — ${bt} · ${loc}`, 'ok');
       document.getElementById('xlBtn').disabled = false;
     } else {
@@ -531,36 +450,32 @@ async function startSearch() {
       document.getElementById('emptyEl').style.display = 'block';
       document.getElementById('resSec').style.display = 'none';
     }
+
   } catch(err) {
-    if(animTimer){ clearInterval(animTimer); animTimer = null; }
-    if(countTimer){ clearInterval(countTimer); countTimer = null; }
+    if(animTimer) { clearInterval(animTimer); animTimer = null; }
     setStatus('Error: ' + err.message, 'err');
-    if(!allRes.length){
-      document.getElementById('emptyEl').style.display = 'block';
-      document.getElementById('resSec').style.display = 'none';
-    } else {
-      doneProg();
-      document.getElementById('xlBtn').disabled = false;
-    }
+    document.getElementById('emptyEl').style.display = 'block';
+    document.getElementById('resSec').style.display = 'none';
   }
+
   setBusy(false);
 }
 
 // ── Render ────────────────────────────────────────────────────
-function esc(s){ if(!s || s==='N/A') return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+function esc(s) { if(!s || s==='N/A') return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
 const naCell = () => '<span class="na">—</span>';
 
-function showSkeletons(){
+function showSkeletons() {
   const tb = document.getElementById('tbody');
   tb.innerHTML = '';
   for(let i = 0; i < 8; i++)
-    tb.insertAdjacentHTML('beforeend',`<tr><td><div class="sk w2"></div></td><td><div class="sk w8"></div></td><td><div class="sk w6"></div></td><td><div class="sk w6"></div></td><td><div class="sk w8"></div></td><td><div class="sk w4"></div></td><td><div class="sk w8"></div></td></tr>`);
+    tb.insertAdjacentHTML('beforeend', `<tr><td><div class="sk w2"></div></td><td><div class="sk w8"></div></td><td><div class="sk w6"></div></td><td><div class="sk w6"></div></td><td><div class="sk w8"></div></td><td><div class="sk w4"></div></td><td><div class="sk w8"></div></td></tr>`);
   document.getElementById('resSec').style.display = 'block';
   document.getElementById('resTitle').textContent = 'Searching…';
   document.getElementById('resSub').textContent = 'Gemini AI real data fetch kar rahi hai…';
 }
 
-function renderTable(res, bt, loc){
+function renderTable(res, bt, loc) {
   document.getElementById('resSec').style.display = 'block';
   document.getElementById('emptyEl').style.display = 'none';
   document.getElementById('resTitle').textContent = res.length + ' Businesses Found';
@@ -569,9 +484,9 @@ function renderTable(res, bt, loc){
   tb.innerHTML = '';
   res.forEach((r, i) => {
     let domain = null;
-    if(r.website && r.website !== 'N/A'){
-      try{ domain = new URL(r.website).hostname; }
-      catch(_){ domain = r.website.replace(/https?:\/\//,'').split('/')[0]; }
+    if(r.website && r.website !== 'N/A') {
+      try { domain = new URL(r.website).hostname; }
+      catch(_) { domain = r.website.replace(/https?:\/\//,'').split('/')[0]; }
     }
     const emailH = (r.email && r.email !== 'N/A')
       ? `<a class="tl" href="mailto:${esc(r.email)}">${esc(r.email)}</a>`
@@ -586,9 +501,9 @@ function renderTable(res, bt, loc){
 }
 
 // ── Export ────────────────────────────────────────────────────
-function exportXL(){
+function exportXL() {
   if(!allRes.length) return;
-  const bt  = document.getElementById('bizType').value;
+  const bt = document.getElementById('bizType').value;
   const loc = document.getElementById('location').value;
   const rows = allRes.map((r, i) => ({'#':i+1,'Business Name':r.name,'Phone':r.phone,'Owner/Manager':r.owner,'Email':r.email,'Website':r.website,'Address':r.address,'Business Type':bt,'Location':loc}));
   const ws = XLSX.utils.json_to_sheet(rows);
@@ -602,7 +517,7 @@ function exportXL(){
   setTimeout(() => { document.getElementById('xlBtn').className='rbtn'; document.getElementById('xlTxt').textContent='Download Excel'; }, 3000);
 }
 
-function clearAll(){
+function clearAll() {
   allRes = [];
   document.getElementById('tbody').innerHTML = '';
   document.getElementById('resSec').style.display = 'none';
@@ -610,9 +525,7 @@ function clearAll(){
   document.getElementById('statusEl').className = 'status';
   document.getElementById('progWrap').style.display = 'none';
   document.getElementById('warnEl').style.display = 'none';
-  document.getElementById('countdown').style.display = 'none';
   document.getElementById('xlBtn').disabled = true;
-  if(countTimer){ clearInterval(countTimer); countTimer = null; }
 }
 </script>
 </body>
