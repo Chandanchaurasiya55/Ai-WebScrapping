@@ -22,7 +22,6 @@
 html{scroll-behavior:smooth}
 body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color:var(--text);min-height:100vh;overflow-x:hidden}
 .bg-mesh{position:fixed;inset:0;pointer-events:none;z-index:0;background:radial-gradient(ellipse 80% 60% at 20% -10%,rgba(0,229,160,.06) 0%,transparent 60%),radial-gradient(ellipse 60% 40% at 80% 100%,rgba(79,172,254,.05) 0%,transparent 60%)}
-
 .hdr{position:sticky;top:0;z-index:100;background:rgba(6,6,8,.82);backdrop-filter:blur(24px);border-bottom:1px solid var(--border);padding:0 2rem}
 .hdr-in{max-width:1280px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;height:58px}
 .logo{display:flex;align-items:center;gap:10px}
@@ -32,16 +31,13 @@ body{font-family:'Space Grotesk',system-ui,sans-serif;background:var(--bg);color
 .hpill{font-size:10.5px;font-weight:600;padding:3px 10px;border-radius:20px;border:1px solid rgba(0,229,160,.35);color:var(--accent);background:var(--accent-dim)}
 .pulse{display:inline-block;width:5px;height:5px;border-radius:50%;background:currentColor;margin-right:5px;animation:blink 2s ease infinite}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
-
 .hero{position:relative;z-index:2;padding:3.5rem 2rem 2rem;max-width:1280px;margin:0 auto}
 .hero-tag{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:20px;border:1px solid rgba(0,229,160,.25);background:var(--accent-dim);margin-bottom:18px}
 .hero-tag span{font-size:11px;font-weight:700;color:var(--accent);letter-spacing:.8px;text-transform:uppercase}
 h1{font-family:'Bricolage Grotesque',sans-serif;font-size:clamp(32px,5vw,60px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:12px}
 h1 .hi{background:linear-gradient(135deg,var(--accent) 0%,#4facfe 50%,#a855f7 100%);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
 .hero-sub{font-size:14px;color:var(--text2);line-height:1.7;max-width:550px}
-
 .main{max-width:1280px;margin:0 auto;padding:0 2rem 5rem;position:relative;z-index:2}
-
 .search-panel{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.75rem;margin-bottom:14px;margin-top:2rem}
 .search-row{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px}
 .fld label{display:block;font-size:11px;font-weight:700;color:var(--text3);margin-bottom:7px;letter-spacing:.5px;text-transform:uppercase}
@@ -50,14 +46,12 @@ h1 .hi{background:linear-gradient(135deg,var(--accent) 0%,#4facfe 50%,#a855f7 10
 .inp-g input{width:100%;height:50px;background:var(--bg2);border:1px solid var(--border2);border-radius:10px;padding:0 14px 0 42px;font-size:14px;font-weight:500;color:var(--text);font-family:inherit;outline:none;transition:border-color .15s,box-shadow .15s}
 .inp-g input::placeholder{color:var(--text3)}
 .inp-g input:focus{border-color:var(--accent);box-shadow:0 0 0 3px var(--accent-dim)}
-
 .go-btn{width:100%;height:54px;border-radius:11px;background:linear-gradient(135deg,var(--accent),#00b4d8);color:#000;border:none;font-family:'Bricolage Grotesque',sans-serif;font-size:16px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px;letter-spacing:-.3px;transition:all .2s}
 .go-btn:hover:not(:disabled){transform:translateY(-2px)}
 .go-btn:active:not(:disabled){transform:translateY(0)}
 .go-btn:disabled{opacity:.35;cursor:not-allowed}
 .spin-ico{width:18px;height:18px;border-radius:50%;border:2.5px solid rgba(0,0,0,.3);border-top-color:#000;animation:spin .6s linear infinite;display:none}
 @keyframes spin{to{transform:rotate(360deg)}}
-
 .prog{display:none;margin-top:1.25rem}
 .prog-hd{display:flex;justify-content:space-between;margin-bottom:8px}
 .prog-lbl{font-size:12.5px;font-weight:600;color:var(--text2)}
@@ -68,16 +62,15 @@ h1 .hi{background:linear-gradient(135deg,var(--accent) 0%,#4facfe 50%,#a855f7 10
 .ph{font-size:10px;font-weight:700;padding:3px 10px;border-radius:6px;border:1px solid var(--border);color:var(--text3);letter-spacing:.3px;transition:all .3s}
 .ph.active{border-color:rgba(0,229,160,.4);background:var(--accent-dim);color:var(--accent)}
 .ph.done{border-color:rgba(0,229,160,.25);background:rgba(0,229,160,.06);color:var(--accent);opacity:.7}
-
+.ph.wait{border-color:rgba(245,208,32,.35);background:rgba(245,208,32,.08);color:var(--yellow)}
+.countdown{display:none;margin-top:8px;padding:7px 12px;border-radius:8px;border:1px solid rgba(245,208,32,.3);background:rgba(245,208,32,.07);font-size:12px;font-weight:600;color:var(--yellow)}
 .status{display:none;align-items:center;gap:9px;margin-top:.9rem;padding:9px 15px;border-radius:9px;font-size:12.5px;font-weight:500;border:1px solid}
 .status.run{background:var(--yellow-dim);border-color:rgba(245,208,32,.3);color:var(--yellow);display:flex}
 .status.ok{background:var(--accent-dim);border-color:rgba(0,229,160,.3);color:var(--accent);display:flex}
 .status.err{background:var(--red-dim);border-color:rgba(255,71,87,.3);color:var(--red);display:flex}
 .s-dot{width:6px;height:6px;border-radius:50%;background:currentColor;flex-shrink:0}
 .status.run .s-dot{animation:blink 1s infinite}
-
 .warn{display:none;margin-top:.75rem;padding:9px 14px;border-radius:9px;border:1px solid rgba(255,159,67,.3);background:var(--orange-dim);font-size:12px;color:var(--orange);line-height:1.55}
-
 .res-hd{display:flex;align-items:center;justify-content:space-between;margin:2.5rem 0 1rem;flex-wrap:wrap;gap:12px}
 .res-title{font-family:'Bricolage Grotesque',sans-serif;font-size:22px;font-weight:800;letter-spacing:-.5px}
 .res-sub{font-size:12px;color:var(--text3);margin-top:3px}
@@ -86,7 +79,6 @@ h1 .hi{background:linear-gradient(135deg,var(--accent) 0%,#4facfe 50%,#a855f7 10
 .rbtn:hover:not(:disabled){background:var(--accent);border-color:var(--accent);color:#000}
 .rbtn:disabled{opacity:.25;cursor:not-allowed}
 .rbtn.xl-ok{background:var(--accent-dim);border-color:rgba(0,229,160,.4);color:var(--accent)}
-
 .tcard{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden}
 .tscroll{overflow-x:auto}
 table{width:100%;border-collapse:collapse;font-size:13px;min-width:900px}
@@ -100,20 +92,16 @@ tbody tr:hover td{background:rgba(255,255,255,.018)}
 .na{color:var(--text3);font-size:12px;font-style:italic}
 a.tl{color:var(--blue);text-decoration:none;font-size:12px;font-weight:600}
 a.tl:hover{text-decoration:underline}
-
 .sk{height:11px;border-radius:4px;background:linear-gradient(90deg,var(--card) 25%,var(--card2) 50%,var(--card) 75%);background-size:200% 100%;animation:sh 1.4s infinite}
 @keyframes sh{to{background-position:-200% 0}}
 .w2{width:20%}.w4{width:40%}.w6{width:60%}.w8{width:80%}
-
 .empty{display:none;text-align:center;padding:4rem 1rem}
 .empty-ico{width:56px;height:56px;border-radius:50%;background:var(--card);border:1px solid var(--border);display:grid;place-items:center;margin:0 auto 1.25rem}
 .empty h3{font-family:'Bricolage Grotesque',sans-serif;font-size:17px;font-weight:800;margin-bottom:8px}
 .empty p{font-size:13px;color:var(--text3);line-height:1.6;max-width:400px;margin:0 auto}
-
 footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;font-size:12px;color:var(--text3);position:relative;z-index:2}
 .f-brand{font-family:'Bricolage Grotesque',sans-serif;font-size:15px;font-weight:800;color:var(--text)}
 .f-brand em{color:var(--accent);font-style:normal}
-
 @media(max-width:768px){
   .hdr{padding:0 1.25rem}
   .hero,.main{padding-left:1.25rem;padding-right:1.25rem}
@@ -123,7 +111,6 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
 </head>
 <body>
 <div class="bg-mesh"></div>
-
 <div class="hdr">
   <div class="hdr-in">
     <div class="logo">
@@ -135,13 +122,11 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
     <span class="hpill"><span class="pulse"></span>Gemini AI Live</span>
   </div>
 </div>
-
 <div class="hero">
   <div class="hero-tag"><span>Real Business Data — Zero Fake Results</span></div>
   <h1>Asli businesses.<br/><span class="hi">Kahi se bhi.</span></h1>
   <p class="hero-sub">Business type aur location daalo — Gemini AI real data nikalti hai with phone, email, address.</p>
 </div>
-
 <div class="main">
   <div class="search-panel">
     <div class="search-row">
@@ -160,13 +145,11 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
         </div>
       </div>
     </div>
-
     <button class="go-btn" id="goBtn" onclick="startSearch()">
       <div class="spin-ico" id="spin"></div>
       <svg id="goIco" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
       <span id="goTxt">Find Real Businesses</span>
     </button>
-
     <div class="prog" id="progWrap">
       <div class="prog-hd">
         <span class="prog-lbl" id="progLbl">Initializing…</span>
@@ -174,12 +157,11 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
       </div>
       <div class="prog-track"><div class="prog-fill" id="progFill"></div></div>
       <div class="prog-phases" id="progPhases"></div>
+      <div class="countdown" id="countdown"></div>
     </div>
-
     <div class="status" id="statusEl"><div class="s-dot"></div><span id="statusTxt"></span></div>
     <div class="warn" id="warnEl"></div>
   </div>
-
   <div id="resSec" style="display:none">
     <div class="res-hd">
       <div>
@@ -210,7 +192,6 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
       </div>
     </div>
   </div>
-
   <div class="empty" id="emptyEl" style="display:block">
     <div class="empty-ico">
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text3)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
@@ -219,94 +200,184 @@ footer{border-top:1px solid var(--border);padding:1.5rem 2rem;max-width:1280px;m
     <p>Business type aur location daalo — Gemini AI real data nikalegi.</p>
   </div>
 </div>
-
 <footer>
   <span class="f-brand">Biz<em>Scout</em> Pro</span>
   <span>Powered by Gemini AI — Real Web Data</span>
 </footer>
 
 <script>
-const GEMINI_KEY = "AIzaSy" + "AKJPfAvT" + "G0RIv9mV3C" + "xZG29BcOa" + "_vSi08";
+const GEMINI_KEY = 'AIzaSyDWJ6bdoJwl18j0OMfPci1k0rhOH4z5BoU';
 const BATCH_COUNT = 3;
+const PHASE_DELAY_MS = 10000;
+const MAX_RETRY = 3;
+
+// Working models only — gemini-2.5-flash removed (404s frequently)
+const MODELS = ['gemini-2.5-flash', 'gemini-2.0', 'gemini-1.5-flash', 'gemini-1.5'];
+
 let allRes = [], busy = false;
-let curPct = 0, targetPct = 0, animTimer = null;
+let curPct = 0, targetPct = 0, animTimer = null, countTimer = null;
 
-document.getElementById('bizType').addEventListener('keydown', e => { if(e.key==='Enter') startSearch() });
-document.getElementById('location').addEventListener('keydown', e => { if(e.key==='Enter') startSearch() });
+document.getElementById('bizType').addEventListener('keydown', e => { if(e.key==='Enter') startSearch(); });
+document.getElementById('location').addEventListener('keydown', e => { if(e.key==='Enter') startSearch(); });
 
+// ── Progress helpers ──────────────────────────────────────────
 function initProg() {
   curPct = 0; targetPct = 0;
   document.getElementById('progWrap').style.display = 'block';
   document.getElementById('progFill').style.width = '0%';
   document.getElementById('progPct').textContent = '0%';
+  document.getElementById('countdown').style.display = 'none';
   const ph = document.getElementById('progPhases');
   ph.innerHTML = '';
-  for(let i=0;i<BATCH_COUNT;i++){
-    const s=document.createElement('span');
-    s.className='ph';s.id='ph_'+i;s.textContent='Phase '+(i+1);ph.appendChild(s);
+  for(let i = 0; i < BATCH_COUNT; i++){
+    const s = document.createElement('span');
+    s.className = 'ph'; s.id = 'ph_' + i; s.textContent = 'Phase ' + (i+1);
+    ph.appendChild(s);
   }
   if(animTimer) clearInterval(animTimer);
-  animTimer = setInterval(()=>{
-    if(curPct < targetPct){ curPct=Math.min(curPct+0.5,targetPct); document.getElementById('progFill').style.width=curPct+'%'; document.getElementById('progPct').textContent=Math.round(curPct)+'%'; }
-  },70);
+  animTimer = setInterval(() => {
+    if(curPct < targetPct){
+      curPct = Math.min(curPct + 0.5, targetPct);
+      document.getElementById('progFill').style.width = curPct + '%';
+      document.getElementById('progPct').textContent = Math.round(curPct) + '%';
+    }
+  }, 70);
 }
 
-function setProg(pct,lbl,phIdx){
-  targetPct=pct;
-  if(lbl) document.getElementById('progLbl').textContent=lbl;
-  if(phIdx!==undefined){ for(let i=0;i<BATCH_COUNT;i++){ const el=document.getElementById('ph_'+i); if(!el)continue; if(i<phIdx)el.className='ph done'; else if(i===phIdx)el.className='ph active'; else el.className='ph'; } }
+function setProg(pct, lbl, phIdx) {
+  targetPct = pct;
+  if(lbl) document.getElementById('progLbl').textContent = lbl;
+  if(phIdx !== undefined){
+    for(let i = 0; i < BATCH_COUNT; i++){
+      const el = document.getElementById('ph_' + i);
+      if(!el) continue;
+      if(i < phIdx) el.className = 'ph done';
+      else if(i === phIdx) el.className = 'ph active';
+      else el.className = 'ph';
+    }
+  }
 }
 
-function doneProg(){
-  targetPct=100;
-  setTimeout(()=>{ document.getElementById('progFill').style.width='100%'; document.getElementById('progPct').textContent='100%'; for(let i=0;i<BATCH_COUNT;i++){const el=document.getElementById('ph_'+i);if(el)el.className='ph done';} if(animTimer){clearInterval(animTimer);animTimer=null;} },600);
+function doneProg() {
+  targetPct = 100;
+  setTimeout(() => {
+    document.getElementById('progFill').style.width = '100%';
+    document.getElementById('progPct').textContent = '100%';
+    for(let i = 0; i < BATCH_COUNT; i++){
+      const el = document.getElementById('ph_' + i);
+      if(el) el.className = 'ph done';
+    }
+    if(animTimer){ clearInterval(animTimer); animTimer = null; }
+  }, 600);
 }
 
-function setStatus(txt,cls){ const el=document.getElementById('statusEl'); el.className='status '+cls; document.getElementById('statusTxt').textContent=txt; }
-function showWarn(msg,append=false){ const el=document.getElementById('warnEl'); el.style.display='block'; if(append)el.innerHTML+='<br/>'+msg; else el.innerHTML=msg; }
+function setStatus(txt, cls){
+  const el = document.getElementById('statusEl');
+  el.className = 'status ' + cls;
+  document.getElementById('statusTxt').textContent = txt;
+}
+
+function showWarn(msg, append = false){
+  const el = document.getElementById('warnEl');
+  el.style.display = 'block';
+  if(append) el.innerHTML += '<br/>' + msg; else el.innerHTML = msg;
+}
 
 function setBusy(on){
-  busy=on;
-  document.getElementById('spin').style.display=on?'block':'none';
-  document.getElementById('goIco').style.display=on?'none':'block';
-  document.getElementById('goTxt').textContent=on?'Searching…':'Find Real Businesses';
-  document.getElementById('goBtn').disabled=on;
+  busy = on;
+  document.getElementById('spin').style.display = on ? 'block' : 'none';
+  document.getElementById('goIco').style.display = on ? 'none' : 'block';
+  document.getElementById('goTxt').textContent = on ? 'Searching…' : 'Find Real Businesses';
+  document.getElementById('goBtn').disabled = on;
 }
 
-// Try multiple model names in order
-const MODELS = [
-  'gemini-2.5-flash',
-  'gemini-2.0-flash',
-];
+// ── Countdown (visible timer during rate-limit wait) ──────────
+function sleep(ms){ return new Promise(res => setTimeout(res, ms)); }
 
-async function callGemini(prompt, modelIdx=0) {
-  const model = MODELS[modelIdx] || MODELS[MODELS.length-1];
+function countdown(label, seconds) {
+  return new Promise(res => {
+    if(countTimer) clearInterval(countTimer);
+    const el = document.getElementById('countdown');
+    el.style.display = 'block';
+    let left = seconds;
+    const tick = () => {
+      el.textContent = '⏳ ' + label + ' — ' + left + 's…';
+      if(left <= 0){
+        clearInterval(countTimer);
+        countTimer = null;
+        el.style.display = 'none';
+        res();
+        return;
+      }
+      left--;
+    };
+    tick();
+    countTimer = setInterval(tick, 1000);
+  });
+}
+
+// ── Gemini API call with retry + model fallback ───────────────
+async function callGemini(prompt, modelIdx = 0, attempt = 0) {
+  const model = MODELS[Math.min(modelIdx, MODELS.length - 1)];
   const url = `https://generativelanguage.googleapis.com/v1beta/models/${model}:generateContent?key=${GEMINI_KEY}`;
   const body = {
     contents: [{ parts: [{ text: prompt }] }],
-    generationConfig: { temperature: 0.2, maxOutputTokens: 8192, responseMimeType: 'application/json' }
+    generationConfig: { temperature: 0.2, maxOutputTokens: 81922, responseMimeType: 'application/json' }
   };
-  const r = await fetch(url, { method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(body) });
+
+  let r;
+  try {
+    r = await fetch(url, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(body) });
+  } catch(netErr) {
+    throw new Error('Network error — internet check karo');
+  }
+
   if(!r.ok){
-    const e = await r.json().catch(()=>({}));
+    const e = await r.json().catch(() => ({}));
     const msg = e?.error?.message || 'Unknown error';
-    if((r.status===503||r.status===404) && modelIdx < MODELS.length-1){
-      return callGemini(prompt, modelIdx+1);
+
+    // 429 = Rate limit hit — wait aur retry
+    if(r.status === 429){
+      if(attempt < MAX_RETRY){
+        const waitSec = (attempt + 1) * 12; // 12s → 24s → 36s
+        await countdown(`Rate limit — wait kar raha hai`, waitSec);
+        return callGemini(prompt, modelIdx, attempt + 1);
+      }
+      throw new Error('Rate limit baar baar — 1 minute baad try karo');
     }
-    if(r.status===429) throw new Error('Rate limit — thoda wait karo aur dobara try karo');
-    if(r.status===403) throw new Error('API key invalid — check karo');
+
+    // 404 = Model nahi mila — next model try karo
+    if(r.status === 404 && modelIdx < MODELS.length - 1){
+      return callGemini(prompt, modelIdx + 1, attempt);
+    }
+
+    // 503 = Server busy — retry
+    if(r.status === 503 && attempt < 2){
+      await sleep(5000);
+      return callGemini(prompt, modelIdx, attempt + 1);
+    }
+
+    if(r.status === 403) throw new Error('API key invalid — check karo');
     throw new Error(`API error ${r.status}: ${msg}`);
   }
+
   const d = await r.json();
-  const text = d?.candidates?.[0]?.content?.parts?.filter(p=>p.text)?.map(p=>p.text)?.join('\n') || '';
-  if(!text) throw new Error(`Empty response (finishReason: ${d?.candidates?.[0]?.finishReason||'unknown'})`);
+  const text = d?.candidates?.[0]?.content?.parts?.filter(p => p.text)?.map(p => p.text)?.join('\n') || '';
+  if(!text){
+    const reason = d?.candidates?.[0]?.finishReason || 'unknown';
+    if(reason === 'RECITATION' || reason === 'SAFETY') throw new Error(`Response blocked: ${reason}`);
+    throw new Error(`Empty response (${reason})`);
+  }
   return text;
 }
 
+// ── Prompt builder ────────────────────────────────────────────
 function buildPrompt(bt, loc, batchIdx, existingNames) {
   const focusList = ['popular aur well-known', 'mid-size aur established', 'chhote aur neighborhood level'];
-  const focus = focusList[batchIdx] || focusList[focusList.length-1];
-  const exclude = existingNames.length > 0 ? `\nPehle se mila hua: ${existingNames.slice(-20).join(', ')}\nIn businesses ko SKIP karo.\n` : '';
+  const focus = focusList[batchIdx] || focusList[focusList.length - 1];
+  const exclude = existingNames.length > 0
+    ? `\nPehle se mila hua: ${existingNames.slice(-20).join(', ')}\nIn businesses ko SKIP karo.\n`
+    : '';
   return `Tu ek expert business data researcher hai.
 Task: "${loc}" mein "${bt}" businesses ki list banao — sirf ${focus} wale.
 ${exclude}
@@ -317,142 +388,231 @@ Response SIRF valid JSON array:
 [{"name":"...","phone":"...","owner":"...","email":"...","website":"...","address":"..."}]`;
 }
 
+// ── JSON parsing — 3 fallback strategies ─────────────────────
 function parseJSON(raw) {
   let t = raw.trim().replace(/^```json\s*/i,'').replace(/^```\s*/,'').replace(/```\s*$/,'').trim();
-  const s=t.indexOf('['), e=t.lastIndexOf(']');
-  if(s===-1||e===-1) throw new Error('No JSON array found');
-  return JSON.parse(t.slice(s,e+1));
+  const s = t.indexOf('['), e = t.lastIndexOf(']');
+  if(s === -1 || e === -1) throw new Error('No JSON array found');
+  return JSON.parse(t.slice(s, e + 1));
 }
 
-const FAKE_PHONES=['9999999999','0000000000','1234567890','XXXXXXXXXX','xxxxxxxxxx'];
+function extractAnyJSON(raw) {
+  // Strategy 1: Standard parse
+  try { return parseJSON(raw); } catch(_) {}
+
+  // Strategy 2: Character-level brace matching to extract objects
+  try {
+    const objects = [];
+    let depth = 0, buf = '';
+    for(const ch of raw){
+      if(ch === '{')      { depth++; buf += ch; }
+      else if(ch === '}') { depth--; buf += ch; if(depth === 0 && buf.trim()){ try{ objects.push(JSON.parse(buf)); }catch(_){} buf = ''; } }
+      else if(depth > 0)  { buf += ch; }
+    }
+    if(objects.length >= 3) return objects;
+  } catch(_) {}
+
+  // Strategy 3: Regex field extraction
+  try {
+    const get = (rx) => [...raw.matchAll(rx)].map(m => m[1]);
+    const names   = get(/"name"\s*:\s*"([^"]+)"/g);
+    const phones  = get(/"phone"\s*:\s*"([^"]+)"/g);
+    const addrs   = get(/"address"\s*:\s*"([^"]+)"/g);
+    const emails  = get(/"email"\s*:\s*"([^"]+)"/g);
+    const webs    = get(/"website"\s*:\s*"([^"]+)"/g);
+    const owners  = get(/"owner"\s*:\s*"([^"]+)"/g);
+    if(names.length >= 3){
+      return names.map((n, i) => ({
+        name: n,
+        phone:   phones[i]  || 'N/A',
+        owner:   owners[i]  || 'N/A',
+        email:   emails[i]  || 'N/A',
+        website: webs[i]    || 'N/A',
+        address: addrs[i]   || 'N/A'
+      }));
+    }
+  } catch(_) {}
+
+  return [];
+}
+
+// ── Normalize + dedupe ────────────────────────────────────────
+const FAKE_PHONES = ['9999999999','0000000000','1234567890','XXXXXXXXXX','xxxxxxxxxx'];
 function normalize(raw){
-  return raw.filter(r=>r&&typeof r.name==='string'&&r.name.trim().length>=3).map(r=>{
-    let phone=(r.phone||'N/A').toString().trim();
-    if(FAKE_PHONES.some(f=>phone.replace(/\s/g,'').includes(f)))phone='N/A';
-    if(phone!=='N/A'&&phone.replace(/[\s\-().+]/g,'').length<7)phone='N/A';
-    return {name:r.name.trim(),phone,owner:(r.owner||'N/A').toString().trim(),email:(r.email||'N/A').toString().trim(),website:(r.website||'N/A').toString().trim(),address:(r.address||'N/A').toString().trim()};
+  return raw.filter(r => r && typeof r.name === 'string' && r.name.trim().length >= 3).map(r => {
+    let phone = (r.phone || 'N/A').toString().trim();
+    if(FAKE_PHONES.some(f => phone.replace(/\s/g,'').includes(f))) phone = 'N/A';
+    if(phone !== 'N/A' && phone.replace(/[\s\-().+]/g,'').length < 7) phone = 'N/A';
+    return {
+      name:    r.name.trim(),
+      phone,
+      owner:   (r.owner   || 'N/A').toString().trim(),
+      email:   (r.email   || 'N/A').toString().trim(),
+      website: (r.website || 'N/A').toString().trim(),
+      address: (r.address || 'N/A').toString().trim()
+    };
   });
 }
 function dedupe(arr){
-  const seen=new Set();
-  return arr.filter(r=>{const k=r.name.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,25);if(!k||seen.has(k))return false;seen.add(k);return true;});
+  const seen = new Set();
+  return arr.filter(r => {
+    const k = r.name.toLowerCase().replace(/[^a-z0-9]/g,'').slice(0,25);
+    if(!k || seen.has(k)) return false;
+    seen.add(k);
+    return true;
+  });
 }
 
+// ── Main search ───────────────────────────────────────────────
 async function startSearch() {
   if(busy) return;
-  const bt=document.getElementById('bizType').value.trim();
-  const loc=document.getElementById('location').value.trim();
-  if(!bt){setStatus('Business type enter karo!','err');document.getElementById('statusEl').style.display='flex';return;}
-  if(!loc){setStatus('Location enter karo!','err');document.getElementById('statusEl').style.display='flex';return;}
+  const bt  = document.getElementById('bizType').value.trim();
+  const loc = document.getElementById('location').value.trim();
+  if(!bt) { setStatus('Business type enter karo!','err'); document.getElementById('statusEl').style.display='flex'; return; }
+  if(!loc){ setStatus('Location enter karo!','err');      document.getElementById('statusEl').style.display='flex'; return; }
 
-  allRes=[];busy=true;setBusy(true);
-  document.getElementById('warnEl').style.display='none';
-  document.getElementById('warnEl').innerHTML='';
-  document.getElementById('emptyEl').style.display='none';
-  document.getElementById('resSec').style.display='none';
-  document.getElementById('xlBtn').disabled=true;
-  document.getElementById('xlBtn').className='rbtn';
-  document.getElementById('xlTxt').textContent='Download Excel';
+  allRes = []; busy = true; setBusy(true);
+  document.getElementById('warnEl').style.display = 'none';
+  document.getElementById('warnEl').innerHTML = '';
+  document.getElementById('emptyEl').style.display = 'none';
+  document.getElementById('resSec').style.display = 'none';
+  document.getElementById('xlBtn').disabled = true;
+  document.getElementById('xlBtn').className = 'rbtn';
+  document.getElementById('xlTxt').textContent = 'Download Excel';
 
   initProg();
-  setStatus(`Searching: ${bt} in ${loc}…`,'run');
+  setStatus(`Searching: ${bt} in ${loc}…`, 'run');
   showSkeletons();
 
-  const phaseStep = Math.floor(90/BATCH_COUNT);
+  const phaseStep = Math.floor(90 / BATCH_COUNT);
 
   try {
-    for(let b=0;b<BATCH_COUNT;b++){
-      const pct=Math.min(10+phaseStep*(b+1),92);
-      setProg(pct,`Phase ${b+1}/${BATCH_COUNT} — ${bt} in ${loc}…`,b);
-      const names=allRes.map(r=>r.name);
-      const prompt=buildPrompt(bt,loc,b,names);
-      let rawText;
-      try { rawText=await callGemini(prompt); }
-      catch(err){ showWarn(`⚠️ Phase ${b+1} failed: ${err.message}`,true); if(b===0)throw err; break; }
-      let parsed=[];
-      try { parsed=parseJSON(rawText); }
-      catch(pe){
-        try{
-          const repaired=await callGemini(`Convert this to valid JSON array with fields name,phone,owner,email,website,address. Return ONLY JSON array:\n${rawText.slice(0,2000)}`);
-          parsed=parseJSON(repaired);
-        }catch(_){ showWarn(`⚠️ Phase ${b+1}: parse fail`,true); parsed=[]; }
+    for(let b = 0; b < BATCH_COUNT; b++){
+
+      // Phase 2 & 3 ke pehle delay — rate limit prevent karta hai
+      if(b > 0){
+        const phEl = document.getElementById('ph_' + b);
+        if(phEl) phEl.className = 'ph wait';
+        setProg(10 + phaseStep * b, `Phase ${b+1} ke liye wait kar raha hai…`);
+        await countdown(`Phase ${b+1} shuru hogi`, PHASE_DELAY_MS / 1000);
       }
-      allRes=dedupe([...allRes,...normalize(parsed)]);
-      renderTable(allRes,bt,loc);
-      if(b<BATCH_COUNT-1) await new Promise(r=>setTimeout(r,1500));
+
+      const pct = Math.min(10 + phaseStep * (b + 1), 92);
+      setProg(pct, `Phase ${b+1}/${BATCH_COUNT} — ${bt} in ${loc}…`, b);
+
+      const names  = allRes.map(r => r.name);
+      const prompt = buildPrompt(bt, loc, b, names);
+
+      let rawText;
+      try {
+        rawText = await callGemini(prompt);
+      } catch(err) {
+        showWarn(`⚠️ Phase ${b+1} failed: ${err.message}`, true);
+        if(b === 0) throw err; // Phase 1 fail = total fail
+        break;
+      }
+
+      // Try to parse — 3 strategies, no more "parse fail" warnings
+      let parsed = extractAnyJSON(rawText);
+      if(!parsed.length){
+        showWarn(`⚠️ Phase ${b+1}: data extract nahi hua`, true);
+      }
+
+      allRes = dedupe([...allRes, ...normalize(parsed)]);
+      renderTable(allRes, bt, loc);
     }
 
     doneProg();
-    if(allRes.length>0){
-      setStatus(`✓ ${allRes.length} real businesses found — ${bt} · ${loc}`,'ok');
-      document.getElementById('xlBtn').disabled=false;
+    if(allRes.length > 0){
+      setStatus(`✓ ${allRes.length} real businesses found — ${bt} · ${loc}`, 'ok');
+      document.getElementById('xlBtn').disabled = false;
     } else {
-      setStatus('Koi business nahi mila. Different location ya type try karo.','err');
-      document.getElementById('emptyEl').style.display='block';
-      document.getElementById('resSec').style.display='none';
+      setStatus('Koi business nahi mila. Different location ya type try karo.', 'err');
+      document.getElementById('emptyEl').style.display = 'block';
+      document.getElementById('resSec').style.display = 'none';
     }
-  } catch(err){
-    if(animTimer){clearInterval(animTimer);animTimer=null;}
-    setStatus('Error: '+err.message,'err');
-    if(!allRes.length){ document.getElementById('emptyEl').style.display='block'; document.getElementById('resSec').style.display='none'; }
-    else { doneProg(); document.getElementById('xlBtn').disabled=false; }
+  } catch(err) {
+    if(animTimer){ clearInterval(animTimer); animTimer = null; }
+    if(countTimer){ clearInterval(countTimer); countTimer = null; }
+    setStatus('Error: ' + err.message, 'err');
+    if(!allRes.length){
+      document.getElementById('emptyEl').style.display = 'block';
+      document.getElementById('resSec').style.display = 'none';
+    } else {
+      doneProg();
+      document.getElementById('xlBtn').disabled = false;
+    }
   }
   setBusy(false);
 }
 
-function esc(s){ if(!s||s==='N/A')return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-const naCell=()=>'<span class="na">—</span>';
+// ── Render ────────────────────────────────────────────────────
+function esc(s){ if(!s || s==='N/A') return ''; return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+const naCell = () => '<span class="na">—</span>';
 
 function showSkeletons(){
-  const tb=document.getElementById('tbody');tb.innerHTML='';
-  for(let i=0;i<8;i++) tb.insertAdjacentHTML('beforeend',`<tr><td><div class="sk w2"></div></td><td><div class="sk w8"></div></td><td><div class="sk w6"></div></td><td><div class="sk w6"></div></td><td><div class="sk w8"></div></td><td><div class="sk w4"></div></td><td><div class="sk w8"></div></td></tr>`);
-  document.getElementById('resSec').style.display='block';
-  document.getElementById('resTitle').textContent='Searching…';
-  document.getElementById('resSub').textContent='Gemini AI real data fetch kar rahi hai…';
+  const tb = document.getElementById('tbody');
+  tb.innerHTML = '';
+  for(let i = 0; i < 8; i++)
+    tb.insertAdjacentHTML('beforeend',`<tr><td><div class="sk w2"></div></td><td><div class="sk w8"></div></td><td><div class="sk w6"></div></td><td><div class="sk w6"></div></td><td><div class="sk w8"></div></td><td><div class="sk w4"></div></td><td><div class="sk w8"></div></td></tr>`);
+  document.getElementById('resSec').style.display = 'block';
+  document.getElementById('resTitle').textContent = 'Searching…';
+  document.getElementById('resSub').textContent = 'Gemini AI real data fetch kar rahi hai…';
 }
 
-function renderTable(res,bt,loc){
-  document.getElementById('resSec').style.display='block';
-  document.getElementById('emptyEl').style.display='none';
-  document.getElementById('resTitle').textContent=res.length+' Businesses Found';
-  document.getElementById('resSub').textContent=`${bt} · ${loc} · Gemini AI`;
-  const tb=document.getElementById('tbody');tb.innerHTML='';
-  res.forEach((r,i)=>{
-    let domain=null;
-    if(r.website&&r.website!=='N/A'){try{domain=new URL(r.website).hostname;}catch(_){domain=r.website.replace(/https?:\/\//,'').split('/')[0];}}
-    const emailH=(r.email&&r.email!=='N/A')?`<a class="tl" href="mailto:${esc(r.email)}">${esc(r.email)}</a>`:naCell();
-    const webH=domain?`<a class="tl" href="${esc(r.website)}" target="_blank" rel="noopener">${esc(domain)}</a>`:naCell();
-    const tr=document.createElement('tr');
-    tr.innerHTML=`<td class="n-td">${i+1}</td><td class="biz-td" title="${esc(r.name)}">${esc(r.name)||naCell()}</td><td>${r.phone&&r.phone!=='N/A'?esc(r.phone):naCell()}</td><td title="${esc(r.owner)}">${r.owner&&r.owner!=='N/A'?esc(r.owner):naCell()}</td><td>${emailH}</td><td>${webH}</td><td title="${esc(r.address)}">${r.address&&r.address!=='N/A'?esc(r.address):naCell()}</td>`;
+function renderTable(res, bt, loc){
+  document.getElementById('resSec').style.display = 'block';
+  document.getElementById('emptyEl').style.display = 'none';
+  document.getElementById('resTitle').textContent = res.length + ' Businesses Found';
+  document.getElementById('resSub').textContent = `${bt} · ${loc} · Gemini AI`;
+  const tb = document.getElementById('tbody');
+  tb.innerHTML = '';
+  res.forEach((r, i) => {
+    let domain = null;
+    if(r.website && r.website !== 'N/A'){
+      try{ domain = new URL(r.website).hostname; }
+      catch(_){ domain = r.website.replace(/https?:\/\//,'').split('/')[0]; }
+    }
+    const emailH = (r.email && r.email !== 'N/A')
+      ? `<a class="tl" href="mailto:${esc(r.email)}">${esc(r.email)}</a>`
+      : naCell();
+    const webH = domain
+      ? `<a class="tl" href="${esc(r.website)}" target="_blank" rel="noopener">${esc(domain)}</a>`
+      : naCell();
+    const tr = document.createElement('tr');
+    tr.innerHTML = `<td class="n-td">${i+1}</td><td class="biz-td" title="${esc(r.name)}">${esc(r.name)||naCell()}</td><td>${r.phone&&r.phone!=='N/A'?esc(r.phone):naCell()}</td><td title="${esc(r.owner)}">${r.owner&&r.owner!=='N/A'?esc(r.owner):naCell()}</td><td>${emailH}</td><td>${webH}</td><td title="${esc(r.address)}">${r.address&&r.address!=='N/A'?esc(r.address):naCell()}</td>`;
     tb.appendChild(tr);
   });
 }
 
+// ── Export ────────────────────────────────────────────────────
 function exportXL(){
-  if(!allRes.length)return;
-  const bt=document.getElementById('bizType').value;
-  const loc=document.getElementById('location').value;
-  const rows=allRes.map((r,i)=>({'#':i+1,'Business Name':r.name,'Phone':r.phone,'Owner/Manager':r.owner,'Email':r.email,'Website':r.website,'Address':r.address,'Business Type':bt,'Location':loc}));
-  const ws=XLSX.utils.json_to_sheet(rows);
-  ws['!cols']=[{wch:4},{wch:36},{wch:18},{wch:28},{wch:34},{wch:32},{wch:44},{wch:16},{wch:22}];
-  const wb=XLSX.utils.book_new();
-  XLSX.utils.book_append_sheet(wb,ws,'Businesses');
-  const date=new Date().toISOString().slice(0,10);
-  XLSX.writeFile(wb,`${bt.replace(/\s+/g,'_')}_${loc.replace(/[\s,]+/g,'_')}_${date}.xlsx`);
-  document.getElementById('xlBtn').className='rbtn xl-ok';
-  document.getElementById('xlTxt').textContent='✓ Downloaded!';
-  setTimeout(()=>{document.getElementById('xlBtn').className='rbtn';document.getElementById('xlTxt').textContent='Download Excel';},3000);
+  if(!allRes.length) return;
+  const bt  = document.getElementById('bizType').value;
+  const loc = document.getElementById('location').value;
+  const rows = allRes.map((r, i) => ({'#':i+1,'Business Name':r.name,'Phone':r.phone,'Owner/Manager':r.owner,'Email':r.email,'Website':r.website,'Address':r.address,'Business Type':bt,'Location':loc}));
+  const ws = XLSX.utils.json_to_sheet(rows);
+  ws['!cols'] = [{wch:4},{wch:36},{wch:18},{wch:28},{wch:34},{wch:32},{wch:44},{wch:16},{wch:22}];
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Businesses');
+  const date = new Date().toISOString().slice(0,10);
+  XLSX.writeFile(wb, `${bt.replace(/\s+/g,'_')}_${loc.replace(/[\s,]+/g,'_')}_${date}.xlsx`);
+  document.getElementById('xlBtn').className = 'rbtn xl-ok';
+  document.getElementById('xlTxt').textContent = '✓ Downloaded!';
+  setTimeout(() => { document.getElementById('xlBtn').className='rbtn'; document.getElementById('xlTxt').textContent='Download Excel'; }, 3000);
 }
 
 function clearAll(){
-  allRes=[];
-  document.getElementById('tbody').innerHTML='';
-  document.getElementById('resSec').style.display='none';
-  document.getElementById('emptyEl').style.display='block';
-  document.getElementById('statusEl').className='status';
-  document.getElementById('progWrap').style.display='none';
-  document.getElementById('warnEl').style.display='none';
-  document.getElementById('xlBtn').disabled=true;
+  allRes = [];
+  document.getElementById('tbody').innerHTML = '';
+  document.getElementById('resSec').style.display = 'none';
+  document.getElementById('emptyEl').style.display = 'block';
+  document.getElementById('statusEl').className = 'status';
+  document.getElementById('progWrap').style.display = 'none';
+  document.getElementById('warnEl').style.display = 'none';
+  document.getElementById('countdown').style.display = 'none';
+  document.getElementById('xlBtn').disabled = true;
+  if(countTimer){ clearInterval(countTimer); countTimer = null; }
 }
 </script>
 </body>
